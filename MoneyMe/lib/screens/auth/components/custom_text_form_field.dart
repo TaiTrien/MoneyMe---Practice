@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
+class CustomTextFormFieldd extends StatefulWidget {
+  const CustomTextFormFieldd({
     Key key,
+    this.counter = 10,
     @required this.labelText,
     @required this.icon,
-    this.helpText,
-    this.keyboardType,
-  }) : super(key: key);
+    @required this.helpText,
+    @required this.keyboardType,
+    String labell,
+  })  : _labell = labell,
+        super(key: key);
 
+  final int counter;
   final String labelText;
   final Icon icon;
   final String helpText;
   final TextInputType keyboardType;
+  final String _labell;
+
+  @override
+  _CustomTextFormFielddState createState() => _CustomTextFormFielddState();
+}
+
+class _CustomTextFormFielddState extends State<CustomTextFormFieldd> {
   @override
   Widget build(BuildContext context) {
+    // var textController = TextEditingController(text: 'acbc');
+    // print(labell);
+
     return TextFormField(
+      // controller: textController,
+      onChanged: (value) {
+        print(widget.labelText);
+      },
       cursorColor: Colors.green,
       validator: (value) => (value.isEmpty) ? 'Enter some text' : null,
       decoration: InputDecoration(
-        prefixIcon: icon,
-        labelText: '$labelText',
+        prefixIcon: widget.icon,
+        labelText:
+            '${widget.labelText} ${widget._labell} --- ${widget.counter}',
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.green,
@@ -29,9 +48,9 @@ class CustomTextFormField extends StatelessWidget {
         labelStyle: TextStyle(
           color: Colors.green,
         ),
-        helperText: this.helpText,
+        helperText: this.widget.helpText,
       ),
-      keyboardType: keyboardType,
+      keyboardType: widget.keyboardType,
     );
   }
 }
