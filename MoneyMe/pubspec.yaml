@@ -27,6 +27,9 @@ dependencies:
   bloc: ^6.0.3
   http: ^0.12.2
   flutter_secure_storage: ^3.3.3
+  connectivity: ^0.4.9+2
+  liquid_progress_indicator: ^0.3.2
+
 
 
 

@@ -5,12 +5,18 @@ class CustomTextField extends StatelessWidget {
   final IconData iconData;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final String helpText;
+  final bool isObscured;
+  final Function onChanged;
   const CustomTextField({
     Key key,
     @required this.label,
     @required this.controller,
     this.iconData,
     this.keyboardType,
+    this.onChanged,
+    this.helpText,
+    this.isObscured = false,
   }) : super(key: key);
 
   @override
@@ -34,8 +40,11 @@ class CustomTextField extends StatelessWidget {
           labelStyle: TextStyle(
             color: Colors.green,
           ),
+          helperText: helpText,
         ),
         keyboardType: keyboardType,
+        onChanged: onChanged,
+        obscureText: isObscured,
       ),
     );
   }

@@ -1,16 +1,23 @@
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
-import 'package:MoneyMe/screens/auth/signup/signup_screen.dart';
-import 'package:MoneyMe/screens/mainscreen/test.dart';
 import 'package:flutter/material.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   static String screenID = 'SignInScreen';
   @override
-  Widget build(BuildContext context) {
-    var controller = new SignInController();
+  _SignInScreenState createState() => _SignInScreenState();
+}
 
+class _SignInScreenState extends State<SignInScreen> {
+  var controller = new SignInController();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -74,17 +81,11 @@ class SignInScreen extends StatelessWidget {
                     label: 'Mật khẩu',
                     iconData: Icons.lock,
                     controller: controller.passwordController,
+                    isObscured: true,
                   ),
                   RoudedButton(
                     titleBtn: 'Đăng nhập',
-                    onPressed: () async {
-                      //await controller.getTokenFromLocal();
-                      controller.handleLogin();
-                      if (await controller.validateUser()) {
-                        Navigator.pushNamed(context, Test.screenID);
-                      } else
-                        print('dm');
-                    },
+                    onPressed: () => controller.handleLogin(context),
                   ),
                   Container(
                     margin: EdgeInsets.only(
@@ -93,7 +94,7 @@ class SignInScreen extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () =>
-                          Navigator.pushNamed(context, SignUpScreen.screenID),
+                          Navigator.pushNamed(context, '/signUpScreen'),
                       child: Row(
                         children: [
                           Icon(

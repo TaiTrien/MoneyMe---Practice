@@ -1,5 +1,3 @@
-import 'package:MoneyMe/screens/auth/signin/signin_screen.dart';
-import 'package:MoneyMe/screens/auth/signup/signup_screen.dart';
 import 'package:MoneyMe/screens/mainscreen/test_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +15,7 @@ class Test extends StatelessWidget {
         child: FlatButton(
           onPressed: () async {
             await controller.deleteToken();
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '/signInScreen');
           },
           child: Text(
             'Đăng xuất',
