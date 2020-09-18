@@ -12,6 +12,10 @@ class SignInController {
   var passwordController = TextEditingController();
   var urlLogin = 'https://fin.mal.vn/api/user/login';
   var urlValidateUser = 'https://fin.mal.vn/api/user/info';
+  dispose() {
+    phoneNumberController.dispose();
+    passwordController.dispose();
+  }
 
   handleLogin(BuildContext context) async {
     bool hasToken = await isSignedIn();
@@ -25,8 +29,9 @@ class SignInController {
       return showDialog(
         context: context,
         builder: (context) => CustomDiaglog(
-          content: "Thiết bị của bạn chưa kết nối Internet",
-          titleWidget: Image.asset(
+          title: "Thiết bị của bạn chưa kết nối Internet",
+          subTitle: "Vui lòng kiểm tra lại kết nối của bạn",
+          image: Image.asset(
             'assets/images/noInternet.gif',
             fit: BoxFit.contain,
           ),
@@ -67,8 +72,9 @@ class SignInController {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(
-        content: "Người dùng này chưa được đăng ký",
-        titleWidget: Image.asset('assets/images/404.gif'),
+        title: "Không tìm thấy người dùng",
+        subTitle: "Vui lòng kiểm tra lại tên tài khoản/mật khẩu",
+        image: Image.asset('assets/images/404.gif'),
         actions: [
           CustomActionButton(
             titleBtn: 'Hủy',

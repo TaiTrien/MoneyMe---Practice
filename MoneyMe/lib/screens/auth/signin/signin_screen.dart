@@ -17,6 +17,12 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

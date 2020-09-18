@@ -1,26 +1,44 @@
 import 'package:flutter/material.dart';
 
 class CustomDiaglog extends StatelessWidget {
-  final Widget titleWidget;
+  final Image image;
   final List<Widget> actions;
-  final String content;
+  final String title;
+  final String subTitle;
   final Function onPress;
   const CustomDiaglog({
     Key key,
     this.actions,
-    this.content,
+    this.title,
     this.onPress,
-    this.titleWidget,
+    this.image,
+    this.subTitle,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       titlePadding: EdgeInsets.all(0),
-      title: titleWidget,
-      content: Text(
-        content,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
+      title: image,
+      content: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: title + '\n',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            TextSpan(
+              text: '\n' + subTitle,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+          ],
         ),
       ),
       actions: actions,
@@ -28,3 +46,25 @@ class CustomDiaglog extends StatelessWidget {
     );
   }
 }
+// Row(
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         children: [
+//           Text(
+//             title,
+//             style: TextStyle(
+//               fontWeight: FontWeight.bold,
+//               fontSize: 20,
+//             ),
+//           ),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           Text(
+//             subTitle,
+//             style: TextStyle(
+//               color: Colors.black54,
+//               fontWeight: FontWeight.w400,
+//             ),
+//           )
+//         ],
+//       ),

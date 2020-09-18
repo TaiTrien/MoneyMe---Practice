@@ -5,7 +5,7 @@ class CustomTextField extends StatelessWidget {
   final IconData iconData;
   final TextInputType keyboardType;
   final TextEditingController controller;
-  final String helpText;
+  final String errorText;
   final bool isObscured;
   final Function onChanged;
   const CustomTextField({
@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.iconData,
     this.keyboardType,
     this.onChanged,
-    this.helpText,
+    this.errorText,
     this.isObscured = false,
   }) : super(key: key);
 
@@ -40,7 +40,7 @@ class CustomTextField extends StatelessWidget {
           labelStyle: TextStyle(
             color: Colors.green,
           ),
-          helperText: helpText,
+          errorText: errorText,
         ),
         keyboardType: keyboardType,
         onChanged: onChanged,
