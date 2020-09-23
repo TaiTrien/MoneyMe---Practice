@@ -1,10 +1,12 @@
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
+import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
   static String screenID = 'SignInScreen';
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -82,16 +84,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     iconData: Icons.phone,
                     keyboardType: TextInputType.number,
                     controller: controller.phoneNumberController,
+                    validator: Validator.isPhoneNumber,
+                    errorMessage: "Số điện thoại không hợp lệ",
                   ),
                   CustomTextField(
                     label: 'Mật khẩu',
                     iconData: Icons.lock,
                     controller: controller.passwordController,
-                    isObscured: true,
+                    isObscured: false,
+                    validator: Validator.isPassword,
+                    errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa, số và ký tự đặc biệt",
                   ),
                   RoudedButton(
                     titleBtn: 'Đăng nhập',
-                    onPressed: () => controller.handleLogin(context),
+                    onPressed: () => controller.handleSignIn(context),
                   ),
                   Container(
                     margin: EdgeInsets.only(
@@ -99,8 +105,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       bottom: 15.0,
                     ),
                     child: GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/signUpScreen'),
+                      onTap: () => Navigator.pushNamedAndRemoveUntil(context, '/signUpScreen', (_) => false),
                       child: Row(
                         children: [
                           Icon(

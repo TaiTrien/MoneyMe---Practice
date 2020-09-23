@@ -1,6 +1,7 @@
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signup/signup_controller.dart';
+import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -11,12 +12,16 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  bool isValid;
+  var controller = SignUpController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var controller = new SignUpController();
-    var size = MediaQuery.of(context).size;
-    var errorText;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -30,7 +35,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              height: size.height * 0.8,
               padding: EdgeInsets.all(10),
               child: Column(
                 children: [
@@ -49,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          blurRadius: 10.0,
+                          blurRadius: 20.0,
                           color: Colors.black87,
                           offset: Offset(0, 10),
                         ),
@@ -75,37 +79,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Color(0xFF4dc9cb),
                         ),
                         CustomTextField(
-                          label: 'Họ tên đầy đủ',
+                          label: 'Họ và tên đầy đủ',
                           iconData: Icons.account_circle,
                           controller: controller.nameController,
+                          validator: Validator.isName,
+                          errorMessage: "Họ tên không hợp lệ",
                         ),
                         CustomTextField(
                           label: 'Số điện thoại',
                           iconData: Icons.phone,
                           keyboardType: TextInputType.number,
                           controller: controller.phoneNumberController,
-                          errorText: errorText,
-                          onChanged: (value) {
-                            setState(() {
-                              errorText = controller.validateInfo(value);
-                            });
-                          },
+                          validator: Validator.isPhoneNumber,
+                          errorMessage: "Số điện thoại không hợp lệ",
                         ),
                         CustomTextField(
                           label: 'Mật khẩu',
                           iconData: Icons.lock,
                           controller: controller.passwordController,
-                          isObscured: true,
+                          isObscured: false,
+                          validator: Validator.isPassword,
+                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa, số và ký tự đặc biệt",
                         ),
                         CustomTextField(
                           label: 'Nhập lại mật khẩu',
                           iconData: Icons.lock,
-                          controller: controller.retypePasswordController,
-                          isObscured: true,
+                          controller: controller.retypedPasswordController,
+                          isObscured: false,
+                          validator: (value) => (Validator.isPassword(value) && (value == controller.passwordController.text)),
+                          errorMessage: "Mật khẩu nhập lại không khớp",
                         ),
                         RoudedButton(
                           titleBtn: 'Đăng ký',
-                          onPressed: controller.handleSignUp,
+                          onPressed: () => controller.handleSignUp(context),
                         ),
                         Container(
                           margin: EdgeInsets.only(
@@ -113,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             bottom: 15.0,
                           ),
                           child: GestureDetector(
-                            onTap: () => Navigator.pop(context),
+                            onTap: () => Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (_) => false),
                             child: Row(
                               children: [
                                 Icon(

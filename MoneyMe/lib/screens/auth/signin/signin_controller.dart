@@ -1,7 +1,9 @@
+import 'package:MoneyMe/models/reponse.dart';
 import 'package:MoneyMe/models/user.dart';
 import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
+import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,17 +14,23 @@ class SignInController {
   var passwordController = TextEditingController();
   var urlLogin = 'https://fin.mal.vn/api/user/login';
   var urlValidateUser = 'https://fin.mal.vn/api/user/info';
+
   dispose() {
     phoneNumberController.dispose();
     passwordController.dispose();
   }
 
-  handleLogin(BuildContext context) async {
+  handleSignIn(BuildContext context) async {
+    String phoneNumber = phoneNumberController.text.trim();
+    String password = passwordController.text.trim();
+
+    bool isPhoneNumberValid = Validator.isPhoneNumber(phoneNumber);
+    bool isPasswordValid = Validator.isPassword(password);
     bool hasToken = await isSignedIn();
     bool isConnected = await Connection.isInternetConnected();
 
     if (hasToken) {
-      return Navigator.pushNamed(context, '/testScreen');
+      return Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
     }
 
     if (!isConnected) {
@@ -49,30 +57,27 @@ class SignInController {
       );
     }
 
-    User user = await getUser();
+    if (!isPhoneNumberValid || !isPasswordValid) return null;
 
-    if (user == null) {
-      return notFoundUser(context);
+    dynamic response = await getApiResponse(
+      phoneNumber: phoneNumberController.text,
+      password: passwordController.text,
+    );
+
+    if (!(response is User)) {
+      return dialogWrongInfo(context, response);
     }
 
-    Store.setToken(user.getToken);
-    String token = user.getToken;
-    bool isValidToken = await validateUser(token: token);
-
-    if (!isValidToken) {
-      return notFoundUser(context);
-    }
-
+    await Store.setToken(response.getToken);
     // Handle if validate successfuly
-
-    Navigator.pushNamed(context, '/testScreen');
+    Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
   }
 
-  Future<Function> notFoundUser(BuildContext context) {
+  Future dialogWrongInfo(BuildContext context, Response response) {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(
-        title: "Không tìm thấy người dùng",
+        title: response.apiMessagse,
         subTitle: "Vui lòng kiểm tra lại tên tài khoản/mật khẩu",
         image: Image.asset('assets/images/404.gif'),
         actions: [
@@ -89,7 +94,7 @@ class SignInController {
             color: Colors.green[400],
             colorTitle: Colors.white,
             onPress: () {
-              Navigator.pushNamed(context, '/signUpScreen');
+              Navigator.pushNamedAndRemoveUntil(context, '/signUpScreen', (_) => false);
             },
           ),
         ],
@@ -97,18 +102,17 @@ class SignInController {
     );
   }
 
-  Future<dynamic> getUser() async {
+  Future<dynamic> getApiResponse({String phoneNumber, String password}) async {
     var response = await http.post(
       urlLogin,
       body: {
-        "user_name": phoneNumberController.text,
-        "password": passwordController.text,
+        "user_name": phoneNumber,
+        "password": password,
       },
     );
-    if (response.statusCode == 200)
-      return User.map(json.decode(response.body));
-    else
-      return null;
+    if (response.statusCode != 200) return Response.map(json.decode(response.body));
+
+    return User.map(json.decode(response.body));
   }
 
   Future<bool> isSignedIn() async {
@@ -116,12 +120,12 @@ class SignInController {
     return (token != null) ? true : false;
   }
 
-  Future<bool> validateUser({String token}) async {
-    var response = await http.get(
-      urlValidateUser,
-      headers: {"Authorization": token},
-    );
-    if (response.statusCode == 200) return true;
-    return false;
-  }
+  // Future<bool> validateUser({String token}) async {
+  //   var response = await http.get(
+  //     urlValidateUser,
+  //     headers: {"Authorization": token},
+  //   );
+  //   if (response.statusCode != 200) return true;
+  //   return false;
+  // }
 }

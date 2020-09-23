@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class TestController {
+class HomeController {
   final tokenStorage = new FlutterSecureStorage();
 
   Future<void> deleteToken() async {

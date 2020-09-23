@@ -19,9 +19,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void checkUserSignedIn() async {
     controller.isSignedIn().then((isSignedIn) {
-      String routeName = isSignedIn ? '/testScreen' : '/signInScreen';
+      String routeName = isSignedIn ? '/homeScreen' : '/signInScreen';
 
-      Navigator.pushReplacementNamed(context, routeName);
+      Navigator.pushNamedAndRemoveUntil(context, routeName, (_) => false);
     });
   }
 
@@ -34,14 +34,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
           height: 200.0,
           child: LiquidCircularProgressIndicator(
             value: 0.25, // Defaults to 0.5.
-            valueColor: AlwaysStoppedAnimation(Colors
-                .teal[200]), // Defaults to the current Theme's accentColor.
-            backgroundColor: Colors
-                .white, // Defaults to the current Theme's backgroundColor.
+            valueColor: AlwaysStoppedAnimation(Colors.teal[200]), // Defaults to the current Theme's accentColor.
+            backgroundColor: Colors.white, // Defaults to the current Theme's backgroundColor.
             borderColor: Colors.teal,
             borderWidth: 5.0,
-            direction: Axis
-                .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
+            direction: Axis.vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
             center: Text(
               "Loading...",
               style: TextStyle(fontSize: 20.0, color: Colors.teal),
