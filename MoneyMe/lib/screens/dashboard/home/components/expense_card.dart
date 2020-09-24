@@ -25,7 +25,7 @@ class ExpenseCard extends StatelessWidget {
         leading: Container(
           height: double.infinity,
           width: 30.0,
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: SvgPicture.asset(
             iconPath,
             color: kHeaderColor,

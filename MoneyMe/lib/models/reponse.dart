@@ -12,4 +12,5 @@ class Response {
 
   dynamic get code => this._code;
   String get apiMessagse => this._message;
+  dynamic get data => this._data;
 }

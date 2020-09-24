@@ -1,32 +1,13 @@
-import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
-class LoadingScreen extends StatefulWidget {
-  static String screenID = 'LoadingScreen';
+import 'loading_controller.dart';
 
-  @override
-  _LoadingScreenState createState() => _LoadingScreenState();
-}
-
-class _LoadingScreenState extends State<LoadingScreen> {
-  var controller = new SignInController();
-  @override
-  void initState() {
-    super.initState();
-    checkUserSignedIn();
-  }
-
-  void checkUserSignedIn() async {
-    controller.isSignedIn().then((isSignedIn) {
-      String routeName = isSignedIn ? '/homeScreen' : '/signInScreen';
-
-      Navigator.pushNamedAndRemoveUntil(context, routeName, (_) => false);
-    });
-  }
-
+class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoadingController controller = LoadingController(context: context);
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -40,7 +21,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             borderWidth: 5.0,
             direction: Axis.vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
             center: Text(
-              "Loading...",
+              "Loading... ",
               style: TextStyle(fontSize: 20.0, color: Colors.teal),
             ),
           ),
