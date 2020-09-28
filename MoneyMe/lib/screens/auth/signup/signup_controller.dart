@@ -1,7 +1,7 @@
 import 'package:MoneyMe/api/user_api.dart';
+import 'package:MoneyMe/models/reponse.dart';
 import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
 import 'package:MoneyMe/screens/auth/signin/components/custom_action_btn.dart';
-import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
@@ -37,17 +37,17 @@ class SignUpController {
     bool isConnected = await Connection.isInternetConnected();
     if (!isConnected) return dialogConnectFailed(context);
 
-    var isRegistered = await UserApi.registerStatus();
-    if (!isRegistered) return dialogRegisterFailed(context);
+    var registerData = await UserApi.getRegisterResponse();
+    if (registerData.code != 200) return dialogRegisterFailed(context, registerData);
 
     //handle when register successfully
     var token = await UserApi.getGlobalToken(phoneNumber: phoneNumber, password: password);
 
     await Store.setToken(token);
-    dialogRegisterSuccessfully(context);
+    dialogRegisterSuccessfully(context, registerData);
   }
 
-  Future dialogRegisterSuccessfully(BuildContext context) {
+  Future dialogRegisterSuccessfully(BuildContext context, Response registerData) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -55,7 +55,7 @@ class SignUpController {
           Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
         });
         return CustomDiaglog(
-          title: 'Đăng ký thành công',
+          title: registerData.apiMessagse,
           subTitle: "Chào mừng bạn đến với Money Me",
           image: Image.asset(
             'assets/images/welcome.gif',
@@ -76,11 +76,11 @@ class SignUpController {
     );
   }
 
-  Future dialogRegisterFailed(BuildContext context) {
+  Future dialogRegisterFailed(BuildContext context, Response registerData) {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(
-        title: "Đăng ký thất bại",
+        title: registerData.apiMessagse,
         subTitle: "Vui lòng đăng ký tài khoản khác",
         image: Image.asset('assets/images/404.gif'),
         actions: [

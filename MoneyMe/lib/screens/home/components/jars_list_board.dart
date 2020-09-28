@@ -1,5 +1,7 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/dashboard/home/home_controller.dart';
+import 'package:MoneyMe/screens/home/components/jar_card.dart';
+import 'package:MoneyMe/screens/home/home_controller.dart';
+
 import 'package:flutter/material.dart';
 
 class JarsListBoard extends StatelessWidget {
@@ -15,10 +17,10 @@ class JarsListBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: size.height * 0.3),
+      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: size.height * 0.4),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical + 10),
+        padding: EdgeInsets.symmetric(vertical: kDefaultPaddingVertical + 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -33,6 +35,9 @@ class JarsListBoard extends StatelessWidget {
                 style: kTitleTextStyle,
               ),
             ),
+            SizedBox(
+              height: 10.0,
+            ),
             Expanded(
               child: GridView.builder(
                 itemCount: 6,
@@ -41,7 +46,11 @@ class JarsListBoard extends StatelessWidget {
                   childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 4),
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return Text('a');
+                  return JarCard(
+                    title: controller.jarsList[index].jarName ?? "Trống",
+                    subTitle: controller.jarsList[index].jarTitle ?? "Trống",
+                    iconName: controller.jarsList[index].icon.substring(4),
+                  );
                 },
               ),
             ),

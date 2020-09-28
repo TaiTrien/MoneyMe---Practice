@@ -1,5 +1,6 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/dashboard/home/home_controller.dart';
+import 'package:MoneyMe/screens/home/home_controller.dart';
+import 'package:MoneyMe/utils/formater.dart';
 import 'package:flutter/material.dart';
 
 class RemainMoneyCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class RemainMoneyCard extends StatelessWidget {
                 style: kSubTitleTextStyle,
               ),
               TextSpan(
-                text: '${controller.totalExpense}',
+                text: Formatter.formatMoney(controller.totalExpense),
                 style: kTitleTextStyle.copyWith(fontSize: 25.0),
               ),
               TextSpan(

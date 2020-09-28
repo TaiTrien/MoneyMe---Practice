@@ -23,8 +23,7 @@ class UserApi {
     return token;
   }
 
-  static Future<bool> registerStatus({String name, String userName, String password}) async {
-    bool isRegistered;
+  static Future<dynamic> getRegisterResponse({String name, String userName, String password}) async {
     var response = await http.post(
       urlRegister,
       body: {
@@ -33,10 +32,8 @@ class UserApi {
         "password": password,
       },
     );
-    var statusCode = Response.map(json.decode(response.body)).code;
-
-    isRegistered = (statusCode == 200) ? true : false;
-    return isRegistered;
+    var data = Response.map(json.decode(response.body));
+    return data;
   }
 
   static Future<dynamic> getUserInfo() async {

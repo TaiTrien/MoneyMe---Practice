@@ -1,78 +1,75 @@
-import 'dart:convert';
-
+import 'package:MoneyMe/api/jar_api.dart';
+import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/api/user_api.dart';
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/bloc/transactionbloc_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
-import 'package:MoneyMe/helpers/notify.dart';
+import 'package:MoneyMe/models/jar.dart';
+import 'package:MoneyMe/models/transaction.dart';
+import 'package:MoneyMe/models/user.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
-import 'package:MoneyMe/screens/auth/signin/signin_screen.dart';
-import 'package:MoneyMe/screens/dashboard/home/home_screen.dart';
-import 'package:MoneyMe/utils/connection.dart';
-import 'package:MoneyMe/utils/store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 
 class LoadingController {
   BuildContext context;
-  LoadingController({this.context}) {
-    loadUserData();
-  }
+  UserBloc _userBloc;
+  JarBloc _jarBloc;
+  TransactionBloc _transactionBloc;
   var signInController = new SignInController();
 
-  var urlGetJarsList = 'https://fin.mal.vn/api/jars/list';
-  var urlGetExpenseHistory = 'https://fin.mal.vn/api/input/history';
-
-  void loadUserData() async {
-    bool isSignedIn = await signInController.isSignedIn();
-    bool isInternetConnected = await Connection.isInternetConnected();
-
-    if (!isInternetConnected) {
-      return Notify().show(
-        message: "Vui lòng kiểm tra kết nối",
-        color: Colors.teal[400],
-        timeout: 10,
-      );
-    }
-
-    var token = await Store.getToken();
-
-    dynamic userInfo = await UserApi.getUserInfo();
-
-    dynamic jarsList = await getData(token: token, url: urlGetJarsList);
-    dynamic expenseHistory = await getData(token: token, url: urlGetExpenseHistory);
-
-    if (userInfo == null || jarsList == null) return;
-
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => isSignedIn
-              ? HomeScreen(
-                  userInfo: userInfo,
-                  jarsList: jarsList,
-                  expenseHistory: expenseHistory,
-                )
-              : SignInScreen(),
-        ),
-        (_) => false);
+  LoadingController({this.context}) {
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    _jarBloc = BlocProvider.of<JarBloc>(context);
+    _transactionBloc = BlocProvider.of<TransactionBloc>(context);
+    handleLoadData();
   }
 
-  Future<dynamic> getData({String token, String url}) async {
-    var data;
-    var response = await http.get(
-      url,
-      headers: {
-        "Authorization": token,
-      },
-    );
+  handleLoadData() async {
+    bool isSignedIn = await signInController.isSignedIn();
+    if (!isSignedIn) return Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (_) => false);
 
-    if (response.statusCode != 200) {
-      return response.statusCode.toString();
+    await loadUserData();
+    await loadJarsData();
+    await loadTransactionsData();
+    return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
+  }
+
+  Future<void> loadUserData() async {
+    var userData;
+    try {
+      userData = await UserApi.getUserInfo();
+      User user = User.map(userData.data);
+      _userBloc.add(LoadUserInfo(user));
+    } catch (e) {
+      print(e);
     }
+  }
 
-    data = json.decode(response.body);
-    return data;
+  Future<void> loadJarsData() async {
+    var jarsListData;
+    List<Jar> jarsList = List<Jar>();
+    jarsListData = await JarApi.getJarsListInfo();
+
+    for (int i = 0; i < jarsListData.data.length; i++) {
+      Jar jar = Jar.map(jarsListData.data[i]);
+      jarsList.add(jar);
+    }
+    _jarBloc.add(LoadJarsData(jarsList));
+  }
+
+  Future<void> loadTransactionsData() async {
+    var transactionsListData;
+    List<Transaction> transactionsList = List<Transaction>();
+
+    transactionsListData = await TransactionApi.getTransactionsList();
+    int transactionsListLength = int.parse(transactionsListData.data["total"]);
+
+    for (int i = 0; i < transactionsListLength; i++) {
+      Transaction transaction = Transaction.map(transactionsListData.data, i);
+      transactionsList.add(transaction);
+    }
+    _transactionBloc.add(LoadTransactionsData(transactionsList));
   }
 }

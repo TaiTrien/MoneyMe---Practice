@@ -6,6 +6,6 @@ abstract class UserEvent {
   UserEvent({this.payload});
 }
 
-class GetUserName extends UserEvent {
-  GetUserName(String userName) : super(payload: userName);
+class LoadUserInfo extends UserEvent {
+  LoadUserInfo(User user) : super(payload: user);
 }

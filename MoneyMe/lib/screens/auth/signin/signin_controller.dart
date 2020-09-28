@@ -1,6 +1,4 @@
 import 'package:MoneyMe/api/user_api.dart';
-import 'package:MoneyMe/models/reponse.dart';
-import 'package:MoneyMe/models/user.dart';
 import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
@@ -12,7 +10,6 @@ import 'components/custom_action_btn.dart';
 class SignInController {
   var phoneNumberController = TextEditingController();
   var passwordController = TextEditingController();
-  var urlValidateUser = 'https://fin.mal.vn/api/user/info';
 
   dispose() {
     phoneNumberController.dispose();
@@ -27,11 +24,6 @@ class SignInController {
     bool isPasswordValid = Validator.isPassword(password);
     bool hasToken = await isSignedIn();
     bool isConnected = await Connection.isInternetConnected();
-
-    var token = await UserApi.getGlobalToken(
-      phoneNumber: phoneNumberController.text,
-      password: passwordController.text,
-    );
 
     if (hasToken) {
       return Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
@@ -62,6 +54,11 @@ class SignInController {
     }
 
     if (!isPhoneNumberValid || !isPasswordValid) return null;
+
+    var token = await UserApi.getGlobalToken(
+      phoneNumber: phoneNumberController.text,
+      password: passwordController.text,
+    );
 
     if (token == null) {
       return dialogWrongInfo(context);
@@ -104,5 +101,10 @@ class SignInController {
         ],
       ),
     );
+  }
+
+  static signOut(BuildContext context) {
+    Store.deleteToken();
+    Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
   }
 }

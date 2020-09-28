@@ -1,8 +1,6 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/dashboard/home/home_controller.dart';
+import 'package:MoneyMe/screens/home/home_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'components/expense_history_card.dart';
 import 'components/jars_list_board.dart';
@@ -14,36 +12,27 @@ class HomeScreen extends StatelessWidget {
   final dynamic expenseHistory;
 
   const HomeScreen({Key key, this.userInfo, this.jarsList, this.expenseHistory}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    var controller = HomeController(userInfo: userInfo, jarsList: jarsList, expenseHistory: expenseHistory);
+    var controller = HomeController(context: context);
     var size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
+    return Material(
+      color: Theme.of(context).primaryColor,
+      child: SafeArea(
         child: Container(
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset('assets/icons/menu.svg'),
-                    Text(
-                      'Hi ${controller.userName}',
-                      style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
-                    ),
-                    SvgPicture.asset(
-                      'assets/icons/search.svg',
-                      color: Colors.white,
-                    ),
-                  ],
+                child: Container(
+                  padding: EdgeInsets.only(top: kDefaultPaddingVertical),
+                  child: Text(
+                    'Chào ${controller.userName}',
+                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 5.0,
               ),
               RemainMoneyCard(
                 controller: controller,

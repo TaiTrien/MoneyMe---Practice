@@ -17,10 +17,10 @@ class ExpenseHistoryBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: size.height * 0.4),
+      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 200),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical + 10),
+        padding: EdgeInsets.symmetric(vertical: kDefaultPaddingVertical + 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -38,14 +38,16 @@ class ExpenseHistoryBoard extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 1000,
+                itemCount: controller.transactionsList.length ?? 0,
                 itemBuilder: (context, index) {
                   return ExpenseCard(
-                    title: 'Ăn uống',
-                    subTitle: 'Chi tiêu thiết yếu',
-                    money: '-20,000',
-                    date: '23/09/2020',
-                    iconPath: 'assets/icons/menu.svg',
+                    title: controller.transactionsList[index].tagName ?? "Trống",
+                    subTitle: controller.transactionsList[index].jarTitle ?? "Trống",
+                    prefixMoney: (controller.transactionsList[index].type == "1") ? '+' : '-',
+                    money: controller.transactionsList[index].price,
+                    color: (controller.transactionsList[index].type == "1") ? Colors.green : Colors.red,
+                    date: controller.transactionsList[index].date,
+                    iconName: controller.transactionsList[index].icon.substring(4),
                   );
                 },
               ),

@@ -1,17 +1,14 @@
 part of 'user_bloc.dart';
 
 abstract class UserState {
-  final String userName;
-  UserState({this.userName});
+  final User user;
+  UserState({this.user});
 }
 
 class UserInitial extends UserState {
-  UserInitial() : super(userName: 'User1');
+  UserInitial() : super(user: User('default user', null, null));
 }
 
-class UpdateState extends UserState {
-  UpdateState(UserState oldState, {String userName})
-      : super(
-          userName: userName ?? oldState.userName,
-        );
+class LoadingState extends UserState {
+  LoadingState(UserState oldState, {User user}) : super(user: user ?? oldState.user);
 }

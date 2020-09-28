@@ -10,4 +10,8 @@ class Store {
   static getToken() async {
     return await tokenStorage.read(key: "token");
   }
+
+  static deleteToken() async {
+    await tokenStorage.delete(key: "token");
+  }
 }
