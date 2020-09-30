@@ -33,7 +33,11 @@ class LoadingController {
     await loadUserData();
     await loadJarsData();
     await loadTransactionsData();
-    return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
+    try {
+      return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> loadUserData() async {

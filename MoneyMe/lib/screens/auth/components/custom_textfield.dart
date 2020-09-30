@@ -72,11 +72,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         keyboardType: widget.keyboardType,
         onChanged: (value) {
-          setState(() {
-            this.value = value;
-            color = selectedColor;
-            message = errorMessage;
-          });
+          setState(
+            () {
+              this.value = value;
+              color = selectedColor;
+              message = errorMessage;
+            },
+          );
         },
         obscureText: widget.isObscured,
       ),

@@ -36,10 +36,12 @@ class JarsListBoard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: 20.0,
             ),
             Expanded(
               child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
                 itemCount: 6,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

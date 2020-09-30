@@ -26,7 +26,7 @@ class SignInController {
     bool isConnected = await Connection.isInternetConnected();
 
     if (hasToken) {
-      return Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
+      return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
     }
 
     if (!isConnected) {
@@ -66,7 +66,7 @@ class SignInController {
 
     await Store.setToken(token);
     // Handle if validate successfuly
-    Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
+    Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
   }
 
   Future<bool> isSignedIn() async {
@@ -101,10 +101,5 @@ class SignInController {
         ],
       ),
     );
-  }
-
-  static signOut(BuildContext context) {
-    Store.deleteToken();
-    Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
   }
 }

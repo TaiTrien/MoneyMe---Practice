@@ -1,5 +1,5 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/account/account_screen.dart';
+import 'package:MoneyMe/screens/account/inform_account/account_screen.dart';
 import 'package:MoneyMe/screens/home/home_screen.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';

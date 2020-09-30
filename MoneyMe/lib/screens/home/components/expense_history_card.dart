@@ -17,7 +17,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 200),
+      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 400),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: kDefaultPaddingVertical + 10),
@@ -37,6 +37,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: controller.transactionsList.length ?? 0,
                 itemBuilder: (context, index) {

@@ -1,0 +1,29 @@
+import 'package:MoneyMe/api/user_api.dart';
+import 'package:MoneyMe/helpers/notify.dart';
+import 'package:flutter/cupertino.dart';
+
+class ChangePasswordController {
+  var currentPasswordController = TextEditingController();
+  var newPasswordController = TextEditingController();
+  var retypedPasswordController = TextEditingController();
+
+  dipose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    retypedPasswordController.dispose();
+  }
+
+  handleChangePassword(BuildContext context) async {
+    String currentPassword = currentPasswordController.text.trim();
+    String newPassword = newPasswordController.text.trim();
+    String retypedPassword = retypedPasswordController.text.trim();
+
+    var data = await UserApi.changePassword(currentPassword: currentPassword, newPassword: newPassword);
+    if (data.code != 200)
+      Notify().error(message: data.apiMessagse);
+    else {
+      Notify().success(message: "Đổi mật khẩu thành công");
+      return Navigator.pop(context);
+    }
+  }
+}

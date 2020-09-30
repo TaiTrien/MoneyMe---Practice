@@ -27,4 +27,6 @@ class Jar {
   String get percentage => this._percentage;
   String get priceIncome => this._priceIncome;
   String get priceSpend => this._priceSpend;
+
+  void setPercentage(String percentage) => this._percentage = percentage;
 }

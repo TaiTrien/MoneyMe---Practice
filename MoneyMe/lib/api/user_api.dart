@@ -7,6 +7,7 @@ class UserApi {
   static String urlLogin = 'https://fin.mal.vn/api/user/login';
   static String urlRegister = "https://fin.mal.vn/api/user/register";
   static String urlGetUserInfo = 'https://fin.mal.vn/api/user/info';
+  static String urlChangePassword = 'https://fin.mal.vn/api/user/password_change';
 
   static Future<String> getGlobalToken({String phoneNumber, String password}) async {
     String token;
@@ -37,7 +38,6 @@ class UserApi {
   }
 
   static Future<dynamic> getUserInfo() async {
-    var userData;
     var token = await Store.getToken();
     var response = await http.get(
       urlGetUserInfo,
@@ -45,12 +45,26 @@ class UserApi {
         "Authorization": token,
       },
     );
-
-    if (response.statusCode != 200) {
-      return response.statusCode.toString();
+    var data = Response.map(json.decode(response.body));
+    if (data.code != 200) {
+      return data.apiMessagse;
     }
+    return data;
+  }
 
-    userData = Response.map(json.decode(response.body));
-    return userData;
+  static Future<dynamic> changePassword({String currentPassword, String newPassword}) async {
+    var token = await Store.getToken();
+    var response = await http.put(
+      urlChangePassword,
+      headers: {
+        "Authorization": token,
+      },
+      body: {
+        "current_password": currentPassword,
+        "new_password": newPassword,
+      },
+    );
+    var data = Response.map(json.decode(response.body));
+    return data;
   }
 }
