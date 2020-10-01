@@ -12,8 +12,10 @@ class JarBloc extends Bloc<JarEvent, JarState> {
 
   @override
   Stream<JarState> mapEventToState(JarEvent event) async* {
-    if (event is LoadJarsData) {
-      yield LoadingState(state, jarsList: event.payload);
+    if (event is UpdateJarsData) {
+      yield UpdateJarsState(state, jarsList: event.payload);
+    } else if (event is UpdateRemainPercentage) {
+      yield UpdatePercentageState(state, remainPercentage: event.payload);
     }
   }
 }

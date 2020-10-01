@@ -1,3 +1,4 @@
+import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:flutter/material.dart';
 
@@ -27,14 +28,14 @@ class _JarSliderState extends State<JarSlider> {
       children: [
         Text(widget.jar.jarName + ' - ' + widget.jar.jarTitle),
         Slider(
+          activeColor: kPrimaryColor,
+          inactiveColor: kSecondaryColor,
           min: 0,
           max: 100,
           onChanged: (double value) {
             setState(() {
               widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
             });
-            // controller.jarsList[index].setPercentage(value.round().toString());
-            // currentValue = double.parse(controller.jarsList[index].percentage);
           },
           value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
         ),

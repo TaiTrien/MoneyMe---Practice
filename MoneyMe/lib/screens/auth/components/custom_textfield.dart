@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool isObscured;
   final Function onChanged;
   final Function validator;
+  final Function onTap;
 
   const CustomTextField({
     Key key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatefulWidget {
     this.errorMessage,
     this.isObscured = false,
     this.validator,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   String value = "";
   Color color;
   String message;
+  bool isValid;
   @override
   void initState() {
     super.initState();
@@ -38,12 +41,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   String get errorMessage {
-    bool isValid = widget.validator(value);
+    isValid = widget.validator(value);
     return isValid ? null : widget.errorMessage;
   }
 
   Color get selectedColor {
-    bool isValid = widget.validator(value);
+    isValid = widget.validator(value);
     return isValid ? Colors.grey : Colors.red;
   }
 
@@ -52,6 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
+        onTap: widget.onTap,
         controller: widget.controller,
         cursorColor: color,
         decoration: InputDecoration(

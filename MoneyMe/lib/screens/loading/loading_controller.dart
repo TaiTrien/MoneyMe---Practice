@@ -60,7 +60,7 @@ class LoadingController {
       Jar jar = Jar.map(jarsListData.data[i]);
       jarsList.add(jar);
     }
-    _jarBloc.add(LoadJarsData(jarsList));
+    _jarBloc.add(UpdateJarsData(jarsList));
   }
 
   Future<void> loadTransactionsData() async {

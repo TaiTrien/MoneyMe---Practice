@@ -46,7 +46,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
                     subTitle: controller.transactionsList[index].jarTitle ?? "Trống",
                     prefixMoney: (controller.transactionsList[index].type == "1") ? '+' : '-',
                     money: controller.transactionsList[index].price,
-                    color: (controller.transactionsList[index].type == "1") ? Colors.green : Colors.red,
+                    color: (controller.transactionsList[index].type == "1") ? Colors.green[400] : Colors.red,
                     date: controller.transactionsList[index].date,
                     iconName: controller.transactionsList[index].icon.substring(4),
                   );

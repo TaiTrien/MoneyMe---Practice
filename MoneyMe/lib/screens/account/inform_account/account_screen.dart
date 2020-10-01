@@ -1,7 +1,10 @@
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/constants.dart';
+import 'package:MoneyMe/screens/account/components/inkwell_btn.dart';
 import 'package:MoneyMe/screens/account/inform_account/account_controller.dart';
 import 'package:MoneyMe/screens/account/components/jar_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountScreen extends StatelessWidget {
   @override
@@ -31,30 +34,35 @@ class AccountScreen extends StatelessWidget {
                       ],
                     ),
                     padding: EdgeInsets.symmetric(
-                      horizontal: kDefaultPaddingHorizontal + 10,
-                      vertical: kDefaultPaddingVertical + 10,
+                      horizontal: kDefaultPaddingHorizontal,
+                      vertical: kDefaultPaddingVertical,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: kDefaultPaddingVertical),
                         Text(
                           'Thiết lập tỉ lệ cho các hũ',
                           style: kTitleTextStyle,
                         ),
                         SizedBox(height: 10.0),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Phần trăm còn lại: ',
-                                style: kSubTitleTextStyle.copyWith(color: Colors.black),
+                        BlocBuilder<JarBloc, JarState>(
+                          builder: (context, state) {
+                            return RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Phần trăm còn lại: ',
+                                    style: kSubTitleTextStyle.copyWith(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: '${controller.remainPercentage}%',
+                                    style: kTitleTextStyle.copyWith(fontSize: 25.0, color: Colors.green[400]),
+                                  ),
+                                ],
                               ),
-                              TextSpan(
-                                text: '${controller.remainPercentage}%',
-                                style: kTitleTextStyle.copyWith(fontSize: 25.0, color: Colors.green),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: 20.0,
@@ -62,39 +70,46 @@ class AccountScreen extends StatelessWidget {
                         ListView.builder(
                           physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: controller.jarsList.length ?? 0,
+                          itemCount: controller.jars.length ?? 0,
                           itemBuilder: (context, index) {
                             return JarSlider(
-                              jar: controller.jarsList[index],
-                              onChange: controller.onChange,
+                              jar: controller.jars[index],
+                              onChange: controller.onSliderChange,
                               getValue: controller.getValue,
                             );
                           },
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FlatButton(
-                                color: Colors.green,
+                        SizedBox(height: 15.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(
+                                right: kDefaultPaddingHorizontal,
+                              ),
+                              child: FlatButton(
+                                color: Colors.green[400],
                                 textColor: Colors.white,
                                 child: Text(
-                                  'Đổi mật khẩu',
+                                  'Cập nhật',
                                 ),
-                                onPressed: () => controller.toChangePasswordScreen(),
+                                onPressed: controller.handleUpdatePercentage,
                               ),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              FlatButton(
-                                color: Colors.red,
-                                textColor: Colors.white,
-                                child: Text('Đăng xuất'),
-                                onPressed: () => controller.signOut(context),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        InkWellBtn(
+                          titleBtn: 'Đổi mật khẩu',
+                          onTap: controller.toChangePasswordScreen,
+                          spashColor: kPrimaryColor,
+                        ),
+                        InkWellBtn(
+                          titleBtn: 'Đăng xuất',
+                          onTap: () => controller.signOut(context),
+                          spashColor: Colors.red,
+                        ),
+                        SizedBox(
+                          height: kDefaultPaddingVertical,
                         ),
                       ],
                     ),

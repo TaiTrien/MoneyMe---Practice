@@ -7,6 +7,10 @@ abstract class JarEvent {
   JarEvent({this.payload});
 }
 
-class LoadJarsData extends JarEvent {
-  LoadJarsData(List<Jar> jarsList) : super(payload: jarsList);
+class UpdateJarsData extends JarEvent {
+  UpdateJarsData(List<Jar> jarsList) : super(payload: jarsList);
+}
+
+class UpdateRemainPercentage extends JarEvent {
+  UpdateRemainPercentage(int remainPercentage) : super(payload: remainPercentage);
 }

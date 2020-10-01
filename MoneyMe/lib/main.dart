@@ -1,3 +1,4 @@
+import 'package:MoneyMe/blocs/auth/auth_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/bloc/transactionbloc_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/constants.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<TransactionBloc>(
           create: (context) => TransactionBloc(),
         ),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData(

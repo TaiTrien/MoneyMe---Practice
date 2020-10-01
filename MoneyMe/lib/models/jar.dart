@@ -8,6 +8,17 @@ class Jar {
   String _priceIncome;
   String _priceSpend;
 
+  Jar(
+    this._jarID,
+    this._jarName,
+    this._jarTitle,
+    this._icon,
+    this._price,
+    this._percentage,
+    this._priceIncome,
+    this._priceSpend,
+  );
+
   Jar.map(dynamic obj) {
     this._jarID = obj["jar_id"];
     this._jarName = obj["jar_name"];

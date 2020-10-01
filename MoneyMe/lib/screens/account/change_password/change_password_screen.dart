@@ -27,69 +27,77 @@ class ChangePasswordScreen extends StatelessWidget {
         ),
         backgroundColor: kSecondaryColor,
       ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(kDefaultPaddingHorizontal),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10.0,
-                      color: Colors.black45,
-                      offset: Offset(0, 5),
+      body: Center(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: SafeArea(
+            child: Container(
+              padding: EdgeInsets.all(kDefaultPaddingHorizontal),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 10.0,
+                          color: Colors.black45,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: kDefaultPaddingHorizontal + 10,
-                  vertical: kDefaultPaddingVertical + 10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomTextField(
-                      label: 'Mật khẩu cũ',
-                      iconData: Icons.lock,
-                      keyboardType: TextInputType.number,
-                      controller: controller.currentPasswordController,
-                      validator: Validator.isPassword,
-                      errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                    padding: EdgeInsets.symmetric(
+                      horizontal: kDefaultPaddingHorizontal + 10,
+                      vertical: kDefaultPaddingVertical + 10,
                     ),
-                    CustomTextField(
-                      label: 'Mật khẩu mới',
-                      iconData: Icons.lock,
-                      controller: controller.newPasswordController,
-                      isObscured: false,
-                      validator: Validator.isPassword,
-                      errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextField(
+                          label: 'Mật khẩu cũ',
+                          iconData: Icons.lock,
+                          keyboardType: TextInputType.number,
+                          controller: controller.currentPasswordController,
+                          validator: Validator.isPassword,
+                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                        ),
+                        CustomTextField(
+                          label: 'Mật khẩu mới',
+                          iconData: Icons.lock,
+                          controller: controller.newPasswordController,
+                          isObscured: false,
+                          validator: Validator.isPassword,
+                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                        ),
+                        CustomTextField(
+                          // onTap: (value) => controller.isValid,
+                          label: 'Nhập lại mật khẩu mới',
+                          iconData: Icons.lock,
+                          controller: controller.retypedPasswordController,
+                          isObscured: false,
+                          validator: (value) {
+                            return (value == controller.newPassword);
+                          },
+                          errorMessage: "Mật khẩu nhập lại không khớp",
+                        ),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
+                          child: FlatButton(
+                            color: Colors.green[400],
+                            textColor: Colors.white,
+                            child: Text('Xác nhận'),
+                            onPressed: () => controller.handleChangePassword(context),
+                          ),
+                        ),
+                      ],
                     ),
-                    CustomTextField(
-                      label: 'Nhập lại mật khẩu mới',
-                      iconData: Icons.lock,
-                      controller: controller.retypedPasswordController,
-                      isObscured: false,
-                      //validator: () => Validator.isRetypedPassword(newPassword, retypedPassword),
-                      errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
-                    ),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                      child: FlatButton(
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        child: Text('Xác nhận'),
-                        onPressed: () => controller.handleChangePassword(context),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
