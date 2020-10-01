@@ -30,6 +30,15 @@ dependencies:
   connectivity: ^0.4.9+2
   liquid_progress_indicator: ^0.3.2
   flutter_svg: ^0.19.0
+  material_design_icons_flutter: ^4.0.5655
+  fluttertoast: ^7.0.2
+  intl: ^0.16.1
+  fancy_bottom_navigation: ^0.3.2
+
+
+
+
+
 
 
 

@@ -1,3 +1,4 @@
+import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
@@ -77,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    color: Color(0xFF4dc9cb),
+                    color: kPrimaryColor,
                   ),
                   CustomTextField(
                     label: 'Số điện thoại',
@@ -93,7 +94,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: controller.passwordController,
                     isObscured: false,
                     validator: Validator.isPassword,
-                    errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa, số và ký tự đặc biệt",
+                    errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
                   ),
                   RoudedButton(
                     titleBtn: 'Đăng nhập',
@@ -118,10 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           Text(
                             'Đăng ký tài khoản mới',
-                            style: TextStyle(
-                              color: Color(0xFF4dc9cb),
-                              fontSize: 16.0,
-                            ),
+                            style: kTitleTextStyle,
                           ),
                         ],
                       ),

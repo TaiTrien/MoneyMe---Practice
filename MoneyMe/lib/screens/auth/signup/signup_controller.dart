@@ -1,23 +1,18 @@
-import 'dart:convert';
-
+import 'package:MoneyMe/api/user_api.dart';
 import 'package:MoneyMe/models/reponse.dart';
-import 'package:MoneyMe/models/user.dart';
 import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
 import 'package:MoneyMe/screens/auth/signin/components/custom_action_btn.dart';
-import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class SignUpController {
   var nameController = TextEditingController();
   var phoneNumberController = TextEditingController();
   var passwordController = TextEditingController();
   var retypedPasswordController = TextEditingController();
-  var urlRegister = "https://fin.mal.vn/api/user/register";
 
   dispose() {
     nameController.dispose();
@@ -26,24 +21,11 @@ class SignUpController {
     retypedPasswordController.dispose();
   }
 
-  Future<dynamic> getApiResponse() async {
-    var response = await http.post(
-      urlRegister,
-      body: {
-        "name": nameController.text,
-        "user_name": phoneNumberController.text,
-        "password": passwordController.text,
-      },
-    );
-    return Response.map(json.decode(response.body));
-  }
-
   handleSignUp(BuildContext context) async {
     String fullName = nameController.text.trim();
     String phoneNumber = phoneNumberController.text.trim();
     String password = passwordController.text.trim();
     String retypedPassword = retypedPasswordController.text.trim();
-    SignInController signInController = SignInController();
 
     bool isNameValid = Validator.isName(fullName);
     bool isPhoneNumberValid = Validator.isPhoneNumber(phoneNumber);
@@ -55,17 +37,17 @@ class SignUpController {
     bool isConnected = await Connection.isInternetConnected();
     if (!isConnected) return dialogConnectFailed(context);
 
-    Response response = await getApiResponse();
-    if (response.code != 200) return dialogRegisterFailed(context, response);
+    var registerData = await UserApi.getRegisterResponse();
+    if (registerData.code != 200) return dialogRegisterFailed(context, registerData);
 
     //handle when register successfully
-    User newUser = await signInController.getApiResponse(phoneNumber: phoneNumber, password: password);
+    var token = await UserApi.getGlobalToken(phoneNumber: phoneNumber, password: password);
 
-    await Store.setToken(newUser.getToken);
-    dialogRegisterSuccessfully(context, response);
+    await Store.setToken(token);
+    dialogRegisterSuccessfully(context, registerData);
   }
 
-  Future dialogRegisterSuccessfully(BuildContext context, Response response) {
+  Future dialogRegisterSuccessfully(BuildContext context, Response registerData) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -73,7 +55,7 @@ class SignUpController {
           Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
         });
         return CustomDiaglog(
-          title: response.apiMessagse,
+          title: registerData.apiMessagse,
           subTitle: "Chào mừng bạn đến với Money Me",
           image: Image.asset(
             'assets/images/welcome.gif',
@@ -94,11 +76,11 @@ class SignUpController {
     );
   }
 
-  Future dialogRegisterFailed(BuildContext context, Response response) {
+  Future dialogRegisterFailed(BuildContext context, Response registerData) {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(
-        title: response.apiMessagse,
+        title: registerData.apiMessagse,
         subTitle: "Vui lòng đăng ký tài khoản khác",
         image: Image.asset('assets/images/404.gif'),
         actions: [

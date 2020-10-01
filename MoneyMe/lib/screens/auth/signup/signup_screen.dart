@@ -1,3 +1,4 @@
+import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signup/signup_controller.dart';
@@ -76,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          color: Color(0xFF4dc9cb),
+                          color: kPrimaryColor,
                         ),
                         CustomTextField(
                           label: 'Họ và tên đầy đủ',
@@ -106,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           iconData: Icons.lock,
                           controller: controller.retypedPasswordController,
                           isObscured: false,
-                          validator: (value) => (Validator.isPassword(value) && (value == controller.passwordController.text)),
+                          validator: (value) => (value == controller.passwordController.text),
                           errorMessage: "Mật khẩu nhập lại không khớp",
                         ),
                         RoudedButton(
@@ -133,8 +134,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Text(
                                   'Trở lại đăng nhập',
                                   style: TextStyle(
-                                    color: Color(0xFF4dc9cb),
+                                    color: kPrimaryColor,
                                     fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
