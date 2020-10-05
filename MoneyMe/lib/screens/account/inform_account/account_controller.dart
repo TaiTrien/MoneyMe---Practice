@@ -19,6 +19,7 @@ class AccountController {
   double playPercentage;
   double givePercentage;
   int percent;
+  bool canSlide = true;
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
@@ -35,8 +36,8 @@ class AccountController {
 
   int getRemainPercentage() {
     double sum = 100;
-    sum -= (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
-    return sum.round();
+    sum = sum - (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
+    return int.parse(sum.toStringAsFixed(0));
   }
 
   double getValue({String jarName}) {
@@ -67,7 +68,17 @@ class AccountController {
       playPercentage = value;
     else if (jarName == "give") givePercentage = value;
     percent = getRemainPercentage();
+
     _jarBloc.add(UpdateRemainPercentage(percent));
+  }
+
+  resetPercentage() {
+    necPercentage = double.parse(jars[0].percentage);
+    ltssPercentage = double.parse(jars[1].percentage);
+    ffaPercentage = double.parse(jars[2].percentage);
+    eduPercentage = double.parse(jars[3].percentage);
+    playPercentage = double.parse(jars[4].percentage);
+    givePercentage = double.parse(jars[5].percentage);
   }
 
   void signOut(BuildContext context) {
@@ -80,14 +91,19 @@ class AccountController {
   }
 
   handleUpdatePercentage() async {
-    if (percent < 0)
-      return Notify().error(
+    if (percent < 0) {
+      Notify().error(
         message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.abs()} %",
       );
-    if (percent > 0 && percent < 100)
-      return Notify().error(
+      return;
+    }
+
+    if (percent > 0 && percent < 100) {
+      Notify().error(
         message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.abs()} % để cập nhật",
       );
+      return;
+    }
 
     List<Jar> newJarsList = List<Jar>();
 

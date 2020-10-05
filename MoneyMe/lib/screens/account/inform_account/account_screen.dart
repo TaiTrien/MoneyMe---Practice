@@ -56,7 +56,7 @@ class AccountScreen extends StatelessWidget {
                                     style: kSubTitleTextStyle.copyWith(color: Colors.black),
                                   ),
                                   TextSpan(
-                                    text: '${controller.remainPercentage}%',
+                                    text: '${controller.percent}%',
                                     style: kTitleTextStyle.copyWith(fontSize: 25.0, color: Colors.green[400]),
                                   ),
                                 ],
@@ -72,10 +72,16 @@ class AccountScreen extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: controller.jars.length ?? 0,
                           itemBuilder: (context, index) {
-                            return JarSlider(
-                              jar: controller.jars[index],
-                              onChange: controller.onSliderChange,
-                              getValue: controller.getValue,
+                            return BlocBuilder<JarBloc, JarState>(
+                              builder: (context, state) {
+                                return JarSlider(
+                                  jar: state.jarsList[index],
+                                  onChange: controller.onSliderChange,
+                                  getValue: controller.getValue,
+                                  canSlide: controller.canSlide,
+                                  remainPercentage: controller.percent,
+                                );
+                              },
                             );
                           },
                         ),
