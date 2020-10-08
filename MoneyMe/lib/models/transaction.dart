@@ -11,6 +11,12 @@ class Transaction {
   String _jarTitle;
   String _jarIcon;
 
+  Transaction({String date, String desc, String price, String tagID})
+      : _date = date,
+        _desc = date,
+        _price = price,
+        _tagID = tagID;
+
   Transaction.map(dynamic obj, int index) {
     this._inputID = obj["items"][index]["input_id"];
     this._tagName = obj["items"][index]["tag_name"];

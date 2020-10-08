@@ -40,7 +40,6 @@ class _JarSliderState extends State<JarSlider> {
           min: 0,
           max: 100,
           onChanged: (double newValue) {
-            print(widget.remainPercentage);
             if (widget.remainPercentage < 0) return;
 
             if (newValue < oldValue) {

@@ -94,14 +94,14 @@ class AccountController {
   handleUpdatePercentage() async {
     if (percent < 0) {
       Notify().error(
-        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.abs()} %",
+        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
       );
       return;
     }
 
     if (percent > 0 && percent < 100) {
       Notify().error(
-        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.abs()} % để cập nhật",
+        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
       );
       return;
     }

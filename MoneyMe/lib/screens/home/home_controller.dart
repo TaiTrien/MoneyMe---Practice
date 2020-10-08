@@ -1,5 +1,5 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/bloc/transactionbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transactionbloc_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:flutter/cupertino.dart';

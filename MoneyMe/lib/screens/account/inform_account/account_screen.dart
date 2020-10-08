@@ -55,7 +55,7 @@ class AccountScreen extends StatelessWidget {
                                     style: kSubTitleTextStyle.copyWith(color: Colors.black),
                                   ),
                                   TextSpan(
-                                    text: '${controller.percent}%',
+                                    text: '${controller.percent.toInt()}%',
                                     style: kTitleTextStyle.copyWith(fontSize: 25.0, color: Colors.green[400]),
                                   ),
                                 ],
