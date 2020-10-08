@@ -18,10 +18,12 @@ class AccountController {
   double eduPercentage;
   double playPercentage;
   double givePercentage;
-  int percent;
+  double percent;
+  bool canSlide = true;
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
+    print(_jarBloc.state.remainPercentage);
     jars = _jarBloc.state.jarsList;
 
     necPercentage = double.parse(jars[0].percentage);
@@ -33,10 +35,10 @@ class AccountController {
     percent = getRemainPercentage();
   }
 
-  int getRemainPercentage() {
+  double getRemainPercentage() {
     double sum = 100;
-    sum -= (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
-    return sum.round();
+    sum = sum - (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
+    return sum;
   }
 
   double getValue({String jarName}) {
@@ -67,7 +69,17 @@ class AccountController {
       playPercentage = value;
     else if (jarName == "give") givePercentage = value;
     percent = getRemainPercentage();
-    _jarBloc.add(UpdateRemainPercentage(percent));
+
+    _jarBloc.add(UpdateRemainPercentage(percent.toInt()));
+  }
+
+  resetPercentage() {
+    necPercentage = double.parse(jars[0].percentage);
+    ltssPercentage = double.parse(jars[1].percentage);
+    ffaPercentage = double.parse(jars[2].percentage);
+    eduPercentage = double.parse(jars[3].percentage);
+    playPercentage = double.parse(jars[4].percentage);
+    givePercentage = double.parse(jars[5].percentage);
   }
 
   void signOut(BuildContext context) {
@@ -80,14 +92,19 @@ class AccountController {
   }
 
   handleUpdatePercentage() async {
-    if (percent < 0)
-      return Notify().error(
-        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.abs()} %",
+    if (percent < 0) {
+      Notify().error(
+        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
       );
-    if (percent > 0 && percent < 100)
-      return Notify().error(
-        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.abs()} % để cập nhật",
+      return;
+    }
+
+    if (percent > 0 && percent < 100) {
+      Notify().error(
+        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
       );
+      return;
+    }
 
     List<Jar> newJarsList = List<Jar>();
 
@@ -97,11 +114,11 @@ class AccountController {
       String jarTitle = jars[i].jarTitle;
       String icon = jars[i].icon;
       String price = jars[i].price;
-      double percentage = getValue(jarName: jarName.toLowerCase());
+      int percentage = getValue(jarName: jarName.toLowerCase()).toInt();
       String priceIncome = jars[i].priceIncome;
       String priceSpend = jars[i].priceSpend;
 
-      Jar newJar = Jar(jarID, jarName, jarTitle, icon, price, percentage.round().toString(), priceIncome, priceSpend);
+      Jar newJar = Jar(jarID, jarName, jarTitle, icon, price, percentage.toString(), priceIncome, priceSpend);
       newJarsList.add(newJar);
     }
 
@@ -110,5 +127,4 @@ class AccountController {
   }
 
   get jarsList => jars;
-  get remainPercentage => percent;
 }

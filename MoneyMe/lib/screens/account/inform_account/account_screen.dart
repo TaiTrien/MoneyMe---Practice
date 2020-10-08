@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     var controller = new AccountController(context: context);
     return Material(
       child: SafeArea(
@@ -56,7 +55,7 @@ class AccountScreen extends StatelessWidget {
                                     style: kSubTitleTextStyle.copyWith(color: Colors.black),
                                   ),
                                   TextSpan(
-                                    text: '${controller.remainPercentage}%',
+                                    text: '${controller.percent.toInt()}%',
                                     style: kTitleTextStyle.copyWith(fontSize: 25.0, color: Colors.green[400]),
                                   ),
                                 ],
@@ -72,10 +71,15 @@ class AccountScreen extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: controller.jars.length ?? 0,
                           itemBuilder: (context, index) {
-                            return JarSlider(
-                              jar: controller.jars[index],
-                              onChange: controller.onSliderChange,
-                              getValue: controller.getValue,
+                            return BlocBuilder<JarBloc, JarState>(
+                              builder: (context, state) {
+                                return JarSlider(
+                                  jar: state.jarsList[index],
+                                  onChange: controller.onSliderChange,
+                                  getValue: controller.getValue,
+                                  remainPercentage: controller.percent,
+                                );
+                              },
                             );
                           },
                         ),

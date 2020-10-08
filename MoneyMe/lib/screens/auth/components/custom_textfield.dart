@@ -10,6 +10,7 @@ class CustomTextField extends StatefulWidget {
   final Function onChanged;
   final Function validator;
   final Function onTap;
+  final int maxLines;
 
   const CustomTextField({
     Key key,
@@ -22,6 +23,7 @@ class CustomTextField extends StatefulWidget {
     this.isObscured = false,
     this.validator,
     this.onTap,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   void initState() {
     super.initState();
-    color = Colors.grey;
+    color = Colors.black;
     message = null;
   }
 
@@ -54,37 +56,41 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: TextField(
-        onTap: widget.onTap,
-        controller: widget.controller,
-        cursorColor: color,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            widget.iconData,
-            color: color,
-          ),
-          labelText: '${widget.label}',
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 80.0),
+        child: TextField(
+          onTap: widget.onTap,
+          controller: widget.controller,
+          cursorColor: color,
+          maxLines: widget.maxLines,
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              widget.iconData,
               color: color,
             ),
+            labelText: '${widget.label}',
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: color,
+              ),
+            ),
+            labelStyle: TextStyle(
+              color: color,
+            ),
+            errorText: message,
           ),
-          labelStyle: TextStyle(
-            color: color,
-          ),
-          errorText: message,
+          keyboardType: widget.keyboardType,
+          onChanged: (value) {
+            setState(
+              () {
+                this.value = value;
+                color = selectedColor;
+                message = errorMessage;
+              },
+            );
+          },
+          obscureText: widget.isObscured,
         ),
-        keyboardType: widget.keyboardType,
-        onChanged: (value) {
-          setState(
-            () {
-              this.value = value;
-              color = selectedColor;
-              message = errorMessage;
-            },
-          );
-        },
-        obscureText: widget.isObscured,
       ),
     );
   }

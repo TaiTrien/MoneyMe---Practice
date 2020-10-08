@@ -2,7 +2,7 @@ import 'package:MoneyMe/api/jar_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/api/user_api.dart';
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/bloc/transactionbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transactionbloc_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/transaction.dart';

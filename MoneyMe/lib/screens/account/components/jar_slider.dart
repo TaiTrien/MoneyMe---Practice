@@ -6,13 +6,13 @@ class JarSlider extends StatefulWidget {
   final Jar jar;
   final Function onChange;
   final Function getValue;
+  final double remainPercentage;
   const JarSlider({
     Key key,
     @required this.jar,
     @required this.onChange,
     @required this.getValue,
-    // @required this.controller,
-    // @required this.index,
+    this.remainPercentage,
   }) : super(key: key);
 
   @override
@@ -20,9 +20,16 @@ class JarSlider extends StatefulWidget {
 }
 
 class _JarSliderState extends State<JarSlider> {
+  double value;
+  double oldValue;
+  @override
+  void initState() {
+    super.initState();
+    oldValue = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
+  }
+
   @override
   Widget build(BuildContext context) {
-    //var currentValue = widget.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,10 +39,16 @@ class _JarSliderState extends State<JarSlider> {
           inactiveColor: kSecondaryColor,
           min: 0,
           max: 100,
-          onChanged: (double value) {
-            setState(() {
-              widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
-            });
+          onChanged: (double newValue) {
+            if (widget.remainPercentage < 0) return;
+
+            if (newValue < oldValue) {
+              value = newValue;
+            } else {
+              oldValue = newValue;
+              value = oldValue;
+            }
+            widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
           },
           value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
         ),
