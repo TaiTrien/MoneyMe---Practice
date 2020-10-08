@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     var controller = new AccountController(context: context);
     return Material(
       child: SafeArea(
@@ -78,7 +77,6 @@ class AccountScreen extends StatelessWidget {
                                   jar: state.jarsList[index],
                                   onChange: controller.onSliderChange,
                                   getValue: controller.getValue,
-                                  canSlide: controller.canSlide,
                                   remainPercentage: controller.percent,
                                 );
                               },

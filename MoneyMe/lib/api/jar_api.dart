@@ -4,8 +4,7 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/reponse.dart';
 import 'package:MoneyMe/utils/store.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:http/http.dart' as http;
 
 class JarApi {
@@ -37,7 +36,7 @@ class JarApi {
       listMapJars.add(
         {
           "jar_id": jar.jarID,
-          "percentage": int.parse(jar.percentage),
+          "percentage": int.parse(jar.percentage).toInt(),
         },
       );
     }
@@ -52,7 +51,7 @@ class JarApi {
         },
         body: json.encode(listMapJars),
       );
-
+      print(json.encode(listMapJars));
       var data = Response.map(json.decode(response.body));
       if (data.code != 200) return data.apiMessagse;
 

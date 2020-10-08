@@ -18,11 +18,12 @@ class AccountController {
   double eduPercentage;
   double playPercentage;
   double givePercentage;
-  int percent;
+  double percent;
   bool canSlide = true;
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
+    print(_jarBloc.state.remainPercentage);
     jars = _jarBloc.state.jarsList;
 
     necPercentage = double.parse(jars[0].percentage);
@@ -34,10 +35,10 @@ class AccountController {
     percent = getRemainPercentage();
   }
 
-  int getRemainPercentage() {
+  double getRemainPercentage() {
     double sum = 100;
     sum = sum - (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
-    return int.parse(sum.toStringAsFixed(0));
+    return sum;
   }
 
   double getValue({String jarName}) {
@@ -69,7 +70,7 @@ class AccountController {
     else if (jarName == "give") givePercentage = value;
     percent = getRemainPercentage();
 
-    _jarBloc.add(UpdateRemainPercentage(percent));
+    _jarBloc.add(UpdateRemainPercentage(percent.toInt()));
   }
 
   resetPercentage() {
@@ -113,11 +114,11 @@ class AccountController {
       String jarTitle = jars[i].jarTitle;
       String icon = jars[i].icon;
       String price = jars[i].price;
-      double percentage = getValue(jarName: jarName.toLowerCase());
+      int percentage = getValue(jarName: jarName.toLowerCase()).toInt();
       String priceIncome = jars[i].priceIncome;
       String priceSpend = jars[i].priceSpend;
 
-      Jar newJar = Jar(jarID, jarName, jarTitle, icon, price, percentage.round().toString(), priceIncome, priceSpend);
+      Jar newJar = Jar(jarID, jarName, jarTitle, icon, price, percentage.toString(), priceIncome, priceSpend);
       newJarsList.add(newJar);
     }
 
@@ -126,5 +127,4 @@ class AccountController {
   }
 
   get jarsList => jars;
-  get remainPercentage => percent;
 }
