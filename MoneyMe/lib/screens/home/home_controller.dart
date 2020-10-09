@@ -1,5 +1,5 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/transactionbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +33,6 @@ class HomeController {
 
   get totalExpense => sumExpense();
   get userName => _userBloc.state.user.name;
-  get transactionsList => _transactionBloc.state.listTransactions;
+  get transactionsList => _transactionBloc.state.transactionsList;
   get jarsList => _jarBloc.state.jarsList;
 }

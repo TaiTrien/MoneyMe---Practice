@@ -1,14 +1,15 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/account/change_password/change_password_controller.dart';
-import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
-import 'package:MoneyMe/utils/validator.dart';
+import 'package:MoneyMe/screens/categories/categories_controller.dart';
+import 'package:MoneyMe/screens/categories/components/tags_list_view.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var controller = ChangePasswordController();
+    var controller = CategoriesController(context: context);
+
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -30,17 +31,37 @@ class CategoriesScreen extends StatelessWidget {
             ),
             backgroundColor: kSecondaryColor,
             bottom: TabBar(
+              indicatorColor: Colors.white,
               tabs: [
                 Tab(
-                  text: 'Khoản thu',
+                  child: Text(
+                    'Khoản thu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
                 ),
                 Tab(
-                  text: 'Khoản chi',
+                  child: Text(
+                    'Khoản thu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          body: Container(),
+          body: TabBarView(
+            children: [
+              TagsListView(
+                tagsList: controller.tagsList,
+              ),
+              Icon(Icons.directions_transit),
+            ],
+          ),
         ),
       ),
     );

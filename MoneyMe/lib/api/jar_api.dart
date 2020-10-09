@@ -11,7 +11,7 @@ class JarApi {
   static var urlGetJarsList = 'https://fin.mal.vn/api/jars/list';
   static var urlEditJarPercentage = 'https://fin.mal.vn/api/jars/edit';
 
-  static Future<dynamic> getJarsListInfo() async {
+  static Future<dynamic> getJarsList() async {
     var jarsListData;
     var token = await Store.getToken();
     var response = await http.get(

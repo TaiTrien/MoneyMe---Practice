@@ -4,8 +4,8 @@ import 'package:MoneyMe/models/transaction.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-part 'transactionbloc_event.dart';
-part 'transactionbloc_state.dart';
+part 'transaction_event.dart';
+part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionblocEvent, TransactionblocState> {
   TransactionBloc() : super(TransactionblocInitial());

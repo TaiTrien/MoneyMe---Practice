@@ -12,8 +12,4 @@ class AddController {
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
   }
-
-  onMoneyChange(value) {
-    print(Formatter.formatMoney(value));
-  }
 }
