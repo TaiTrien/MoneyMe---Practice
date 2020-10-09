@@ -1,3 +1,4 @@
+import 'package:MoneyMe/utils/formater.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,5 +11,9 @@ class AddController {
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
+  }
+
+  onMoneyChange(value) {
+    print(Formatter.formatMoney(value));
   }
 }

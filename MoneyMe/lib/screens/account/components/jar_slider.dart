@@ -48,7 +48,7 @@ class _JarSliderState extends State<JarSlider> {
               oldValue = newValue;
               value = oldValue;
             }
-            widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
+            widget.onChange(_value: value, jarName: widget.jar.jarName.toLowerCase());
           },
           value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
         ),

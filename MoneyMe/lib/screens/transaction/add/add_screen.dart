@@ -3,8 +3,13 @@ import 'package:MoneyMe/screens/account/components/inkwell_btn.dart';
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
+import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
 import 'package:MoneyMe/utils/validator.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 import 'package:flutter/material.dart';
+
+var currencyMask = new MaskTextInputFormatter(mask: '###,###,###,###');
 
 class AddTransactionScreen extends StatelessWidget {
   @override
@@ -55,11 +60,13 @@ class AddTransactionScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomTextField(
+                            TransactionTextField(
                               label: 'Số tiền',
                               iconData: Icons.attach_money,
                               keyboardType: TextInputType.number,
                               controller: controller.moneyController,
+                              formatter: currencyMask,
+                              color: Colors.black,
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
