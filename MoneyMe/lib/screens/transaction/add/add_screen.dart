@@ -4,7 +4,6 @@ import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
 import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
-import 'package:MoneyMe/utils/validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:flutter/material.dart';

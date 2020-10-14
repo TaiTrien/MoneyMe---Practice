@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';

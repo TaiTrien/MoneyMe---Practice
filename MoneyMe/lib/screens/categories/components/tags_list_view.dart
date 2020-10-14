@@ -1,11 +1,11 @@
 import 'package:MoneyMe/constants.dart';
+import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/screens/categories/components/tag_row.dart';
 import 'package:flutter/material.dart';
 
 class TagsListView extends StatelessWidget {
   final List<Tag> tagsList;
-
   const TagsListView({
     Key key,
     @required this.tagsList,
@@ -21,8 +21,6 @@ class TagsListView extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              itemCount: tagsList.length,
               separatorBuilder: (context, index) {
                 return Divider(
                   color: kPrimaryColor,
@@ -32,10 +30,13 @@ class TagsListView extends StatelessWidget {
                   indent: kDefaultPaddingHorizontal,
                 );
               },
+              itemCount: tagsList.length,
               itemBuilder: (context, index) {
-                return JarRow(
+                return TagRow(
+                  parentID: tagsList[index].tagID,
+                  tagsList: tagsList,
                   title: tagsList[index].tagName,
-                  jarName: 'NEC',
+                  jarName: 'jarNames[index]',
                   iconName: tagsList[index].icon.substring(4),
                 );
               },

@@ -44,7 +44,7 @@ class CategoriesScreen extends StatelessWidget {
                 ),
                 Tab(
                   child: Text(
-                    'Khoản thu',
+                    'Khoản chi',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -57,9 +57,15 @@ class CategoriesScreen extends StatelessWidget {
           body: TabBarView(
             children: [
               TagsListView(
-                tagsList: controller.tagsList,
+                tagsList: controller.revenues,
+                // childTagsList: controller.childTags,
+                //jarNames: controller.expenseJarName(),
               ),
-              Icon(Icons.directions_transit),
+              TagsListView(
+                tagsList: controller.expenses,
+                // childTagsList: controller.childTags,
+                //jarNames: controller.expenseJarName(),
+              ),
             ],
           ),
         ),
