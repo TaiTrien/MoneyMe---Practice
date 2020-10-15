@@ -10,3 +10,7 @@ abstract class TagEvent {
 class LoadingTagsData extends TagEvent {
   LoadingTagsData(List<Tag> tagsList) : super(payload: tagsList);
 }
+
+class SelectTag extends TagEvent {
+  SelectTag(Tag tag) : super(payload: tag);
+}

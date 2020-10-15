@@ -11,11 +11,11 @@ class TagBloc extends Bloc<TagEvent, TagState> {
   TagBloc() : super(TagInitialState());
 
   @override
-  Stream<TagState> mapEventToState(
-    TagEvent event,
-  ) async* {
+  Stream<TagState> mapEventToState(TagEvent event) async* {
     if (event is LoadingTagsData) {
-      yield LoadingState(state, tagsList: event.payload);
+      yield UpdateState(state, tagsList: event.payload);
+    } else if (event is SelectTag) {
+      yield UpdateState(state, selectedTag: event.payload);
     }
   }
 }

@@ -7,8 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeController {
   final BuildContext context;
 
+  // ignore: close_sinks
   UserBloc _userBloc;
+  // ignore: close_sinks
   JarBloc _jarBloc;
+  // ignore: close_sinks
   TransactionBloc _transactionBloc;
   dynamic userInfo;
   dynamic expenseHistory;

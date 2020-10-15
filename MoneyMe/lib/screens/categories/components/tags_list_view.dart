@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class TagsListView extends StatelessWidget {
   final Map<int, Map<String, dynamic>> tags;
   final List<Jar> jarsList;
+
   const TagsListView({
     Key key,
     @required this.tags,
@@ -34,7 +35,7 @@ class TagsListView extends StatelessWidget {
               itemCount: tags.length,
               itemBuilder: (context, index) {
                 return TagRow(
-                  title: tags[index]['parent'].tagName,
+                  tagParent: tags[index]['parent'],
                   jarName: (jarsList == null)
                       ? ''
                       : jarsList
@@ -42,7 +43,6 @@ class TagsListView extends StatelessWidget {
                             (jar) => (jar.jarID == tags[index]['parent'].jarID),
                           )
                           .jarName,
-                  iconName: tags[index]['parent'].icon.substring(4),
                   childTagsList: tags[index]['children'],
                   jarsList: jarsList,
                 );

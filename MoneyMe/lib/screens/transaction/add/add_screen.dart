@@ -1,9 +1,11 @@
+import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/account/components/inkwell_btn.dart';
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
 import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:flutter/material.dart';
@@ -51,10 +53,14 @@ class AddTransactionScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: kDefaultPaddingVertical),
-                        InkWellBtn(
-                          titleBtn: 'Chọn hạng mục',
-                          onTap: controller.toCategoriesScreen,
-                          spashColor: kPrimaryColor,
+                        BlocBuilder<TagBloc, TagState>(
+                          builder: (context, state) {
+                            return InkWellBtn(
+                              titleBtn: (state.selectedTag != null) ? state.selectedTag.tagName : 'Chọn hạng mục',
+                              onTap: controller.toCategoriesScreen,
+                              spashColor: kPrimaryColor,
+                            );
+                          },
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

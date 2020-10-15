@@ -7,12 +7,14 @@ class TagRowChild extends StatelessWidget {
   final String jarName;
   final String iconName;
   final Color color;
+  final Function onTap;
   const TagRowChild({
     Key key,
     @required this.title,
     @required this.iconName,
     this.color,
     this.jarName,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -22,12 +24,13 @@ class TagRowChild extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: Container(
-          padding: EdgeInsets.only(left: 60),
+          padding: EdgeInsets.only(left: 40),
           child: ListTile(
+            onTap: onTap,
+            contentPadding: EdgeInsets.only(right: 12),
             leading: Container(
               height: double.infinity,
               width: 30.0,
-              alignment: Alignment.centerLeft,
               child: Icon(
                 MdiIcons.fromString(iconName),
                 color: kPrimaryColor,
