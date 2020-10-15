@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
   final String label;
-  final Function onTap;
   final IconData iconData;
+  final TextEditingController controller;
   const DateTimePicker({
     Key key,
     @required this.label,
-    this.onTap,
     this.iconData,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -23,6 +23,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
+    widget.controller.text = widget.controller.text = Formatter.format.format(_selectedDate).toString();
   }
 
   @override
@@ -37,11 +38,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
               widget.iconData,
               color: Colors.black,
             ),
-            labelText: Formatter.format.format(_selectedDate).toString(),
             labelStyle: TextStyle(
               color: Colors.black,
             ),
           ),
+          controller: widget.controller,
         ),
       ),
       onTap: () async {
@@ -53,7 +54,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
           helpText: 'Chọn ngày giao dịch',
           cancelText: 'Hủy',
           confirmText: 'Chọn',
-        ).then((value) => setState(() => _selectedDate = value ?? _selectedDate));
+        ).then(
+          (value) => setState(
+            () => {
+              _selectedDate = value ?? _selectedDate,
+              widget.controller.text = Formatter.format.format(_selectedDate).toString(),
+            },
+          ),
+        );
       },
     );
   }

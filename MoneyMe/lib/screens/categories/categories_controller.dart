@@ -72,6 +72,11 @@ class CategoriesController {
     }
   }
 
+  onTap(Tag tag) {
+    Navigator.pop(context);
+    _tagBloc.add(SelectTag(tag));
+  }
+
   get seperatedTagsList => this.tagMap;
   get revenues => this.revenueMap;
   get expenses => this.expenseMap;
