@@ -4,12 +4,15 @@ part of 'jarbloc_bloc.dart';
 abstract class JarState {
   final List<Jar> jarsList;
   final int remainPercentage;
-  final int sliderValue;
-  JarState({this.jarsList, this.remainPercentage, this.sliderValue});
+  JarState({this.jarsList, this.remainPercentage});
 }
 
 class JarblocInitial extends JarState {
-  JarblocInitial() : super(jarsList: null, remainPercentage: 0, sliderValue: 0);
+  JarblocInitial()
+      : super(
+          jarsList: null,
+          remainPercentage: 0,
+        );
 }
 
 class UpdateJarsState extends JarState {
@@ -21,14 +24,5 @@ class UpdatePercentageState extends JarState {
       : super(
           jarsList: oldState.jarsList,
           remainPercentage: remainPercentage ?? oldState.remainPercentage,
-        );
-}
-
-class UpdateSliderValueState extends JarState {
-  UpdateSliderValueState(JarState oldState, {int sliderValue})
-      : super(
-          jarsList: oldState.jarsList,
-          remainPercentage: oldState.remainPercentage,
-          sliderValue: sliderValue ?? oldState.sliderValue,
         );
 }

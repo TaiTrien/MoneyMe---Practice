@@ -1,4 +1,4 @@
-part of 'transactionbloc_bloc.dart';
+part of 'transaction_bloc.dart';
 
 @immutable
 abstract class TransactionblocEvent {

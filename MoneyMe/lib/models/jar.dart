@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Jar {
   String _jarID;
   String _jarName;

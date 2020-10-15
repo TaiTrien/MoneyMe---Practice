@@ -1,15 +1,17 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/transactionbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
-import 'package:MoneyMe/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeController {
   final BuildContext context;
 
+  // ignore: close_sinks
   UserBloc _userBloc;
+  // ignore: close_sinks
   JarBloc _jarBloc;
+  // ignore: close_sinks
   TransactionBloc _transactionBloc;
   dynamic userInfo;
   dynamic expenseHistory;
@@ -33,6 +35,6 @@ class HomeController {
 
   get totalExpense => sumExpense();
   get userName => _userBloc.state.user.name;
-  get transactionsList => _transactionBloc.state.listTransactions;
+  get transactionsList => _transactionBloc.state.transactionsList;
   get jarsList => _jarBloc.state.jarsList;
 }

@@ -1,4 +1,3 @@
-import 'package:MoneyMe/utils/formater.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,6 +36,7 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 80.0),
         child: TextField(
+          controller: widget.controller,
           inputFormatters: [widget.formatter],
           maxLength: 15,
           cursorColor: widget.color,

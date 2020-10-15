@@ -13,7 +13,7 @@ class Transaction {
 
   Transaction({String date, String desc, String price, String tagID})
       : _date = date,
-        _desc = date,
+        _desc = desc,
         _price = price,
         _tagID = tagID;
 

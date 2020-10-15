@@ -14,7 +14,3 @@ class UpdateJarsData extends JarEvent {
 class UpdateRemainPercentage extends JarEvent {
   UpdateRemainPercentage(int remainPercentage) : super(payload: remainPercentage);
 }
-
-class UpdateSliderValue extends JarEvent {
-  UpdateSliderValue(int sliderValue) : super(payload: sliderValue);
-}
