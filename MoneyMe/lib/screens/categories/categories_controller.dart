@@ -13,13 +13,12 @@ class CategoriesController {
   TagBloc _tagBloc;
   JarBloc _jarBloc;
 
-  Function eq = const DeepCollectionEquality().equals;
-
   List<Tag> tagsList;
   List<Jar> jarsList;
-  List<Tag> revenueList = List<Tag>();
-  List<Tag> expenseList = List<Tag>();
-  List<Tag> childTagsList = List<Tag>();
+
+  var tagMap = Map<int, Map<String, dynamic>>();
+  var revenueMap = Map<int, Map<String, dynamic>>();
+  var expenseMap = Map<int, Map<String, dynamic>>();
 
   CategoriesController({this.context}) {
     _tagBloc = BlocProvider.of<TagBloc>(context);
@@ -30,34 +29,51 @@ class CategoriesController {
     seperateTagsList();
   }
 
-  seperateTagsList() {
-    var mapTag = Map<String, Map<String, dynamic>>();
+  getChildTagsList() {
+    var childTagsList = List<Tag>();
 
     for (int i = 0; i < tagsList.length; i++) {
       String parentID = tagsList[i].parentID;
-      List<Tag> childTags = new List<Tag>();
+
+      if (parentID != '0') {
+        childTagsList.add(tagsList[i]);
+      }
+    }
+    return childTagsList;
+  }
+
+  seperateTagsList() {
+    var childTagsList = getChildTagsList();
+    int indexRevenue = 0;
+    int indexExpense = 0;
+
+    for (int i = 0; i < tagsList.length; i++) {
+      String parentID = tagsList[i].parentID;
 
       if (parentID == '0') {
         String tagID = tagsList[i].tagID;
-
-        mapTag[tagID] = {
+        if (tagsList[i].type == '1') {
+          revenueMap[indexRevenue] = {
+            'parent': tagsList[i],
+            'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
+          };
+          indexRevenue++;
+        } else if (tagsList[i].type == '2') {
+          expenseMap[indexExpense] = {
+            'parent': tagsList[i],
+            'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
+          };
+          indexExpense++;
+        }
+        tagMap[i] = {
           'parent': tagsList[i],
-          'children': childTags,
-        };
-      } else {
-        childTags.add(tagsList[i]);
-        mapTag[parentID] = {
-          'parent': mapTag[parentID],
-          'children': childTags,
+          'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
         };
       }
     }
-    print(tagsList.length);
-    print(mapTag.length);
-    print(mapTag['2247']['parent'].tagID);
   }
 
-  get revenues => this.revenueList;
-  get expenses => this.expenseList;
-  get jars => this.jarsList;
+  get seperatedTagsList => this.tagMap;
+  get revenues => this.revenueMap;
+  get expenses => this.expenseMap;
 }

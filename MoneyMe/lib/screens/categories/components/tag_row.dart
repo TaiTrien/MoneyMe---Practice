@@ -7,28 +7,22 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class TagRow extends StatelessWidget {
   final String title;
-  final String jarName;
   final String iconName;
-  final Color color;
-  final String parentID;
+  final String jarName;
 
-  final List<Tag> tagsList;
+  final List<Tag> childTagsList;
   final List<Jar> jarsList;
   const TagRow({
     Key key,
     @required this.title,
     @required this.iconName,
-    this.color,
-    this.jarName,
-    this.tagsList,
-    this.parentID,
+    this.childTagsList,
     this.jarsList,
+    this.jarName,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //List<Tag> childTags = childTagsList.where((tag) => tag.parentID == this.parentID).toList();
-
     return Card(
       elevation: 0,
       child: Theme(
@@ -53,12 +47,17 @@ class TagRow extends StatelessWidget {
             jarName,
             style: kSubTitleTextStyle,
           ),
-          children: tagsList
-              .where((tag) => tag.parentID == parentID)
+          children: childTagsList
               .map(
                 (tag) => TagRowChild(
                   title: tag.tagName,
-                  jarName: (tag.jarID == '0') ? '' : jarName,
+                  jarName: (jarsList == null)
+                      ? ''
+                      : jarsList
+                          .singleWhere(
+                            (jar) => (jar.jarID == tag.jarID),
+                          )
+                          .jarName,
                   iconName: tag.icon.substring(4),
                 ),
               )

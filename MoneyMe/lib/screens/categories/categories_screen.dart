@@ -57,14 +57,11 @@ class CategoriesScreen extends StatelessWidget {
           body: TabBarView(
             children: [
               TagsListView(
-                tagsList: controller.revenues,
-                // childTagsList: controller.childTags,
-                //jarNames: controller.expenseJarName(),
+                tags: controller.revenues,
               ),
               TagsListView(
-                tagsList: controller.expenses,
-                // childTagsList: controller.childTags,
-                //jarNames: controller.expenseJarName(),
+                tags: controller.expenses,
+                jarsList: controller.jarsList,
               ),
             ],
           ),

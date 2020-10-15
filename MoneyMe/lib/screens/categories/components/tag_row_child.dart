@@ -7,13 +7,11 @@ class TagRowChild extends StatelessWidget {
   final String jarName;
   final String iconName;
   final Color color;
-  final String prefixMoney;
   const TagRowChild({
     Key key,
     @required this.title,
     @required this.iconName,
     this.color,
-    this.prefixMoney,
     this.jarName,
   }) : super(key: key);
 
