@@ -1,6 +1,5 @@
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/models/jar.dart';
-import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/screens/categories/components/tag_row.dart';
 import 'package:flutter/material.dart';
 

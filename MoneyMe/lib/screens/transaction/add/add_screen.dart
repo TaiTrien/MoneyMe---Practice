@@ -1,18 +1,15 @@
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/account/components/inkwell_btn.dart';
 import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
 import 'package:MoneyMe/screens/transaction/add/components/tag_button.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
+import 'package:MoneyMe/screens/transaction/components/money_formatter.dart';
 import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-var currencyMask = new MaskTextInputFormatter(mask: '###,###,###,###');
 
 class AddTransactionScreen extends StatelessWidget {
   @override
@@ -76,18 +73,20 @@ class AddTransactionScreen extends StatelessWidget {
                               iconData: Icons.attach_money,
                               keyboardType: TextInputType.number,
                               controller: controller.moneyController,
-                              formatter: currencyMask,
+                              formatter: MoneyTextFormatter(),
                               color: Colors.black,
+                              onChange: controller.onDataChange,
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
                               iconData: Icons.calendar_today,
                               controller: controller.dateController,
+                              onChange: controller.onDataChange,
                             ),
                             CustomTextField(
                               label: 'Ghi chú',
                               iconData: Icons.note,
-                              controller: controller.noteController,
+                              controller: controller.descController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                             ),

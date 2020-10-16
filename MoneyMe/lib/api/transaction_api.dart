@@ -28,29 +28,24 @@ class TransactionApi {
   }
 
   static Future<dynamic> spend(Transaction transaction) async {
-    var transactionListData;
+    var transactionData;
 
     var mapTransaction = Map<String, dynamic>();
     mapTransaction["date"] = transaction.date;
     mapTransaction["desc"] = transaction.desc;
     mapTransaction["price"] = transaction.price;
     mapTransaction["tag_id"] = transaction.tagID;
-    print(mapTransaction);
 
     var token = await Store.getToken();
     var response = await http.post(
-      urlGetTransactionsList,
+      urlSpend,
       headers: {
         "Authorization": token,
         "Content-Type": "application/json",
       },
       body: json.encode(mapTransaction),
     );
-
-    if (response.statusCode != 200) {
-      return response.statusCode.toString();
-    }
-    transactionListData = Response.map(json.decode(response.body));
-    return transactionListData;
+    transactionData = Response.map(json.decode(response.body));
+    return transactionData;
   }
 }

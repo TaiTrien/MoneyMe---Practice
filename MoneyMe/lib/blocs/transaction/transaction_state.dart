@@ -1,16 +1,23 @@
 part of 'transaction_bloc.dart';
 
 @immutable
-abstract class TransactionblocState {
+abstract class TransactionState {
   final List<Transaction> transactionsList;
-
-  TransactionblocState({this.transactionsList});
+  final Transaction currentTransaction;
+  TransactionState({this.transactionsList, this.currentTransaction});
 }
 
-class TransactionblocInitial extends TransactionblocState {
-  TransactionblocInitial() : super(transactionsList: null);
+class TransactionblocInitial extends TransactionState {
+  TransactionblocInitial() : super(transactionsList: null, currentTransaction: null);
 }
 
-class LoadingState extends TransactionblocState {
-  LoadingState(TransactionblocState oldState, {List<Transaction> listTransactions}) : super(transactionsList: listTransactions ?? oldState.transactionsList);
+class UpdateState extends TransactionState {
+  UpdateState(
+    TransactionState oldState, {
+    List<Transaction> listTransactions,
+    Transaction currentTransaction,
+  }) : super(
+          transactionsList: listTransactions ?? oldState.transactionsList,
+          currentTransaction: currentTransaction ?? oldState.currentTransaction,
+        );
 }

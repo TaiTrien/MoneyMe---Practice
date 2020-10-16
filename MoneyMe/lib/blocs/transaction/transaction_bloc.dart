@@ -7,15 +7,17 @@ import 'package:meta/meta.dart';
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
-class TransactionBloc extends Bloc<TransactionblocEvent, TransactionblocState> {
+class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionblocInitial());
 
   @override
-  Stream<TransactionblocState> mapEventToState(
-    TransactionblocEvent event,
+  Stream<TransactionState> mapEventToState(
+    TransactionEvent event,
   ) async* {
     if (event is LoadTransactionsData) {
-      yield LoadingState(state, listTransactions: event.payload);
+      yield UpdateState(state, listTransactions: event.payload);
+    } else if (event is GetCurrentTransaction) {
+      yield UpdateState(state, currentTransaction: event.payload);
     }
   }
 }

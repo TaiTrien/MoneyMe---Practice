@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomDiaglog extends StatelessWidget {
-  final Image image;
+  final Widget titleWidget;
   final List<Widget> actions;
   final String title;
   final String subTitle;
@@ -11,30 +11,30 @@ class CustomDiaglog extends StatelessWidget {
     this.actions,
     this.title,
     this.onPress,
-    this.image,
+    this.titleWidget,
     this.subTitle,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       titlePadding: EdgeInsets.all(0),
-      title: image,
+      title: titleWidget,
       content: RichText(
+        textAlign: TextAlign.center,
         text: TextSpan(
           children: [
             TextSpan(
               text: title + '\n',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black54,
+                fontSize: 28,
               ),
             ),
             TextSpan(
               text: '\n' + subTitle,
               style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
+                fontSize: 14,
                 color: Colors.black54,
               ),
             ),
@@ -46,25 +46,3 @@ class CustomDiaglog extends StatelessWidget {
     );
   }
 }
-// Row(
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         children: [
-//           Text(
-//             title,
-//             style: TextStyle(
-//               fontWeight: FontWeight.bold,
-//               fontSize: 20,
-//             ),
-//           ),
-//           SizedBox(
-//             height: 20,
-//           ),
-//           Text(
-//             subTitle,
-//             style: TextStyle(
-//               color: Colors.black54,
-//               fontWeight: FontWeight.w400,
-//             ),
-//           )
-//         ],
-//       ),

@@ -1,6 +1,6 @@
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/home/home_controller.dart';
-import 'package:MoneyMe/utils/formater.dart';
+import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/material.dart';
 
 class RemainMoneyCard extends StatelessWidget {

@@ -44,7 +44,7 @@ class JarApi {
     var token = await Store.getToken();
     try {
       var response = await http.put(
-        "https://fin.mal.vn/api/jars/edit",
+        urlEditJarPercentage,
         headers: {
           "Authorization": token,
           "Content-Type": "application/json",

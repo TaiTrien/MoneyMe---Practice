@@ -1,7 +1,7 @@
 import 'package:MoneyMe/api/user_api.dart';
 import 'package:MoneyMe/models/reponse.dart';
-import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
-import 'package:MoneyMe/screens/auth/signin/components/custom_action_btn.dart';
+import 'package:MoneyMe/components/custom_dialog.dart';
+import 'package:MoneyMe/components/custom_action_btn.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
@@ -57,7 +57,7 @@ class SignUpController {
         return CustomDiaglog(
           title: registerData.apiMessagse,
           subTitle: "Chào mừng bạn đến với Money Me",
-          image: Image.asset(
+          titleWidget: Image.asset(
             'assets/images/welcome.gif',
             fit: BoxFit.contain,
           ),
@@ -82,7 +82,7 @@ class SignUpController {
       builder: (context) => CustomDiaglog(
         title: registerData.apiMessagse,
         subTitle: "Vui lòng đăng ký tài khoản khác",
-        image: Image.asset('assets/images/404.gif'),
+        titleWidget: Image.asset('assets/images/404.gif'),
         actions: [
           CustomActionButton(
             titleBtn: 'Hủy',
@@ -111,7 +111,7 @@ class SignUpController {
       builder: (context) => CustomDiaglog(
         title: "Thiết bị của bạn chưa kết nối Internet",
         subTitle: "Vui lòng kiểm tra lại kết nối của bạn",
-        image: Image.asset(
+        titleWidget: Image.asset(
           'assets/images/noInternet.gif',
           fit: BoxFit.contain,
         ),
