@@ -13,6 +13,7 @@ class TagRow extends StatelessWidget {
 
   final List<Tag> childTagsList;
   final List<Jar> jarsList;
+  final Function onTap;
 
   const TagRow({
     Key key,
@@ -20,6 +21,7 @@ class TagRow extends StatelessWidget {
     this.jarsList,
     this.jarName,
     this.tagParent,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,8 @@ class TagRow extends StatelessWidget {
           children: [
             ListTile(
               onTap: () {
-                _tagBloc.add(SelectTag(tagParent));
+                // _tagBloc.add(SelectTag(tagParent));
+                onTap(tagParent);
               },
               contentPadding: EdgeInsets.symmetric(horizontal: 15),
               leading: Container(
@@ -62,7 +65,8 @@ class TagRow extends StatelessWidget {
                     .map(
                       (tag) => TagRowChild(
                         onTap: () {
-                          _tagBloc.add(SelectTag(tag));
+                          onTap(tag);
+                          //_tagBloc.add(SelectTag(tag));
                         },
                         title: tag.tagName,
                         jarName: (jarsList == null)

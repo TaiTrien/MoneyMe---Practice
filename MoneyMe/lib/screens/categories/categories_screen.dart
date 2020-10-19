@@ -58,8 +58,10 @@ class CategoriesScreen extends StatelessWidget {
             children: [
               TagsListView(
                 tags: controller.revenues,
+                onTap: controller.onTap,
               ),
               TagsListView(
+                onTap: controller.onTap,
                 tags: controller.expenses,
                 jarsList: controller.jarsList,
               ),

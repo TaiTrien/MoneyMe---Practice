@@ -73,8 +73,8 @@ class CategoriesController {
   }
 
   onTap(Tag tag) {
-    Navigator.pop(context);
     _tagBloc.add(SelectTag(tag));
+    Navigator.pop(context);
   }
 
   get seperatedTagsList => this.tagMap;
