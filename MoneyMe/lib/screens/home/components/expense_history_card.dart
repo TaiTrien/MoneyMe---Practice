@@ -41,14 +41,18 @@ class ExpenseHistoryBoard extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: (controller.transactionsList != null) ? controller.transactionsList.length : 0,
                 itemBuilder: (context, index) {
-                  return ExpenseCard(
-                    title: controller.transactionsList[index].tagName ?? "Trống",
-                    subTitle: controller.transactionsList[index].jarTitle ?? "Trống",
-                    prefixMoney: (controller.transactionsList[index].type == "1") ? '+' : '-',
-                    money: controller.transactionsList[index].price,
-                    color: (controller.transactionsList[index].type == "1") ? Colors.green[400] : Colors.red,
-                    date: controller.transactionsList[index].date,
-                    iconName: controller.transactionsList[index].icon.substring(4),
+                  var currentTransaction = controller.transactionsList[index];
+                  return GestureDetector(
+                    onTap: () => controller.toEditTransactionScreen(currentTransaction),
+                    child: ExpenseCard(
+                      title: currentTransaction.tagName ?? "Trống",
+                      subTitle: currentTransaction.jarTitle ?? "Trống",
+                      prefixMoney: (currentTransaction.type == "1") ? '+' : '-',
+                      money: currentTransaction.price,
+                      color: (currentTransaction.type == "1") ? Colors.green[400] : Colors.red,
+                      date: currentTransaction.date,
+                      iconName: currentTransaction.icon.substring(4),
+                    ),
                   );
                 },
               ),

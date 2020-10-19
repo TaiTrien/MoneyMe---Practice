@@ -9,6 +9,7 @@ class TransactionApi {
   static var urlGetTransactionsList = 'https://fin.mal.vn/api/input/history';
   static var urlSpend = 'https://fin.mal.vn/api/input/spend';
   static var urlIncome = 'https://fin.mal.vn/api/input/income';
+  static var urlDelete = "https://fin.mal.vn/api/input/";
 
   static Future<dynamic> getTransactionsList() async {
     var transactionListData;
@@ -70,5 +71,22 @@ class TransactionApi {
     );
     transactionData = Response.map(json.decode(response.body));
     return transactionData;
+  }
+
+  static Future<dynamic> delete(int typeTransaction, String inputID) async {
+    var token = await Store.getToken();
+    var url = urlDelete + 'spend/$inputID';
+
+    if (typeTransaction == 2) {
+      url = urlDelete + 'income/$inputID';
+    }
+    var response = await http.delete(
+      url,
+      headers: {
+        "Authorization": token,
+      },
+    );
+
+    return Response.map(json.decode(response.body));
   }
 }

@@ -1,7 +1,10 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
+import 'package:MoneyMe/models/transaction.dart';
+import 'package:MoneyMe/screens/transaction/edit/edit_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeController {
@@ -21,6 +24,16 @@ class HomeController {
     _userBloc = BlocProvider.of<UserBloc>(context);
     _jarBloc = BlocProvider.of<JarBloc>(context);
     _transactionBloc = BlocProvider.of<TransactionBloc>(context);
+  }
+  toEditTransactionScreen(Transaction selectedTransaction) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditTransactionScreen(
+          selectedTransaction: selectedTransaction,
+        ),
+      ),
+    );
   }
 
   sumExpense() {

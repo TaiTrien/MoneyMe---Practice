@@ -33,7 +33,6 @@ class TagRow extends StatelessWidget {
           children: [
             ListTile(
               onTap: () {
-                // _tagBloc.add(SelectTag(tagParent));
                 onTap(tagParent);
               },
               contentPadding: EdgeInsets.symmetric(horizontal: 15),
