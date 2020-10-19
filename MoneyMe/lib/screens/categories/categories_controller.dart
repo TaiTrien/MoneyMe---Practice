@@ -72,7 +72,7 @@ class CategoriesController {
     }
   }
 
-  onTap(Tag tag) {
+  onSelectTag(Tag tag) {
     _tagBloc.add(SelectTag(tag));
     Navigator.pop(context);
   }

@@ -1,10 +1,8 @@
-import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/screens/categories/components/tag_row_child.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TagRow extends StatelessWidget {
@@ -27,7 +25,6 @@ class TagRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: close_sinks
-    TagBloc _tagBloc = BlocProvider.of<TagBloc>(context);
     return Card(
       elevation: 0,
       child: Theme(

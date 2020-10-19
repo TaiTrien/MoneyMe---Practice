@@ -27,6 +27,29 @@ class TransactionApi {
     return transactionListData;
   }
 
+  static Future<dynamic> income(Transaction transaction, List mapJar) async {
+    var transactionData;
+
+    var mapTransaction = Map<String, dynamic>();
+    mapTransaction["date"] = transaction.date;
+    mapTransaction["desc"] = transaction.desc;
+    mapTransaction["price"] = transaction.price;
+    mapTransaction["tag_id"] = transaction.tagID;
+    mapTransaction["jar_ids"] = mapJar;
+
+    var token = await Store.getToken();
+    var response = await http.post(
+      urlIncome,
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json",
+      },
+      body: json.encode(mapTransaction),
+    );
+    transactionData = Response.map(json.decode(response.body));
+    return transactionData;
+  }
+
   static Future<dynamic> spend(Transaction transaction) async {
     var transactionData;
 

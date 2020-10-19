@@ -1,5 +1,4 @@
 import 'package:MoneyMe/api/jar_api.dart';
-import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
@@ -24,6 +23,11 @@ class AddController {
   final dateController = TextEditingController();
   final descController = TextEditingController();
   final moneyController = TextEditingController();
+
+  String date;
+  String desc;
+  String price;
+  String tagID;
 
   AddController({this.context}) {
     _tagBloc = BlocProvider.of<TagBloc>(context);
@@ -56,10 +60,10 @@ class AddController {
   }
 
   onDataChange(value) {
-    String date = dateController.text.trim() ?? '';
-    String desc = descController.text.trim() ?? '';
-    String price = moneyController.text.trim() ?? '';
-    String tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+    date = dateController.text.trim() ?? '';
+    desc = descController.text.trim() ?? '';
+    price = moneyController.text.trim() ?? '';
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
 
@@ -76,10 +80,10 @@ class AddController {
   }
 
   handleAddTransaction() async {
-    String date = _transactionBloc.state.currentTransaction.date;
-    String desc = _transactionBloc.state.currentTransaction.desc;
-    String price = _transactionBloc.state.currentTransaction.price;
-    String tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+    date = _transactionBloc.state.currentTransaction.date;
+    desc = _transactionBloc.state.currentTransaction.desc;
+    price = _transactionBloc.state.currentTransaction.price;
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
     if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
       Notify().error(
@@ -87,16 +91,39 @@ class AddController {
       );
       return;
     }
-    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    if (_tagBloc.state.selectedTag == null) return;
 
-    if (_tagBloc.state.selectedTag != null && _tagBloc.state.selectedTag.type == "2") {
-      var data = await TransactionApi.spend(transaction);
+    Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    var data;
+    switch (_tagBloc.state.selectedTag.type) {
+      case "1":
+        List<Map<String, dynamic>> listMapsTag = List<Map<String, dynamic>>();
+        List<Jar> jarsList = _jarBloc.state.jarsList;
 
-      if (data.code != 200) return dialogFailed();
-      addSuccessfully();
-    } else {
-      print('hihih');
+        listMapsTag = jarsList
+            .map((jar) => {
+                  "jar_id": jar.jarID,
+                  "percentage": jar.percentage,
+                  "price": int.tryParse(price) * int.tryParse(jar.percentage) / 100,
+                })
+            .toList();
+        data = await TransactionApi.income(newTransaction, listMapsTag);
+        break;
+
+      case "2":
+        data = await TransactionApi.spend(newTransaction);
+        break;
     }
+
+    if (data.code != 200) return dialogFailed();
+    addSuccessfully();
+  }
+
+  addSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    resetData();
+    dialogSuccessfully();
   }
 
   Future<void> loadJarsData() async {
@@ -123,13 +150,6 @@ class AddController {
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
-  }
-
-  addSuccessfully() async {
-    await loadJarsData();
-    await loadTransactionsData();
-    resetData();
-    dialogSuccessfully();
   }
 
   Future dialogSuccessfully() {

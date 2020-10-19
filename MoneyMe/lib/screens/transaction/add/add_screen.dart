@@ -1,5 +1,4 @@
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
 import 'package:MoneyMe/screens/transaction/add/components/note_textfield.dart';
