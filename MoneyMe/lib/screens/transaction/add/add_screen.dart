@@ -1,8 +1,8 @@
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/add_controller.dart';
+import 'package:MoneyMe/screens/transaction/add/components/note_textfield.dart';
 import 'package:MoneyMe/screens/transaction/add/components/tag_button.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
 import 'package:MoneyMe/screens/transaction/components/money_formatter.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class AddTransactionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = AddController(context: context);
+    var controller = AddController(context: context);
 
     return Material(
       child: SafeArea(
@@ -83,12 +83,13 @@ class AddTransactionScreen extends StatelessWidget {
                               controller: controller.dateController,
                               onChange: controller.onDataChange,
                             ),
-                            CustomTextField(
+                            NoteTextField(
                               label: 'Ghi chú',
                               iconData: Icons.note,
                               controller: controller.descController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
+                              onChanged: controller.onDataChange,
                             ),
                             Container(
                               width: double.infinity,

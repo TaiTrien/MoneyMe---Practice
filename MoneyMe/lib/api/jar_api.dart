@@ -36,7 +36,7 @@ class JarApi {
       listMapJars.add(
         {
           "jar_id": jar.jarID,
-          "percentage": int.parse(jar.percentage).toInt(),
+          "percentage": jar.percentage,
         },
       );
     }

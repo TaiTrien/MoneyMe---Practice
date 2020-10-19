@@ -14,3 +14,11 @@ class LoadingTagsData extends TagEvent {
 class SelectTag extends TagEvent {
   SelectTag(Tag tag) : super(payload: tag);
 }
+
+class ResetSelectedTag extends TagEvent {
+  ResetSelectedTag(Tag tag) : super(payload: tag);
+}
+
+class SumExpense extends TagEvent {
+  SumExpense(int totalExpense) : super(payload: totalExpense);
+}

@@ -16,6 +16,10 @@ class TagBloc extends Bloc<TagEvent, TagState> {
       yield UpdateState(state, tagsList: event.payload);
     } else if (event is SelectTag) {
       yield UpdateState(state, selectedTag: event.payload);
+    } else if (event is ResetSelectedTag) {
+      yield ResetState(state, selectedTag: event.payload);
+    } else if (event is SumExpense) {
+      yield UpdateState(state, totalExpense: event.payload);
     }
   }
 }

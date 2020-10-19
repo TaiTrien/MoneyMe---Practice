@@ -39,7 +39,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
               child: ListView.builder(
                 physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: controller.transactionsList.length ?? 0,
+                itemCount: (controller.transactionsList != null) ? controller.transactionsList.length : 0,
                 itemBuilder: (context, index) {
                   return ExpenseCard(
                     title: controller.transactionsList[index].tagName ?? "Trống",

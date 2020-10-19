@@ -1,3 +1,4 @@
+import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/components/custom_action_btn.dart';
+import 'package:MoneyMe/screens/loading/loading_controller.dart';
 import 'package:MoneyMe/utils/formatter.dart';
 
 import 'package:flutter/material.dart';
@@ -15,20 +17,18 @@ class AddController {
   BuildContext context;
   TagBloc _tagBloc;
   TransactionBloc _transactionBloc;
-  Tag currentTag;
   Transaction currentTransaction;
-
-  AddController({this.context}) {
-    _tagBloc = BlocProvider.of<TagBloc>(context);
-    _transactionBloc = BlocProvider.of<TransactionBloc>(context);
-    currentTag = _tagBloc.state.selectedTag;
-    currentTransaction = _transactionBloc.state.currentTransaction;
-    initData();
-  }
 
   final dateController = TextEditingController();
   final descController = TextEditingController();
   final moneyController = TextEditingController();
+
+  AddController({this.context}) {
+    _tagBloc = BlocProvider.of<TagBloc>(context);
+    _transactionBloc = BlocProvider.of<TransactionBloc>(context);
+    currentTransaction = _transactionBloc.state.currentTransaction;
+    initData();
+  }
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
@@ -52,22 +52,30 @@ class AddController {
   }
 
   onDataChange(value) {
-    print('hi');
-  }
-
-  resetData() {
-    dateController.clear();
-    moneyController.clear();
-  }
-
-  handleAddTransaction() async {
     String date = dateController.text.trim() ?? '';
     String desc = descController.text.trim() ?? '';
     String price = moneyController.text.trim() ?? '';
-    String tagID = (currentTag != null) ? currentTag.tagID : '';
-
+    String tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+
+    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    _transactionBloc.add(GetCurrentTransaction(transaction));
+  }
+
+  resetData() {
+    _tagBloc.add(ResetSelectedTag(null));
+    _transactionBloc.add(ResetCurrentTransaction(null));
+
+    moneyController.text = '0';
+    descController.clear();
+  }
+
+  handleAddTransaction() async {
+    String date = _transactionBloc.state.currentTransaction.date;
+    String desc = _transactionBloc.state.currentTransaction.desc;
+    String price = _transactionBloc.state.currentTransaction.price;
+    String tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
     if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
       Notify().error(
@@ -76,20 +84,37 @@ class AddController {
       return;
     }
     Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-    _transactionBloc.add(GetCurrentTransaction(transaction));
 
-    if (currentTag != null && currentTag.type == "2") {
+    if (_tagBloc.state.selectedTag != null && _tagBloc.state.selectedTag.type == "2") {
       var data = await TransactionApi.spend(transaction);
 
-      if (data.code != 200) return addFailed();
-      addSuccess();
-      resetData();
+      if (data.code != 200) return dialogFailed();
+      addSuccessfully();
     } else {
       print('hihih');
     }
   }
 
-  Future addSuccess() {
+  loadingTagsData() async {
+    var tagsListData = await TagApi.getTagsList();
+    List<Tag> tagsList = List<Tag>();
+
+    int tagsListLength = tagsListData.data.length;
+
+    for (int i = 0; i < tagsListLength; i++) {
+      Tag newTag = Tag.map(tagsListData.data[i]);
+      tagsList.add(newTag);
+    }
+    _tagBloc.add(LoadingTagsData(tagsList));
+  }
+
+  addSuccessfully() async {
+    await loadingTagsData();
+    resetData();
+    dialogSuccessfully();
+  }
+
+  Future dialogSuccessfully() {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(
@@ -113,7 +138,7 @@ class AddController {
     );
   }
 
-  Future addFailed() {
+  Future dialogFailed() {
     return showDialog(
       context: context,
       builder: (context) => CustomDiaglog(

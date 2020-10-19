@@ -13,3 +13,7 @@ class LoadTransactionsData extends TransactionEvent {
 class GetCurrentTransaction extends TransactionEvent {
   GetCurrentTransaction(Transaction currentTransaction) : super(payload: currentTransaction);
 }
+
+class ResetCurrentTransaction extends TransactionEvent {
+  ResetCurrentTransaction(Transaction currentTransaction) : super(payload: currentTransaction);
+}

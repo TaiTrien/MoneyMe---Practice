@@ -21,3 +21,14 @@ class UpdateState extends TransactionState {
           currentTransaction: currentTransaction ?? oldState.currentTransaction,
         );
 }
+
+class ResetState extends TransactionState {
+  ResetState(
+    TransactionState oldState, {
+    List<Transaction> listTransactions,
+    Transaction currentTransaction,
+  }) : super(
+          transactionsList: listTransactions ?? oldState.transactionsList,
+          currentTransaction: currentTransaction,
+        );
+}

@@ -4,6 +4,7 @@ part of 'jarbloc_bloc.dart';
 abstract class JarState {
   final List<Jar> jarsList;
   final int remainPercentage;
+
   JarState({this.jarsList, this.remainPercentage});
 }
 

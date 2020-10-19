@@ -18,6 +18,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       yield UpdateState(state, listTransactions: event.payload);
     } else if (event is GetCurrentTransaction) {
       yield UpdateState(state, currentTransaction: event.payload);
+    } else if (event is ResetCurrentTransaction) {
+      yield ResetState(state, currentTransaction: event.payload);
     }
   }
 }

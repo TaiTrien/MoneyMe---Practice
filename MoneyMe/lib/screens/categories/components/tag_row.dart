@@ -10,7 +10,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class TagRow extends StatelessWidget {
   final String jarName;
   final Tag tagParent;
-  final Function onTap;
 
   final List<Tag> childTagsList;
   final List<Jar> jarsList;
@@ -21,7 +20,6 @@ class TagRow extends StatelessWidget {
     this.jarsList,
     this.jarName,
     this.tagParent,
-    this.onTap,
   }) : super(key: key);
 
   @override
