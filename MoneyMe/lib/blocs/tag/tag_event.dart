@@ -18,7 +18,3 @@ class SelectTag extends TagEvent {
 class ResetSelectedTag extends TagEvent {
   ResetSelectedTag(Tag tag) : super(payload: tag);
 }
-
-class SumExpense extends TagEvent {
-  SumExpense(int totalExpense) : super(payload: totalExpense);
-}

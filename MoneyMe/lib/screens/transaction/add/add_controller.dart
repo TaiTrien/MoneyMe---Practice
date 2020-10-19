@@ -1,13 +1,14 @@
+import 'package:MoneyMe/api/jar_api.dart';
 import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/helpers/notify.dart';
-import 'package:MoneyMe/models/tag.dart';
+import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/components/custom_action_btn.dart';
-import 'package:MoneyMe/screens/loading/loading_controller.dart';
 import 'package:MoneyMe/utils/formatter.dart';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class AddController {
   TagBloc _tagBloc;
   TransactionBloc _transactionBloc;
   Transaction currentTransaction;
+  JarBloc _jarBloc;
 
   final dateController = TextEditingController();
   final descController = TextEditingController();
@@ -26,6 +28,8 @@ class AddController {
   AddController({this.context}) {
     _tagBloc = BlocProvider.of<TagBloc>(context);
     _transactionBloc = BlocProvider.of<TransactionBloc>(context);
+    _jarBloc = BlocProvider.of<JarBloc>(context);
+
     currentTransaction = _transactionBloc.state.currentTransaction;
     initData();
   }
@@ -95,21 +99,35 @@ class AddController {
     }
   }
 
-  loadingTagsData() async {
-    var tagsListData = await TagApi.getTagsList();
-    List<Tag> tagsList = List<Tag>();
+  Future<void> loadJarsData() async {
+    var jarsListData;
+    List<Jar> jarsList = List<Jar>();
+    jarsListData = await JarApi.getJarsList();
 
-    int tagsListLength = tagsListData.data.length;
-
-    for (int i = 0; i < tagsListLength; i++) {
-      Tag newTag = Tag.map(tagsListData.data[i]);
-      tagsList.add(newTag);
+    for (int i = 0; i < jarsListData.data.length; i++) {
+      Jar jar = Jar.map(jarsListData.data[i]);
+      jarsList.add(jar);
     }
-    _tagBloc.add(LoadingTagsData(tagsList));
+    _jarBloc.add(UpdateJarsData(jarsList));
+  }
+
+  Future<void> loadTransactionsData() async {
+    var transactionsListData;
+    List<Transaction> transactionsList = List<Transaction>();
+
+    transactionsListData = await TransactionApi.getTransactionsList();
+    int transactionsListLength = int.parse(transactionsListData.data["total"]);
+
+    for (int i = 0; i < transactionsListLength; i++) {
+      Transaction transaction = Transaction.map(transactionsListData.data, i);
+      transactionsList.add(transaction);
+    }
+    _transactionBloc.add(LoadTransactionsData(transactionsList));
   }
 
   addSuccessfully() async {
-    await loadingTagsData();
+    await loadJarsData();
+    await loadTransactionsData();
     resetData();
     dialogSuccessfully();
   }

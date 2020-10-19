@@ -1,3 +1,4 @@
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/home/home_controller.dart';
@@ -23,7 +24,7 @@ class RemainMoneyCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
-        child: BlocBuilder<TagBloc, TagState>(
+        child: BlocBuilder<JarBloc, JarState>(
           builder: (context, state) {
             return RichText(
               textAlign: TextAlign.center,
@@ -34,7 +35,7 @@ class RemainMoneyCard extends StatelessWidget {
                     style: kSubTitleTextStyle,
                   ),
                   TextSpan(
-                    text: Formatter.formatMoney(controller.totalExpense),
+                    text: Formatter.formatMoney(state.remainMoney),
                     style: kTitleTextStyle.copyWith(fontSize: 25.0),
                   ),
                   TextSpan(

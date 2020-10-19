@@ -15,7 +15,6 @@ class HomeController {
   // ignore: close_sinks
   TransactionBloc _transactionBloc;
   // ignore: close_sinks
-  TagBloc _tagBloc;
 
   dynamic userInfo;
   dynamic expenseHistory;
@@ -23,7 +22,6 @@ class HomeController {
     _userBloc = BlocProvider.of<UserBloc>(context);
     _jarBloc = BlocProvider.of<JarBloc>(context);
     _transactionBloc = BlocProvider.of<TransactionBloc>(context);
-    _tagBloc = BlocProvider.of<TagBloc>(context);
   }
 
   sumExpense() {
@@ -35,10 +33,10 @@ class HomeController {
         print(e);
       }
     }
-    _tagBloc.add(SumExpense(totalExpense));
+    return totalExpense;
   }
 
-  get totalExpense => _tagBloc.state.totalExpense;
+  get totalExpense => _jarBloc.state.remainMoney;
   get userName => _userBloc.state.user.name;
   get transactionsList => _transactionBloc.state.transactionsList;
   get jarsList => _jarBloc.state.jarsList;
