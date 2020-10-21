@@ -1,5 +1,4 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
-import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/screens/transaction/edit/edit_screen.dart';
@@ -15,15 +14,12 @@ class HomeController {
   // ignore: close_sinks
   JarBloc _jarBloc;
   // ignore: close_sinks
-  TransactionBloc _transactionBloc;
-  // ignore: close_sinks
 
   dynamic userInfo;
   dynamic expenseHistory;
   HomeController({this.context}) {
     _userBloc = BlocProvider.of<UserBloc>(context);
     _jarBloc = BlocProvider.of<JarBloc>(context);
-    _transactionBloc = BlocProvider.of<TransactionBloc>(context);
   }
   toEditTransactionScreen(Transaction selectedTransaction) {
     Navigator.push(
@@ -40,7 +36,7 @@ class HomeController {
     int totalExpense = 0;
     for (int i = 0; i < 6; i++) {
       try {
-        totalExpense += int.parse(_jarBloc.state.jarsList[i].price);
+        totalExpense += _jarBloc.state.jarsList[i].price;
       } catch (e) {
         print(e);
       }
@@ -50,6 +46,5 @@ class HomeController {
 
   get totalExpense => _jarBloc.state.remainMoney;
   get userName => _userBloc.state.user.name;
-  get transactionsList => _transactionBloc.state.transactionsList;
   get jarsList => _jarBloc.state.jarsList;
 }

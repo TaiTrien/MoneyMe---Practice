@@ -42,16 +42,6 @@ class _NoteTextFieldState extends State<NoteTextField> {
     message = null;
   }
 
-  String get errorMessage {
-    isValid = widget.validator(value);
-    return isValid ? null : widget.errorMessage;
-  }
-
-  Color get selectedColor {
-    isValid = widget.validator(value);
-    return isValid ? Colors.grey : Colors.red;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(

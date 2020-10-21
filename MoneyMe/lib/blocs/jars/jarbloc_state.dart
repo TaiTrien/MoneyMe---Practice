@@ -17,13 +17,13 @@ class JarblocInitial extends JarState {
           remainPercentage: 0,
         );
 
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + int.parse(jar.price));
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class UpdateJarsState extends JarState {
   UpdateJarsState(JarState oldState, {List<Jar> jarsList}) : super(jarsList: jarsList ?? oldState.jarsList);
 
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + int.parse(jar.price));
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class UpdatePercentageState extends JarState {
@@ -33,5 +33,5 @@ class UpdatePercentageState extends JarState {
           remainPercentage: remainPercentage ?? oldState.remainPercentage,
         );
 
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + int.parse(jar.price));
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }

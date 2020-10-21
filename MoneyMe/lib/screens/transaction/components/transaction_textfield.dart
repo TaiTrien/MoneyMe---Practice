@@ -9,6 +9,7 @@ class TransactionTextField extends StatefulWidget {
   final Color color;
   final TextInputFormatter formatter;
   final Function onChange;
+  final Function onTap;
   const TransactionTextField({
     Key key,
     @required this.label,
@@ -18,6 +19,7 @@ class TransactionTextField extends StatefulWidget {
     this.color,
     this.formatter,
     this.onChange,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -37,11 +39,16 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 80.0),
         child: TextField(
+          onTap: widget.onTap,
           onChanged: widget.onChange,
           textAlign: TextAlign.end,
-          controller: widget.controller,
+          controller: widget.controller
+            ..selection = TextSelection.collapsed(
+              offset: widget.controller.text.length,
+            ),
           inputFormatters: [widget.formatter],
           cursorColor: widget.color,
+          maxLength: 12,
           decoration: InputDecoration(
             prefixIcon: Icon(
               widget.iconData,

@@ -34,7 +34,7 @@ class RemainMoneyCard extends StatelessWidget {
                     style: kSubTitleTextStyle,
                   ),
                   TextSpan(
-                    text: Formatter.formatMoney(state.remainMoney),
+                    text: Formatter.formatMoney(state.remainMoney).toString(),
                     style: kTitleTextStyle.copyWith(fontSize: 25.0),
                   ),
                   TextSpan(

@@ -6,9 +6,8 @@ import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/transaction.dart';
-import 'package:MoneyMe/components/custom_dialog.dart';
-import 'package:MoneyMe/components/custom_action_btn.dart';
 import 'package:MoneyMe/utils/formatter.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +39,7 @@ class AddController {
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
+    hideKeyboard(context);
   }
 
   initData() {
@@ -62,7 +62,7 @@ class AddController {
   onDataChange(value) {
     date = dateController.text.trim() ?? '';
     desc = descController.text.trim() ?? '';
-    price = moneyController.text.trim() ?? '';
+    price = moneyController.text;
     tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
@@ -115,7 +115,16 @@ class AddController {
         break;
     }
 
-    if (data.code != 200) return dialogFailed();
+    if (data.code != 200)
+      return CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: 'Thêm giao dịch thất bại',
+        confirmBtnText: 'Đóng',
+        confirmBtnColor: Colors.green,
+        text: "Thêm giao dịch thất bại",
+      );
+
     addSuccessfully();
   }
 
@@ -123,7 +132,24 @@ class AddController {
     await loadJarsData();
     await loadTransactionsData();
     resetData();
-    dialogSuccessfully();
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.success,
+      title: 'Hoàn tất',
+      confirmBtnText: 'Xong',
+      confirmBtnColor: Colors.green,
+      text: "Giao dịch của bạn đã được thêm thành công",
+    );
+  }
+
+  void hideKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    currentFocus.unfocus();
+  }
+
+  void showKeyBoard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    currentFocus.unfocus();
   }
 
   Future<void> loadJarsData() async {
@@ -150,53 +176,5 @@ class AddController {
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
-  }
-
-  Future dialogSuccessfully() {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Hoàn tất",
-        subTitle: "Giao dịch của bạn đã được thêm thành công",
-        titleWidget: Image.asset(
-          'assets/images/success.gif',
-          fit: BoxFit.contain,
-        ),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.blue,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future dialogFailed() {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Thêm giao dịch thất bại",
-        subTitle: "Vui lòng kiểm tra lại thông tin",
-        titleWidget: Image.asset(
-          'assets/images/noInternet.gif',
-          fit: BoxFit.contain,
-        ),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.grey,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

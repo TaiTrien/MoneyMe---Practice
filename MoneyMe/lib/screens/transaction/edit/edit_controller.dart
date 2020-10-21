@@ -9,6 +9,7 @@ import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/components/custom_action_btn.dart';
 import 'package:MoneyMe/utils/formatter.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,9 +77,26 @@ class EditController {
   handleDeleteTransaction() async {
     int typeTransaction = int.tryParse(selectedTransaction.type);
     String inputID = selectedTransaction.inputId;
-    var response = await TransactionApi.delete(typeTransaction, inputID);
-    print(response.apiMessagse);
-    editSuccessfully();
+
+    var respone;
+
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      showCancelBtn: true,
+      title: '',
+      confirmBtnText: 'Xóa',
+      confirmBtnColor: Colors.red,
+      onCancelBtnTap: () => Navigator.pop(context),
+      onConfirmBtnTap: () async {
+        respone = await TransactionApi.delete(typeTransaction, inputID);
+        if (respone.code != 200) return Notify().error(message: 'Xóa thất bại', timeout: 8);
+
+        deleteSuccessfully();
+      },
+      text: 'Bạn có chắc xóa giao dịch này chứ ?',
+    );
+    if (respone.code == 200) Navigator.pop(context);
   }
 
   handleAddTransaction() async {
@@ -119,6 +137,12 @@ class EditController {
 
     if (data.code != 200) return dialogFailed();
     editSuccessfully();
+  }
+
+  deleteSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    Notify().success(message: "Xóa thành công", timeout: 8);
   }
 
   editSuccessfully() async {

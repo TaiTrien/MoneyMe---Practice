@@ -75,10 +75,11 @@ class TransactionApi {
 
   static Future<dynamic> delete(int typeTransaction, String inputID) async {
     var token = await Store.getToken();
-    var url = urlDelete + 'spend/$inputID';
+
+    var url = urlDelete + 'income/$inputID';
 
     if (typeTransaction == 2) {
-      url = urlDelete + 'income/$inputID';
+      url = urlDelete + 'spend/$inputID';
     }
     var response = await http.delete(
       url,

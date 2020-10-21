@@ -55,6 +55,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           initialDate: _selectedDate ?? DateTime.now(),
           firstDate: DateTime(2000),
           lastDate: DateTime(2025),
+          locale: Locale('vi'),
           helpText: 'Chọn ngày giao dịch',
           cancelText: 'Hủy',
           confirmText: 'Chọn',
