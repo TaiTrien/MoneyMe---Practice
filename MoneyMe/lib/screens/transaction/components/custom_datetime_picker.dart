@@ -24,8 +24,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = DateTime.now();
-    widget.controller.text = Formatter.mask.format(_selectedDate).toString();
   }
 
   @override
@@ -62,9 +60,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         ).then(
           (value) => setState(
             () => {
-              widget.onChange(value),
               _selectedDate = value ?? _selectedDate,
               widget.controller.text = Formatter.mask.format(_selectedDate).toString(),
+              widget.onChange(widget.controller.text),
             },
           ),
         );
