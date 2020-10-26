@@ -49,6 +49,39 @@ class EditController {
   get tagName => currentTransaction.tagName;
   get icon => currentTransaction.icon.substring(4);
 
+  handleDeleteTransaction() async {
+    int typeTransaction = int.tryParse(currentTransaction.type);
+
+    String inputID = currentTransaction.inputId;
+
+    var respone;
+
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      showCancelBtn: true,
+      title: '',
+      confirmBtnText: 'Xóa',
+      confirmBtnColor: Colors.red,
+      onCancelBtnTap: () => Navigator.pop(context),
+      onConfirmBtnTap: () async {
+        respone = await TransactionApi.delete(typeTransaction, inputID);
+        if (respone.code != 200) return Notify().error(message: 'Xóa thất bại', timeout: 8);
+
+        deleteSuccessfully();
+      },
+      text: 'Bạn có chắc xóa giao dịch này chứ ?',
+    );
+  }
+
+  deleteSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    Notify().success(message: "Xóa thành công", timeout: 8);
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
 //   onDataChange(value) {
 //     date = dateController.text.trim() ?? '';
 //     desc = descController.text.trim() ?? '';
@@ -68,43 +101,6 @@ class EditController {
 
 //     moneyController.text = '0';
 //     descController.clear();
-//   }
-
-//   handleDeleteTransaction() async {
-//     int typeTransaction = (_transactionBloc.state.currentTransaction != null)
-//         ? int.tryParse(_transactionBloc.state.currentTransaction.type)
-//         : int.tryParse(
-//             currentTransaction.type,
-//           );
-
-//     String inputID = currentTransaction.inputId;
-
-//     var respone;
-
-//     CoolAlert.show(
-//       context: context,
-//       type: CoolAlertType.warning,
-//       showCancelBtn: true,
-//       title: '',
-//       confirmBtnText: 'Xóa',
-//       confirmBtnColor: Colors.red,
-//       onCancelBtnTap: () => Navigator.pop(context),
-//       onConfirmBtnTap: () async {
-//         respone = await TransactionApi.delete(typeTransaction, inputID);
-//         if (respone.code != 200) return Notify().error(message: 'Xóa thất bại', timeout: 8);
-
-//         deleteSuccessfully();
-//       },
-//       text: 'Bạn có chắc xóa giao dịch này chứ ?',
-//     );
-//   }
-
-//   deleteSuccessfully() async {
-//     await loadJarsData();
-//     await loadTransactionsData();
-//     Notify().success(message: "Xóa thành công", timeout: 8);
-//     Navigator.pop(context);
-//     Navigator.pop(context);
 //   }
 
 //   handleEditTransaction() async {
