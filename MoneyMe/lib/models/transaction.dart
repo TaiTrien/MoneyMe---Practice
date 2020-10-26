@@ -42,4 +42,15 @@ class Transaction {
   String get jarName => this._jarName;
   String get jarTitle => this._jarTitle;
   String get jarIcon => this._jarIcon;
+
+  set tagName(tagName) => this._tagName = tagName;
+  set tagID(tagID) => this._tagID = tagID;
+  set icon(icon) => this._icon = icon;
+  set desc(desc) => this._desc = desc;
+  set price(price) => this._price = price;
+  set date(date) => this._date = date;
+  set type(type) => this._type = type;
+  set jarName(jarName) => this._jarName = jarName;
+  set jarTitle(jarTitle) => this._jarTitle = jarTitle;
+  set jarIcon(jarIcon) => this._jarIcon = jarIcon;
 }

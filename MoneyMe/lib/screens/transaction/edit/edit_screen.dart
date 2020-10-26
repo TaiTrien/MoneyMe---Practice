@@ -82,13 +82,11 @@ class EditTransactionScreen extends StatelessWidget {
                               controller: controller.priceController,
                               formatter: MoneyTextFormatter(),
                               color: Colors.black,
-                              // onChange: () {},
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
                               iconData: Icons.calendar_today,
                               controller: controller.dateController,
-                              //onChange: () {},
                             ),
                             NoteTextField(
                               label: 'Ghi chú',
@@ -96,7 +94,6 @@ class EditTransactionScreen extends StatelessWidget {
                               controller: controller.descController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
-                              //onChanged: () {},
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +113,7 @@ class EditTransactionScreen extends StatelessWidget {
                                     color: Colors.green[400],
                                     textColor: Colors.white,
                                     child: Text('Sửa'),
-                                    onPressed: () {},
+                                    onPressed: controller.handleEditTransaction,
                                   ),
                                 ),
                               ],

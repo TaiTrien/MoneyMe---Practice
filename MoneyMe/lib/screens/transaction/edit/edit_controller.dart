@@ -41,14 +41,11 @@ class EditController {
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
   }
-  // String date;
-  // String desc;
-  // String price;
-  // String tagID;
 
   get tagName => currentTransaction.tagName;
   get icon => currentTransaction.icon.substring(4);
 
+  //to handle when delete a transaction
   handleDeleteTransaction() async {
     int typeTransaction = int.tryParse(currentTransaction.type);
 
@@ -82,56 +79,34 @@ class EditController {
     Navigator.pop(context);
   }
 
-//   onDataChange(value) {
-//     date = dateController.text.trim() ?? '';
-//     desc = descController.text.trim() ?? '';
-//     price = moneyController.text.trim() ?? '';
-//     tagID = currentTransaction.tagID;
-//     //to format price into new string
-//     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+  // to handle when edit a transaction
 
-//     currentTransaction = Transaction(date: date, desc: desc, price: price, tagID: tagID);
-//     _transactionBloc.add(GetCurrentTransaction(currentTransaction));
-//   }
+  handleEditTransaction() async {
+    String inputID = currentTransaction.inputId;
+    String date = dateController.text.trim() ?? '';
+    String desc = descController.text.trim() ?? '';
+    String price = priceController.text ?? '';
+    String tagID = currentTransaction.tagID;
+    //to format price into new string
+    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
 
-//   resetData() {
-//     _tagBloc.add(ResetSelectedTag(null));
+    currentTransaction.date = date;
+    currentTransaction.desc = desc;
+    currentTransaction.price = price;
+    currentTransaction.tagID = tagID;
 
-//     _transactionBloc.add(ResetCurrentTransaction(null));
+    var data = await TransactionApi.editTransaction(inputID, currentTransaction);
 
-//     moneyController.text = '0';
-//     descController.clear();
-//   }
+    if (data.code != 200) return Notify().error(message: 'Sửa giao dịch thất bại', timeout: 8);
 
-//   handleEditTransaction() async {
-//     date = dateController.text.trim() ?? '';
-//     desc = descController.text.trim() ?? '';
-//     price = moneyController.text.trim() ?? '';
-//     tagID = currentTransaction.tagID;
+    editSuccessfully();
+  }
 
-//     String inputID = currentTransaction.inputId;
-
-//     if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
-//       Notify().error(
-//         message: 'Cần điền đầy đủ thông tin',
-//       );
-//       return;
-//     }
-
-//     Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-
-//     var data = await TransactionApi.editTransaction(inputID, newTransaction);
-
-//     //if (data.code != 200) return dialogFailed();
-//     editSuccessfully();
-//   }
-
-//   editSuccessfully() async {
-//     await loadJarsData();
-//     await loadTransactionsData();
-//     resetData();
-//     Navigator.pop(context);
-//   }
+  editSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    Navigator.pop(context);
+  }
 
   Future<void> loadJarsData() async {
     var jarsListData;

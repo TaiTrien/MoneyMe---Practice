@@ -32,18 +32,6 @@ class HomeController {
     );
   }
 
-  sumExpense() {
-    int totalExpense = 0;
-    for (int i = 0; i < 6; i++) {
-      try {
-        totalExpense += _jarBloc.state.jarsList[i].price;
-      } catch (e) {
-        print(e);
-      }
-    }
-    return totalExpense;
-  }
-
   get totalExpense => _jarBloc.state.remainMoney;
   get userName => _userBloc.state.user.name;
   get jarsList => _jarBloc.state.jarsList;
