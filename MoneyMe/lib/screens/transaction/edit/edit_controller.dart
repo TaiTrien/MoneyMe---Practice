@@ -96,7 +96,6 @@ class EditController {
       },
       text: 'Bạn có chắc xóa giao dịch này chứ ?',
     );
-    if (respone.code == 200) Navigator.pop(context);
   }
 
   handleAddTransaction() async {
@@ -143,6 +142,8 @@ class EditController {
     await loadJarsData();
     await loadTransactionsData();
     Notify().success(message: "Xóa thành công", timeout: 8);
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   editSuccessfully() async {
