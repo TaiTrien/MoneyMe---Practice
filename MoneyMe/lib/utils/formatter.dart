@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class Formatter {
   static final currencyFormat = new NumberFormat("#,##0", "en_US");
-  static final mask = new DateFormat("dd-MM-yyyy");
+  static final dateFormat = new DateFormat("dd-MM-yyyy");
 
   static formatMoney(dynamic money) {
     try {
@@ -19,6 +19,6 @@ class Formatter {
     } catch (e) {
       print(e);
     }
-    return mask.format(date);
+    return dateFormat.format(date);
   }
 }

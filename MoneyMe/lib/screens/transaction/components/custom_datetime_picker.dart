@@ -61,7 +61,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           (value) => setState(
             () => {
               _selectedDate = value ?? _selectedDate,
-              widget.controller.text = Formatter.mask.format(_selectedDate).toString(),
+              widget.controller.text = Formatter.dateFormat.format(_selectedDate).toString(),
               if (widget.onChange != null) widget.onChange(_selectedDate),
             },
           ),

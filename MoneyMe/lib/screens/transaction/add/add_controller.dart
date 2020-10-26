@@ -50,7 +50,7 @@ class AddController {
         : 0.toString();
     dateController.text = (currentTransaction != null)
         ? currentTransaction.date
-        : Formatter.mask
+        : Formatter.dateFormat
             .format(
               DateTime.now(),
             )

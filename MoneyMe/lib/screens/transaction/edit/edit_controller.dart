@@ -34,7 +34,13 @@ class EditController {
 
   initData() {
     priceController.text = Formatter.formatMoney(currentTransaction.price);
-    dateController.text = Formatter.formatDate(currentTransaction.date);
+
+    bool isDateFormatted = currentTransaction.date.contains(new RegExp(r'[/\-\_]'));
+    if (!isDateFormatted)
+      dateController.text = Formatter.formatDate(currentTransaction.date);
+    else
+      dateController.text = currentTransaction.date;
+
     descController.text = currentTransaction.desc;
   }
 
