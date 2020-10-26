@@ -9,7 +9,7 @@ class TransactionApi {
   static var urlGetTransactionsList = 'https://fin.mal.vn/api/input/history';
   static var urlSpend = 'https://fin.mal.vn/api/input/spend';
   static var urlIncome = 'https://fin.mal.vn/api/input/income';
-  static var urlDelete = "https://fin.mal.vn/api/input/";
+  static var urlEdit = "https://fin.mal.vn/api/input/";
 
   static Future<dynamic> getTransactionsList() async {
     var transactionListData;
@@ -76,16 +76,41 @@ class TransactionApi {
   static Future<dynamic> delete(int typeTransaction, String inputID) async {
     var token = await Store.getToken();
 
-    var url = urlDelete + 'income/$inputID';
+    var url = urlEdit + 'income/$inputID';
 
     if (typeTransaction == 2) {
-      url = urlDelete + 'spend/$inputID';
+      url = urlEdit + 'spend/$inputID';
     }
     var response = await http.delete(
       url,
       headers: {
         "Authorization": token,
       },
+    );
+
+    return Response.map(json.decode(response.body));
+  }
+
+  static Future<dynamic> editTransaction(String inputID, Transaction transaction) async {
+    var token = await Store.getToken();
+    var url = urlEdit + 'income/$inputID';
+
+    if (transaction.type == '2') {
+      url = urlEdit + 'spend/$inputID';
+    }
+    var mapTransaction = Map<String, dynamic>();
+    mapTransaction["date"] = transaction.date;
+    mapTransaction["desc"] = transaction.desc;
+    mapTransaction["price"] = transaction.price;
+    mapTransaction["tag_id"] = transaction.tagID;
+
+    var response = await http.put(
+      url,
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json",
+      },
+      body: json.encode(mapTransaction),
     );
 
     return Response.map(json.decode(response.body));

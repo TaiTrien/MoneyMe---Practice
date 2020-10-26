@@ -116,7 +116,7 @@ class EditTransactionScreen extends StatelessWidget {
                                     color: Colors.green[400],
                                     textColor: Colors.white,
                                     child: Text('Sửa'),
-                                    onPressed: () {},
+                                    onPressed: controller.handleEditTransaction,
                                   ),
                                 ),
                               ],

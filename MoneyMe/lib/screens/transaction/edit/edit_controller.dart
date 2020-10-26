@@ -114,28 +114,11 @@ class EditController {
 
     Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
     var data;
-    switch (_tagBloc.state.selectedTag.type) {
-      case "1":
-        List<Map<String, dynamic>> listMapsTag = List<Map<String, dynamic>>();
-        List<Jar> jarsList = _jarBloc.state.jarsList;
 
-        listMapsTag = jarsList
-            .map((jar) => {
-                  "jar_id": jar.jarID,
-                  "percentage": jar.percentage,
-                  "price": int.tryParse(price) * int.tryParse(jar.percentage) / 100,
-                })
-            .toList();
-        data = await TransactionApi.income(newTransaction, listMapsTag);
-        break;
+    data = await TransactionApi.editTransaction(inputID, newTransaction);
 
-      case "2":
-        data = await TransactionApi.spend(newTransaction);
-        break;
-    }
-
-    if (data.code != 200) return dialogFailed();
-    editSuccessfully();
+    //if (data.code != 200) return dialogFailed();
+    //editSuccessfully();
   }
 
   deleteSuccessfully() async {
@@ -150,7 +133,6 @@ class EditController {
     await loadJarsData();
     await loadTransactionsData();
     resetData();
-    dialogSuccessfully();
   }
 
   Future<void> loadJarsData() async {
@@ -177,53 +159,5 @@ class EditController {
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
-  }
-
-  Future dialogSuccessfully() {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Hoàn tất",
-        subTitle: "Giao dịch của bạn đã được thêm thành công",
-        titleWidget: Image.asset(
-          'assets/images/success.gif',
-          fit: BoxFit.contain,
-        ),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.blue,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future dialogFailed() {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Thêm giao dịch thất bại",
-        subTitle: "Vui lòng kiểm tra lại thông tin",
-        titleWidget: Image.asset(
-          'assets/images/noInternet.gif',
-          fit: BoxFit.contain,
-        ),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.grey,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
