@@ -20,7 +20,7 @@ class EditTransactionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = EditController(context: context, selectedTransaction: selectedTransaction);
+    var controller = EditController(context: context, currentTransaction: selectedTransaction);
     final bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return Material(
@@ -66,8 +66,8 @@ class EditTransactionScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: TagButton(
                                 onTap: controller.toCategoriesScreen,
-                                title: (state.selectedTag != null) ? state.selectedTag.tagName : controller.tagName,
-                                iconName: (state.selectedTag != null) ? state.selectedTag.icon.substring(4) : controller.icon,
+                                title: controller.tagName,
+                                iconName: controller.icon,
                               ),
                             );
                           },
@@ -79,16 +79,16 @@ class EditTransactionScreen extends StatelessWidget {
                               label: 'Số tiền',
                               iconData: Icons.attach_money,
                               keyboardType: TextInputType.number,
-                              controller: controller.moneyController,
+                              controller: controller.priceController,
                               formatter: MoneyTextFormatter(),
                               color: Colors.black,
-                              onChange: controller.onDataChange,
+                              // onChange: () {},
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
                               iconData: Icons.calendar_today,
                               controller: controller.dateController,
-                              onChange: controller.onDataChange,
+                              //onChange: () {},
                             ),
                             NoteTextField(
                               label: 'Ghi chú',
@@ -96,7 +96,7 @@ class EditTransactionScreen extends StatelessWidget {
                               controller: controller.descController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
-                              onChanged: controller.onDataChange,
+                              //onChanged: () {},
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +107,7 @@ class EditTransactionScreen extends StatelessWidget {
                                     color: Colors.red[400],
                                     textColor: Colors.white,
                                     child: Text('Xóa'),
-                                    onPressed: controller.handleDeleteTransaction,
+                                    onPressed: () {},
                                   ),
                                 ),
                                 Container(
@@ -116,7 +116,7 @@ class EditTransactionScreen extends StatelessWidget {
                                     color: Colors.green[400],
                                     textColor: Colors.white,
                                     child: Text('Sửa'),
-                                    onPressed: controller.handleEditTransaction,
+                                    onPressed: () {},
                                   ),
                                 ),
                               ],

@@ -6,8 +6,6 @@ import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/transaction.dart';
-import 'package:MoneyMe/components/custom_dialog.dart';
-import 'package:MoneyMe/components/custom_action_btn.dart';
 import 'package:MoneyMe/utils/formatter.dart';
 import 'package:cool_alert/cool_alert.dart';
 
@@ -16,124 +14,128 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditController {
   BuildContext context;
-  Transaction selectedTransaction;
-
-  TagBloc _tagBloc;
-  TransactionBloc _transactionBloc;
   Transaction currentTransaction;
+
+  TransactionBloc _transactionBloc;
   JarBloc _jarBloc;
+  TagBloc _tagBloc;
 
   final dateController = TextEditingController();
   final descController = TextEditingController();
-  final moneyController = TextEditingController();
+  final priceController = TextEditingController();
 
-  String date;
-  String desc;
-  String price;
-  String tagID;
-
-  EditController({this.context, this.selectedTransaction}) {
-    _tagBloc = BlocProvider.of<TagBloc>(context);
+  EditController({this.context, this.currentTransaction}) {
     _transactionBloc = BlocProvider.of<TransactionBloc>(context);
     _jarBloc = BlocProvider.of<JarBloc>(context);
+    _tagBloc = BlocProvider.of<TagBloc>(context);
 
-    currentTransaction = _transactionBloc.state.currentTransaction;
     initData();
+  }
+
+  initData() {
+    priceController.text = Formatter.formatMoney(currentTransaction.price);
+    dateController.text = Formatter.formatDate(currentTransaction.date);
+    descController.text = currentTransaction.desc;
   }
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
   }
+  // String date;
+  // String desc;
+  // String price;
+  // String tagID;
 
-  initData() {
-    moneyController.text = Formatter.formatMoney(selectedTransaction.price);
-    dateController.text = Formatter.formatDate(selectedTransaction.date);
-    descController.text = selectedTransaction.desc;
-  }
+  get tagName => currentTransaction.tagName;
+  get icon => currentTransaction.icon.substring(4);
 
-  get tagName => selectedTransaction.tagName;
-  get icon => selectedTransaction.icon.substring(4);
+//   onDataChange(value) {
+//     date = dateController.text.trim() ?? '';
+//     desc = descController.text.trim() ?? '';
+//     price = moneyController.text.trim() ?? '';
+//     tagID = currentTransaction.tagID;
+//     //to format price into new string
+//     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
 
-  onDataChange(value) {
-    date = dateController.text.trim() ?? '';
-    desc = descController.text.trim() ?? '';
-    price = moneyController.text.trim() ?? '';
-    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
-    //to format price into new string
-    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+//     currentTransaction = Transaction(date: date, desc: desc, price: price, tagID: tagID);
+//     _transactionBloc.add(GetCurrentTransaction(currentTransaction));
+//   }
 
-    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-    _transactionBloc.add(GetCurrentTransaction(transaction));
-  }
+//   resetData() {
+//     _tagBloc.add(ResetSelectedTag(null));
 
-  resetData() {
-    _tagBloc.add(ResetSelectedTag(null));
-    _transactionBloc.add(ResetCurrentTransaction(null));
+//     _transactionBloc.add(ResetCurrentTransaction(null));
 
-    moneyController.text = '0';
-    descController.clear();
-  }
+//     moneyController.text = '0';
+//     descController.clear();
+//   }
 
-  handleDeleteTransaction() async {
-    int typeTransaction = int.tryParse(selectedTransaction.type);
-    String inputID = selectedTransaction.inputId;
+//   handleDeleteTransaction() async {
+//     int typeTransaction = (_transactionBloc.state.currentTransaction != null)
+//         ? int.tryParse(_transactionBloc.state.currentTransaction.type)
+//         : int.tryParse(
+//             currentTransaction.type,
+//           );
 
-    var respone;
+//     String inputID = currentTransaction.inputId;
 
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.warning,
-      showCancelBtn: true,
-      title: '',
-      confirmBtnText: 'Xóa',
-      confirmBtnColor: Colors.red,
-      onCancelBtnTap: () => Navigator.pop(context),
-      onConfirmBtnTap: () async {
-        respone = await TransactionApi.delete(typeTransaction, inputID);
-        if (respone.code != 200) return Notify().error(message: 'Xóa thất bại', timeout: 8);
+//     var respone;
 
-        deleteSuccessfully();
-      },
-      text: 'Bạn có chắc xóa giao dịch này chứ ?',
-    );
-  }
+//     CoolAlert.show(
+//       context: context,
+//       type: CoolAlertType.warning,
+//       showCancelBtn: true,
+//       title: '',
+//       confirmBtnText: 'Xóa',
+//       confirmBtnColor: Colors.red,
+//       onCancelBtnTap: () => Navigator.pop(context),
+//       onConfirmBtnTap: () async {
+//         respone = await TransactionApi.delete(typeTransaction, inputID);
+//         if (respone.code != 200) return Notify().error(message: 'Xóa thất bại', timeout: 8);
 
-  handleAddTransaction() async {
-    date = _transactionBloc.state.currentTransaction.date;
-    desc = _transactionBloc.state.currentTransaction.desc;
-    price = _transactionBloc.state.currentTransaction.price;
-    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+//         deleteSuccessfully();
+//       },
+//       text: 'Bạn có chắc xóa giao dịch này chứ ?',
+//     );
+//   }
 
-    if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
-      Notify().error(
-        message: 'Cần điền đầy đủ thông tin',
-      );
-      return;
-    }
-    if (_tagBloc.state.selectedTag == null) return;
+//   deleteSuccessfully() async {
+//     await loadJarsData();
+//     await loadTransactionsData();
+//     Notify().success(message: "Xóa thành công", timeout: 8);
+//     Navigator.pop(context);
+//     Navigator.pop(context);
+//   }
 
-    Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-    var data;
+//   handleEditTransaction() async {
+//     date = dateController.text.trim() ?? '';
+//     desc = descController.text.trim() ?? '';
+//     price = moneyController.text.trim() ?? '';
+//     tagID = currentTransaction.tagID;
 
-    data = await TransactionApi.editTransaction(inputID, newTransaction);
+//     String inputID = currentTransaction.inputId;
 
-    //if (data.code != 200) return dialogFailed();
-    //editSuccessfully();
-  }
+//     if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
+//       Notify().error(
+//         message: 'Cần điền đầy đủ thông tin',
+//       );
+//       return;
+//     }
 
-  deleteSuccessfully() async {
-    await loadJarsData();
-    await loadTransactionsData();
-    Notify().success(message: "Xóa thành công", timeout: 8);
-    Navigator.pop(context);
-    Navigator.pop(context);
-  }
+//     Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
 
-  editSuccessfully() async {
-    await loadJarsData();
-    await loadTransactionsData();
-    resetData();
-  }
+//     var data = await TransactionApi.editTransaction(inputID, newTransaction);
+
+//     //if (data.code != 200) return dialogFailed();
+//     editSuccessfully();
+//   }
+
+//   editSuccessfully() async {
+//     await loadJarsData();
+//     await loadTransactionsData();
+//     resetData();
+//     Navigator.pop(context);
+//   }
 
   Future<void> loadJarsData() async {
     var jarsListData;
