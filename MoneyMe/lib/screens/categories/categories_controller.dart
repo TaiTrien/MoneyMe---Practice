@@ -121,7 +121,6 @@ class CategoriesController {
       //push to management screen
     } else if (typeScreen == TypeScreen.edit) {
       //push tag to edit transaction screen
-      _tagBloc.add(SelectTag(tag));
       Navigator.pop(context, tag);
     }
   }

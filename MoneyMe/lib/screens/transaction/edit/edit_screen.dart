@@ -22,7 +22,6 @@ class EditTransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = EditController(context: context, currentTransaction: selectedTransaction);
     final bottom = MediaQuery.of(context).viewInsets.bottom;
-
     return Material(
       child: SafeArea(
         child: Container(
