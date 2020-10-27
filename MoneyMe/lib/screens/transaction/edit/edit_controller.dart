@@ -41,26 +41,16 @@ class EditController {
   }
 
   displayData() {
-    Transaction tempStateTransaction = _transactionBloc.state.currentTransaction;
+    Transaction tempTransaction = _transactionBloc.state.currentTransaction ?? currentTransaction;
 
-    if (tempStateTransaction == null) {
-      priceController.text = Formatter.formatMoney(currentTransaction.price);
-      bool isDateFormatted = currentTransaction.date.contains(new RegExp(r'[/\-\_]'));
-      if (!isDateFormatted)
-        dateController.text = Formatter.formatDate(currentTransaction.date);
-      else
-        dateController.text = currentTransaction.date;
-      descController.text = currentTransaction.desc;
-    } else {
-      priceController.text = Formatter.formatMoney(tempStateTransaction.price);
-      bool isDateFormatted = tempStateTransaction.date.contains(new RegExp(r'[/\-\_]'));
-      if (!isDateFormatted)
-        dateController.text = Formatter.formatDate(tempStateTransaction.date);
-      else
-        dateController.text = tempStateTransaction.date;
+    priceController.text = Formatter.formatMoney(tempTransaction.price);
+    bool isDateFormatted = tempTransaction.date.contains(new RegExp(r'[/\-\_]'));
+    if (!isDateFormatted)
+      dateController.text = Formatter.formatDate(tempTransaction.date);
+    else
+      dateController.text = tempTransaction.date;
 
-      descController.text = tempStateTransaction.desc;
-    }
+    descController.text = tempTransaction.desc;
   }
 
   resetData() {
@@ -89,6 +79,7 @@ class EditController {
       MaterialPageRoute(
         builder: (context) => CategoriesScreen(
           typeScreen: TypeScreen.edit,
+          currentTransaction: currentTransaction,
         ),
       ),
     );
@@ -140,8 +131,6 @@ class EditController {
     String tagID = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagID : _tagBloc.state.selectedTag.tagID;
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
-    String tagName = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagName : _tagBloc.state.selectedTag.tagName;
-    print(tagName);
     currentTransaction.date = date;
     currentTransaction.desc = desc;
     currentTransaction.price = price;
