@@ -2,11 +2,13 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
+import 'package:MoneyMe/screens/categories/categories_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesController {
   BuildContext context;
+  TypeScreen typeScreen;
   // ignore: close_sinks
   TagBloc _tagBloc;
   // ignore: close_sinks
@@ -19,7 +21,7 @@ class CategoriesController {
   var revenueMap = Map<int, Map<String, dynamic>>();
   var expenseMap = Map<int, Map<String, dynamic>>();
 
-  CategoriesController({this.context}) {
+  CategoriesController({this.context, this.typeScreen}) {
     _tagBloc = BlocProvider.of<TagBloc>(context);
     _jarBloc = BlocProvider.of<JarBloc>(context);
 
@@ -73,8 +75,16 @@ class CategoriesController {
   }
 
   onSelectTag(Tag tag) {
-    _tagBloc.add(SelectTag(tag));
-    Navigator.pop(context);
+    if (typeScreen == TypeScreen.select) {
+      _tagBloc.add(SelectTag(tag));
+      Navigator.pop(context);
+    } else if (typeScreen == TypeScreen.management) {
+      //push to management screen
+    } else if (typeScreen == TypeScreen.edit) {
+      //push tag to edit transaction screen
+      _tagBloc.add(SelectTag(tag));
+      Navigator.pop(context, tag);
+    }
   }
 
   get seperatedTagsList => this.tagMap;

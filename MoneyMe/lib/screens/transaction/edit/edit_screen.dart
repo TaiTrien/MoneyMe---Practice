@@ -66,8 +66,8 @@ class EditTransactionScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: TagButton(
                                 onTap: controller.toCategoriesScreen,
-                                title: controller.tagName,
-                                iconName: controller.icon,
+                                title: (state.selectedTag == null) ? controller.currentTransaction.tagName : state.selectedTag.tagName,
+                                iconName: (state.selectedTag == null) ? controller.currentTransaction.icon.substring(4) : state.selectedTag.icon.substring(4),
                               ),
                             );
                           },

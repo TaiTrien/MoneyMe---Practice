@@ -15,5 +15,5 @@ final routes = {
   '/mainScreen': (context) => MainScreen(),
   '/changePasswordScreen': (context) => ChangePasswordScreen(),
   '/addTransactionScreen': (context) => AddTransactionScreen(),
-  '/categoriesScreen': (context) => CategoriesScreen(),
+  '/categoriesScreen': (context) => CategoriesScreen(typeScreen: TypeScreen.select),
 };
