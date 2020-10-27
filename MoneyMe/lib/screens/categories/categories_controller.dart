@@ -3,6 +3,8 @@ import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
+import 'package:MoneyMe/screens/categories/add/add_controller.dart';
+import 'package:MoneyMe/screens/categories/add/add_tag_screen.dart';
 import 'package:MoneyMe/screens/categories/categories_screen.dart';
 import 'package:MoneyMe/screens/categories/components/tags_list_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,6 +121,13 @@ class CategoriesController {
       Navigator.pop(context);
     } else if (typeScreen == TypeScreen.management) {
       //push to management screen
+      AddTagController controller = AddTagController(context: context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddTagScreen(),
+        ),
+      );
     } else if (typeScreen == TypeScreen.edit) {
       //push tag to edit transaction screen
       Navigator.pop(context, tag);
