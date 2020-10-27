@@ -4,16 +4,26 @@ part of 'jarbloc_bloc.dart';
 abstract class JarState {
   final List<Jar> jarsList;
   final int remainPercentage;
-  final int sliderValue;
-  JarState({this.jarsList, this.remainPercentage, this.sliderValue});
+
+  JarState({this.jarsList, this.remainPercentage});
+
+  int get remainMoney;
 }
 
 class JarblocInitial extends JarState {
-  JarblocInitial() : super(jarsList: null, remainPercentage: 0, sliderValue: 0);
+  JarblocInitial()
+      : super(
+          jarsList: null,
+          remainPercentage: 0,
+        );
+
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class UpdateJarsState extends JarState {
   UpdateJarsState(JarState oldState, {List<Jar> jarsList}) : super(jarsList: jarsList ?? oldState.jarsList);
+
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class UpdatePercentageState extends JarState {
@@ -22,13 +32,6 @@ class UpdatePercentageState extends JarState {
           jarsList: oldState.jarsList,
           remainPercentage: remainPercentage ?? oldState.remainPercentage,
         );
-}
 
-class UpdateSliderValueState extends JarState {
-  UpdateSliderValueState(JarState oldState, {int sliderValue})
-      : super(
-          jarsList: oldState.jarsList,
-          remainPercentage: oldState.remainPercentage,
-          sliderValue: sliderValue ?? oldState.sliderValue,
-        );
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }

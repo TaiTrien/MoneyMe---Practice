@@ -1,7 +1,9 @@
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/home/home_controller.dart';
-import 'package:MoneyMe/utils/formater.dart';
+import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RemainMoneyCard extends StatelessWidget {
   final HomeController controller;
@@ -21,24 +23,28 @@ class RemainMoneyCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Số tiền hiện tại trong ví\n',
-                style: kSubTitleTextStyle,
+        child: BlocBuilder<JarBloc, JarState>(
+          builder: (context, state) {
+            return RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Số tiền hiện tại trong ví\n',
+                    style: kSubTitleTextStyle,
+                  ),
+                  TextSpan(
+                    text: Formatter.formatMoney(state.remainMoney).toString(),
+                    style: kTitleTextStyle.copyWith(fontSize: 25.0),
+                  ),
+                  TextSpan(
+                    text: ' VND',
+                    style: kTitleTextStyle,
+                  ),
+                ],
               ),
-              TextSpan(
-                text: Formatter.formatMoney(controller.totalExpense),
-                style: kTitleTextStyle.copyWith(fontSize: 25.0),
-              ),
-              TextSpan(
-                text: ' VND',
-                style: kTitleTextStyle,
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

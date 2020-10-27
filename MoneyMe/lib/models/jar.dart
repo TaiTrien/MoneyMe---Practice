@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-
 class Jar {
   String _jarID;
   String _jarName;
   String _jarTitle;
   String _icon;
-  String _price;
+  int _price;
   String _percentage;
   String _priceIncome;
   String _priceSpend;
@@ -26,7 +24,7 @@ class Jar {
     this._jarName = obj["jar_name"];
     this._jarTitle = obj["jar_title"];
     this._icon = obj["icon"];
-    this._price = obj["price"];
+    this._price = int.tryParse(obj["price"]);
     this._percentage = obj["percentage"];
     this._priceIncome = obj["price_in_come"];
     this._priceSpend = obj["price_spend"];
@@ -36,7 +34,7 @@ class Jar {
   String get jarName => this._jarName;
   String get jarTitle => this._jarTitle;
   String get icon => this._icon;
-  String get price => this._price;
+  int get price => this._price;
   String get percentage => this._percentage;
   String get priceIncome => this._priceIncome;
   String get priceSpend => this._priceSpend;

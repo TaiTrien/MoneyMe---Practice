@@ -1,5 +1,5 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/utils/formater.dart';
+import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

@@ -113,7 +113,7 @@ class AccountController {
       String jarName = jars[i].jarName;
       String jarTitle = jars[i].jarTitle;
       String icon = jars[i].icon;
-      String price = jars[i].price;
+      int price = jars[i].price;
       int percentage = getValue(jarName: jarName.toLowerCase()).toInt();
       String priceIncome = jars[i].priceIncome;
       String priceSpend = jars[i].priceSpend;

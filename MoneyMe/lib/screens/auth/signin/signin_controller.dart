@@ -1,11 +1,11 @@
 import 'package:MoneyMe/api/user_api.dart';
-import 'package:MoneyMe/screens/auth/components/custom_dialog.dart';
+import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/material.dart';
 
-import 'components/custom_action_btn.dart';
+import '../../../components/custom_action_btn.dart';
 
 class SignInController {
   var phoneNumberController = TextEditingController();
@@ -35,7 +35,7 @@ class SignInController {
         builder: (context) => CustomDiaglog(
           title: "Thiết bị của bạn chưa kết nối Internet",
           subTitle: "Vui lòng kiểm tra lại kết nối của bạn",
-          image: Image.asset(
+          titleWidget: Image.asset(
             'assets/images/noInternet.gif',
             fit: BoxFit.contain,
           ),
@@ -80,7 +80,7 @@ class SignInController {
       builder: (context) => CustomDiaglog(
         title: "Tài khoản hoặc mật khẩu không chính xác",
         subTitle: "Vui lòng kiểm tra lại tên tài khoản/mật khẩu",
-        image: Image.asset('assets/images/404.gif'),
+        titleWidget: Image.asset('assets/images/404.gif'),
         actions: [
           CustomActionButton(
             titleBtn: 'Hủy',

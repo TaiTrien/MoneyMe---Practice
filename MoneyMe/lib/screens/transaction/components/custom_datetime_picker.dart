@@ -1,15 +1,17 @@
-import 'package:MoneyMe/utils/formater.dart';
+import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
   final String label;
-  final Function onTap;
   final IconData iconData;
+  final TextEditingController controller;
+  final Function onChange;
   const DateTimePicker({
     Key key,
     @required this.label,
-    this.onTap,
     this.iconData,
+    this.controller,
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = DateTime.now();
   }
 
   @override
@@ -31,29 +32,40 @@ class _DateTimePickerState extends State<DateTimePicker> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: TextField(
+          onChanged: widget.onChange,
           enabled: false,
           decoration: InputDecoration(
+            labelText: 'Ngày giao dịch',
             prefixIcon: Icon(
               widget.iconData,
               color: Colors.black,
             ),
-            labelText: Formatter.format.format(_selectedDate).toString(),
             labelStyle: TextStyle(
               color: Colors.black,
             ),
           ),
+          controller: widget.controller,
         ),
       ),
       onTap: () async {
         await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
+          initialDate: _selectedDate ?? DateTime.now(),
           firstDate: DateTime(2000),
           lastDate: DateTime(2025),
+          locale: Locale('vi'),
           helpText: 'Chọn ngày giao dịch',
           cancelText: 'Hủy',
           confirmText: 'Chọn',
-        ).then((value) => setState(() => _selectedDate = value ?? _selectedDate));
+        ).then(
+          (value) => setState(
+            () => {
+              _selectedDate = value ?? _selectedDate,
+              widget.controller.text = Formatter.dateFormat.format(_selectedDate).toString(),
+              if (widget.onChange != null) widget.onChange(_selectedDate),
+            },
+          ),
+        );
       },
     );
   }

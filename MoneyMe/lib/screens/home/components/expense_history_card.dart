@@ -1,5 +1,7 @@
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../home_controller.dart';
 import 'expense_card.dart';
@@ -36,19 +38,27 @@ class ExpenseHistoryBoard extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.transactionsList.length ?? 0,
-                itemBuilder: (context, index) {
-                  return ExpenseCard(
-                    title: controller.transactionsList[index].tagName ?? "Trống",
-                    subTitle: controller.transactionsList[index].jarTitle ?? "Trống",
-                    prefixMoney: (controller.transactionsList[index].type == "1") ? '+' : '-',
-                    money: controller.transactionsList[index].price,
-                    color: (controller.transactionsList[index].type == "1") ? Colors.green[400] : Colors.red,
-                    date: controller.transactionsList[index].date,
-                    iconName: controller.transactionsList[index].icon.substring(4),
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: (state.transactionsList != null) ? state.transactionsList.length : 0,
+                    itemBuilder: (context, index) {
+                      var currentTransaction = state.transactionsList[index];
+                      return GestureDetector(
+                        onTap: () => controller.toEditTransactionScreen(currentTransaction),
+                        child: ExpenseCard(
+                          title: currentTransaction.tagName ?? "Trống",
+                          subTitle: currentTransaction.jarTitle ?? "Trống",
+                          prefixMoney: (currentTransaction.type == "1") ? '+' : '-',
+                          money: currentTransaction.price,
+                          color: (currentTransaction.type == "1") ? Colors.green[400] : Colors.red,
+                          date: currentTransaction.date,
+                          iconName: currentTransaction.icon.substring(4),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

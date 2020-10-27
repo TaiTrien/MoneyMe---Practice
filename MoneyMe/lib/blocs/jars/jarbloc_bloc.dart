@@ -16,8 +16,6 @@ class JarBloc extends Bloc<JarEvent, JarState> {
       yield UpdateJarsState(state, jarsList: event.payload);
     } else if (event is UpdateRemainPercentage) {
       yield UpdatePercentageState(state, remainPercentage: event.payload);
-    } else if (event is UpdateSliderValue) {
-      yield UpdateSliderValueState(state, sliderValue: event.payload);
     }
   }
 }

@@ -11,7 +11,7 @@ class JarApi {
   static var urlGetJarsList = 'https://fin.mal.vn/api/jars/list';
   static var urlEditJarPercentage = 'https://fin.mal.vn/api/jars/edit';
 
-  static Future<dynamic> getJarsListInfo() async {
+  static Future<dynamic> getJarsList() async {
     var jarsListData;
     var token = await Store.getToken();
     var response = await http.get(
@@ -36,7 +36,7 @@ class JarApi {
       listMapJars.add(
         {
           "jar_id": jar.jarID,
-          "percentage": int.parse(jar.percentage).toInt(),
+          "percentage": jar.percentage,
         },
       );
     }
@@ -44,7 +44,7 @@ class JarApi {
     var token = await Store.getToken();
     try {
       var response = await http.put(
-        "https://fin.mal.vn/api/jars/edit",
+        urlEditJarPercentage,
         headers: {
           "Authorization": token,
           "Content-Type": "application/json",
