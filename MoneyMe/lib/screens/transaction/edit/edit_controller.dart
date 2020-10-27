@@ -37,25 +37,30 @@ class EditController {
     _jarBloc = BlocProvider.of<JarBloc>(context);
     _tagBloc = BlocProvider.of<TagBloc>(context);
 
-    initData();
+    displayData();
   }
 
-  initData() {
+  displayData() {
     Transaction tempStateTransaction = _transactionBloc.state.currentTransaction;
 
-    priceController.text = (tempStateTransaction == null)
-        ? Formatter.formatMoney(currentTransaction.price)
-        : Formatter.formatMoney(
-            tempStateTransaction.price,
-          );
+    if (tempStateTransaction == null) {
+      priceController.text = Formatter.formatMoney(currentTransaction.price);
+      bool isDateFormatted = currentTransaction.date.contains(new RegExp(r'[/\-\_]'));
+      if (!isDateFormatted)
+        dateController.text = Formatter.formatDate(currentTransaction.date);
+      else
+        dateController.text = currentTransaction.date;
+      descController.text = currentTransaction.desc;
+    } else {
+      priceController.text = Formatter.formatMoney(tempStateTransaction.price);
+      bool isDateFormatted = tempStateTransaction.date.contains(new RegExp(r'[/\-\_]'));
+      if (!isDateFormatted)
+        dateController.text = Formatter.formatDate(tempStateTransaction.date);
+      else
+        dateController.text = tempStateTransaction.date;
 
-    bool isDateFormatted = currentTransaction.date.contains(new RegExp(r'[/\-\_]'));
-    if (!isDateFormatted)
-      dateController.text = Formatter.formatDate(currentTransaction.date);
-    else
-      dateController.text = currentTransaction.date;
-
-    descController.text = (tempStateTransaction == null) ? currentTransaction.desc : tempStateTransaction.desc;
+      descController.text = tempStateTransaction.desc;
+    }
   }
 
   resetData() {
