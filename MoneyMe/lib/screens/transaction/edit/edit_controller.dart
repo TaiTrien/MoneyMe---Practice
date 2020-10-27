@@ -9,6 +9,7 @@ import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/screens/categories/categories_screen.dart';
 import 'package:MoneyMe/utils/formatter.dart';
+import 'package:MoneyMe/utils/services.dart';
 import 'package:cool_alert/cool_alert.dart';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,10 @@ class EditController {
   BuildContext context;
   Transaction currentTransaction;
   Tag selectedTag;
+  String date;
+  String desc;
+  String price;
+  String tagID;
 
   TransactionBloc _transactionBloc;
   JarBloc _jarBloc;
@@ -36,7 +41,13 @@ class EditController {
   }
 
   initData() {
-    priceController.text = Formatter.formatMoney(currentTransaction.price);
+    Transaction tempStateTransaction = _transactionBloc.state.currentTransaction;
+
+    priceController.text = (tempStateTransaction == null)
+        ? Formatter.formatMoney(currentTransaction.price)
+        : Formatter.formatMoney(
+            tempStateTransaction.price,
+          );
 
     bool isDateFormatted = currentTransaction.date.contains(new RegExp(r'[/\-\_]'));
     if (!isDateFormatted)
@@ -44,7 +55,27 @@ class EditController {
     else
       dateController.text = currentTransaction.date;
 
-    descController.text = currentTransaction.desc;
+    descController.text = (tempStateTransaction == null) ? currentTransaction.desc : tempStateTransaction.desc;
+  }
+
+  resetData() {
+    _tagBloc.add(ResetSelectedTag(null));
+    _transactionBloc.add(ResetCurrentTransaction(null));
+
+    priceController.text = '0';
+    descController.clear();
+  }
+
+  onDataChange(value) {
+    date = dateController.text.trim() ?? '';
+    desc = descController.text.trim() ?? '';
+    price = priceController.text;
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+    //to format price into new string
+    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+
+    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    _transactionBloc.add(GetCurrentTransaction(transaction));
   }
 
   void toCategoriesScreen() async {
@@ -57,6 +88,7 @@ class EditController {
       ),
     );
     _tagBloc.add(SelectTag(selectedTag));
+    Services.hideKeyboard(context);
   }
 
   //to handle when delete a transaction
@@ -100,15 +132,15 @@ class EditController {
     String date = dateController.text.trim() ?? '';
     String desc = descController.text.trim() ?? '';
     String price = priceController.text ?? '';
-    String tagID = (selectedTag == null) ? currentTransaction.tagID : selectedTag.tagID;
+    String tagID = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagID : _tagBloc.state.selectedTag.tagID;
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
-
+    String tagName = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagName : _tagBloc.state.selectedTag.tagName;
+    print(tagName);
     currentTransaction.date = date;
     currentTransaction.desc = desc;
     currentTransaction.price = price;
     currentTransaction.tagID = tagID;
-
     var data = await TransactionApi.editTransaction(inputID, currentTransaction);
 
     if (data.code != 200) return Notify().error(message: 'Sửa giao dịch thất bại', timeout: 8);
@@ -119,6 +151,7 @@ class EditController {
   editSuccessfully() async {
     await loadJarsData();
     await loadTransactionsData();
+    resetData();
     Navigator.pop(context);
   }
 

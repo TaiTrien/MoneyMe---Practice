@@ -7,6 +7,7 @@ import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/utils/formatter.dart';
+import 'package:MoneyMe/utils/services.dart';
 import 'package:cool_alert/cool_alert.dart';
 
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class AddController {
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
-    hideKeyboard(context);
+    Services.hideKeyboard(context);
   }
 
   initData() {
@@ -132,6 +133,7 @@ class AddController {
     await loadJarsData();
     await loadTransactionsData();
     resetData();
+    Services.showKeyBoard(context);
     CoolAlert.show(
       context: context,
       type: CoolAlertType.success,
@@ -140,16 +142,6 @@ class AddController {
       confirmBtnColor: Colors.green,
       text: "Giao dịch của bạn đã được thêm thành công",
     );
-  }
-
-  void hideKeyboard(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    currentFocus.unfocus();
-  }
-
-  void showKeyBoard(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    currentFocus.unfocus();
   }
 
   Future<void> loadJarsData() async {

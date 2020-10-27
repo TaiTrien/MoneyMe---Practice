@@ -6,6 +6,7 @@ import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.da
 import 'package:MoneyMe/screens/transaction/components/money_formatter.dart';
 import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
 import 'package:MoneyMe/screens/transaction/edit/edit_controller.dart';
+import 'package:MoneyMe/utils/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -82,11 +83,13 @@ class EditTransactionScreen extends StatelessWidget {
                               controller: controller.priceController,
                               formatter: MoneyTextFormatter(),
                               color: Colors.black,
+                              onChange: controller.onDataChange,
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
                               iconData: Icons.calendar_today,
                               controller: controller.dateController,
+                              onChange: controller.onDataChange,
                             ),
                             NoteTextField(
                               label: 'Ghi chú',
@@ -94,6 +97,7 @@ class EditTransactionScreen extends StatelessWidget {
                               controller: controller.descController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
+                              onChanged: controller.onDataChange,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

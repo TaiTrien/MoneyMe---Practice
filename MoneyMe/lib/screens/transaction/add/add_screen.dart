@@ -6,6 +6,7 @@ import 'package:MoneyMe/screens/transaction/add/components/tag_button.dart';
 import 'package:MoneyMe/screens/transaction/components/custom_datetime_picker.dart';
 import 'package:MoneyMe/screens/transaction/components/money_formatter.dart';
 import 'package:MoneyMe/screens/transaction/components/transaction_textfield.dart';
+import 'package:MoneyMe/utils/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class AddTransactionScreen extends StatelessWidget {
     return Material(
       child: SafeArea(
         child: GestureDetector(
-          onTap: () => controller.hideKeyboard(context),
+          onTap: () => Services.hideKeyboard(context),
           child: Container(
             color: kSecondaryColor,
             height: double.infinity,
@@ -76,7 +77,6 @@ class AddTransactionScreen extends StatelessWidget {
                                 formatter: MoneyTextFormatter(),
                                 color: Colors.black,
                                 onChange: controller.onDataChange,
-                                onTap: () => controller.showKeyBoard(context),
                               ),
                               DateTimePicker(
                                 label: 'Chọn thời gian',
@@ -91,7 +91,6 @@ class AddTransactionScreen extends StatelessWidget {
                                 keyboardType: TextInputType.multiline,
                                 maxLines: null,
                                 onChanged: controller.onDataChange,
-                                onTap: () => controller.showKeyBoard(context),
                               ),
                               Container(
                                 width: double.infinity,
