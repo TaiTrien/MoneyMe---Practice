@@ -1,0 +1,50 @@
+import 'package:MoneyMe/api/tag_api.dart';
+import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
+import 'package:MoneyMe/models/tag.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class AddTagController {
+  BuildContext context;
+  Tag currentTag = Tag(type: '1');
+  Tag parentTag;
+
+  TextEditingController tagController = TextEditingController();
+  TagBloc _tagBloc;
+
+  AddTagController({this.context}) {
+    _tagBloc = BlocProvider.of<TagBloc>(context);
+    _tagBloc.add(SelectTag(currentTag));
+  }
+  updateParentTag(Tag newTag) {
+    parentTag = newTag;
+  }
+
+  onChanged(value) {
+    print(value);
+  }
+
+  handleAddTag() async {
+    Tag newTag = new Tag(
+      icon: "mdi-cash-usd-outline",
+      jarID: "745",
+      parentID: "2252",
+      tagName: "Cơm trưa",
+      type: '2',
+    );
+
+    TagApi.addTag(newTag);
+  }
+
+  switchToggle() {
+    if (currentTag.type == '1')
+      currentTag.type = '2';
+    else if (currentTag.type == '2') currentTag.type = '1';
+    _tagBloc.add(SelectTag(currentTag));
+
+    parentTag = null;
+  }
+
+  List<dynamic> get revenues => _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
+  List<dynamic> get expenses => _tagBloc.state.expenses.entries.map((entry) => entry.value["parent"]).toList();
+}

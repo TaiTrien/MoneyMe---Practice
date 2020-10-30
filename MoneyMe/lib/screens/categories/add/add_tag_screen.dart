@@ -1,12 +1,16 @@
+import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
+import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/models/icon.dart';
+import 'package:MoneyMe/screens/categories/add/add_tag_controller.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_dropdown.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_toggle_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTagScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var controller = new AddTagController(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -26,7 +30,7 @@ class AddTagScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomToggle(
-              onPress: () {},
+              onPress: controller.switchToggle,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
@@ -64,8 +68,9 @@ class AddTagScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.only(right: kDefaultPaddingHorizontal),
                     child: TextField(
+                      onChanged: controller.onChanged,
                       onTap: () {},
-                      controller: null,
+                      controller: controller.tagController,
                       cursorColor: kPrimaryColor,
                       decoration: InputDecoration(
                         hintText: 'Tên hạng mục',
@@ -80,8 +85,15 @@ class AddTagScreen extends StatelessWidget {
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(left: kDefaultPaddingHorizontal, top: kDefaultPaddingVertical),
-                    child: CustomDropdown(
-                      hintText: 'Hạng mục cha',
+                    child: BlocBuilder<TagBloc, TagState>(
+                      builder: (context, state) {
+                        return CustomDropdown(
+                          hintText: 'Hạng mục cha',
+                          value: controller.parentTag,
+                          items: (state.selectedTag.type == '1') ? controller.revenues : controller.expenses,
+                          onChanged: controller.updateParentTag,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -91,14 +103,33 @@ class AddTagScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-              child: CustomDropdown(
-                hintText: 'Chọn hũ',
-              ),
+            BlocBuilder<TagBloc, TagState>(
+              builder: (context, state) {
+                return Visibility(
+                  visible: (state.selectedTag.type == '2') ? true : false,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: kDefaultPaddingHorizontal,
+                      vertical: kDefaultPaddingVertical,
+                    ),
+                    child: BlocBuilder<JarBloc, JarState>(
+                      builder: (context, state) {
+                        return CustomDropdown(
+                          hintText: 'Chọn hũ',
+                          items: state.jarsList,
+                          onChanged: (value) {},
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
+              padding: EdgeInsets.symmetric(
+                horizontal: kDefaultPaddingHorizontal,
+                vertical: kDefaultPaddingVertical,
+              ),
               child: Text('Nếu bạn bỏ trống hạng mục cha thì mặc định hạng mục này sẽ là hạng mục cha.'),
             ),
             Container(
@@ -119,6 +150,7 @@ class AddTagScreen extends StatelessWidget {
     );
   }
 }
+
 // Wrap(
 //             spacing: 10,
 //             runSpacing: kDefaultPaddingVertical,

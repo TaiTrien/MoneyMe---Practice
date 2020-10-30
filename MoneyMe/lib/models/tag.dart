@@ -28,7 +28,4 @@ class Tag {
   get tagID => this._tagID;
   get jarID => this._jarID;
   get parentID => this._parentID;
-
-  @override
-  int get hashCode => super.hashCode;
 }

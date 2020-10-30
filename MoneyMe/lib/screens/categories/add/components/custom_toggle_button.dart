@@ -35,6 +35,8 @@ class _CustomToggleState extends State<CustomToggle> {
       borderColor: kTextColor,
       onPressed: (int index) {
         setState(() {
+          if (_selections[index] == true) return;
+          widget.onPress();
           for (int i = 0; i < _selections.length; i++) {
             _selections[i] = i == index;
           }

@@ -1,21 +1,32 @@
+import 'package:MoneyMe/models/tag.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String hintText;
   @required
-  final String items;
+  final List<dynamic> items;
+  final Function onChanged;
+  final dynamic value;
 
-  const CustomDropdown({Key key, this.hintText, this.items}) : super(key: key);
+  const CustomDropdown({Key key, this.hintText, this.items, this.onChanged, this.value}) : super(key: key);
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  String dropdownValue;
+  dynamic dropdownValue;
+
+  @override
+  void didUpdateWidget(CustomDropdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    dropdownValue = null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
+    print(widget.value);
+    return DropdownButton<dynamic>(
+      value: widget.value ?? dropdownValue,
       isExpanded: true,
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
@@ -31,15 +42,16 @@ class _CustomDropdownState extends State<CustomDropdown> {
         height: 1,
         color: Colors.black,
       ),
-      onChanged: (String newValue) {
+      onChanged: (dynamic newValue) {
+        widget.onChanged(newValue);
         setState(() {
           dropdownValue = newValue;
         });
       },
-      items: <String>['One', 'Two', 'Free', 'Four'].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
+      items: widget.items.map<DropdownMenuItem<dynamic>>((dynamic value) {
+        return DropdownMenuItem<dynamic>(
           value: value,
-          child: Text(value),
+          child: (value is Tag) ? Text(value.tagName) : Text(value.jarName + ' - ' + value.jarTitle),
         );
       }).toList(),
     );
