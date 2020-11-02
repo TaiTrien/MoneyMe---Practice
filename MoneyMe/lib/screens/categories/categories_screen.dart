@@ -60,7 +60,7 @@ class CategoriesScreen extends StatelessWidget {
             builder: (context, state) {
               return TabBarView(
                 children: (typeScreen != TypeScreen.edit)
-                    ? ([
+                    ? [
                         TagsListView(
                           tags: state.revenues,
                           onTap: controller.onSelectTag,
@@ -70,17 +70,21 @@ class CategoriesScreen extends StatelessWidget {
                           tags: state.expenses,
                           jarsList: controller.jarsList,
                         )
-                      ])
+                      ]
                     : (currentTransaction.type == '1')
-                        ? TagsListView(
-                            tags: state.revenues,
-                            onTap: controller.onSelectTag,
-                          )
-                        : TagsListView(
-                            onTap: controller.onSelectTag,
-                            tags: state.expenses,
-                            jarsList: controller.jarsList,
-                          ),
+                        ? [
+                            TagsListView(
+                              tags: state.revenues,
+                              onTap: controller.onSelectTag,
+                            )
+                          ]
+                        : [
+                            TagsListView(
+                              onTap: controller.onSelectTag,
+                              tags: state.expenses,
+                              jarsList: controller.jarsList,
+                            )
+                          ],
                 //children: controller.tagsListView,
               );
             },
