@@ -3,6 +3,8 @@ import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
+import 'package:MoneyMe/screens/categories/add/add_tag_controller.dart';
+import 'package:MoneyMe/screens/categories/add/add_tag_screen.dart';
 import 'package:MoneyMe/screens/categories/categories_screen.dart';
 import 'package:MoneyMe/screens/categories/components/tags_list_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +25,6 @@ class CategoriesController {
   List<TagsListView> tagsListViews;
   List<Tab> tabs;
 
-  var tagMap = Map<int, Map<String, dynamic>>();
   var revenueMap = Map<int, Map<String, dynamic>>();
   var expenseMap = Map<int, Map<String, dynamic>>();
 
@@ -33,19 +34,7 @@ class CategoriesController {
 
     tagsList = _tagBloc.state.tagsList;
     jarsList = _jarBloc.state.jarsList;
-    seperateTagsList();
-
-    tagsListViews = [
-      TagsListView(
-        tags: revenues,
-        onTap: onSelectTag,
-      ),
-      TagsListView(
-        onTap: onSelectTag,
-        tags: expenses,
-        jarsList: jarsList,
-      )
-    ];
+    // seperateTagsList();
 
     tabs = [
       Tab(
@@ -68,67 +57,39 @@ class CategoriesController {
       ),
     ];
   }
-
-  getChildTagsList() {
-    var childTagsList = List<Tag>();
-
-    for (int i = 0; i < tagsList.length; i++) {
-      String parentID = tagsList[i].parentID;
-
-      if (parentID != '0') {
-        childTagsList.add(tagsList[i]);
-      }
-    }
-    return childTagsList;
-  }
-
-  seperateTagsList() {
-    var childTagsList = getChildTagsList();
-    int indexRevenue = 0;
-    int indexExpense = 0;
-
-    for (int i = 0; i < tagsList.length; i++) {
-      String parentID = tagsList[i].parentID;
-
-      if (parentID == '0') {
-        String tagID = tagsList[i].tagID;
-        if (tagsList[i].type == '1') {
-          revenueMap[indexRevenue] = {
-            'parent': tagsList[i],
-            'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
-          };
-          indexRevenue++;
-        } else if (tagsList[i].type == '2') {
-          expenseMap[indexExpense] = {
-            'parent': tagsList[i],
-            'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
-          };
-          indexExpense++;
-        }
-        tagMap[i] = {
-          'parent': tagsList[i],
-          'children': childTagsList.where((tag) => (tag.parentID == tagID)).toList(),
-        };
-      }
-    }
+  toAddTagScreen() {
+    AddTagController controller = AddTagController(context: context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTagScreen(),
+      ),
+    );
   }
 
   onSelectTag(Tag tag) {
     if (typeScreen == TypeScreen.select) {
       _tagBloc.add(SelectTag(tag));
       Navigator.pop(context);
-    } else if (typeScreen == TypeScreen.management) {
-      //push to management screen
     } else if (typeScreen == TypeScreen.edit) {
       //push tag to edit transaction screen
       Navigator.pop(context, tag);
     }
   }
 
-  get seperatedTagsList => this.tagMap;
-  get revenues => this.revenueMap;
-  get expenses => this.expenseMap;
   get tabsView {
+    tagsListViews = [
+      TagsListView(
+        tags: _tagBloc.state.revenues,
+        onTap: onSelectTag,
+      ),
+      TagsListView(
+        onTap: onSelectTag,
+        tags: _tagBloc.state.expenses,
+        jarsList: jarsList,
+      )
+    ];
+
     if (typeScreen != TypeScreen.edit) return tabs;
 
     if (currentTransaction.type == '1') return [tabs[0]];

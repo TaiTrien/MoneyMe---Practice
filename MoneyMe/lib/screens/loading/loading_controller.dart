@@ -6,6 +6,7 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
+import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
@@ -39,6 +40,7 @@ class LoadingController {
     await loadJarsData();
     await loadTransactionsData();
     await loadTagsData();
+
     try {
       return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
     } catch (e) {
@@ -64,6 +66,7 @@ class LoadingController {
 
     for (int i = 0; i < jarsListData.data.length; i++) {
       Jar jar = Jar.map(jarsListData.data[i]);
+      IconsList.icons.add(jar.icon);
       jarsList.add(jar);
     }
     _jarBloc.add(UpdateJarsData(jarsList));
@@ -77,6 +80,9 @@ class LoadingController {
 
     for (int i = 0; i < tagsListLength; i++) {
       Tag newTag = Tag.map(tagsListData.data[i]);
+
+      if (!IconsList.icons.contains(newTag.icon)) IconsList.icons.add(newTag.icon);
+
       tagsList.add(newTag);
     }
 

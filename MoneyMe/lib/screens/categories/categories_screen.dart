@@ -1,8 +1,11 @@
+import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/screens/categories/categories_controller.dart';
+import 'package:MoneyMe/screens/categories/components/tags_list_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum TypeScreen {
   select,
@@ -39,14 +42,48 @@ class CategoriesScreen extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
+            actions: (typeScreen == TypeScreen.management)
+                ? [
+                    FlatButton(
+                      child: Icon(Icons.add, color: Colors.white),
+                      onPressed: controller.toAddTagScreen,
+                    )
+                  ]
+                : [],
             backgroundColor: kSecondaryColor,
             bottom: TabBar(
               indicatorColor: Colors.white,
               tabs: controller.tabsView,
             ),
           ),
-          body: TabBarView(
-            children: controller.tagsListView,
+          body: BlocBuilder<TagBloc, TagState>(
+            builder: (context, state) {
+              return TabBarView(
+                children: (typeScreen != TypeScreen.edit)
+                    ? ([
+                        TagsListView(
+                          tags: state.revenues,
+                          onTap: controller.onSelectTag,
+                        ),
+                        TagsListView(
+                          onTap: controller.onSelectTag,
+                          tags: state.expenses,
+                          jarsList: controller.jarsList,
+                        )
+                      ])
+                    : (currentTransaction.type == '1')
+                        ? TagsListView(
+                            tags: state.revenues,
+                            onTap: controller.onSelectTag,
+                          )
+                        : TagsListView(
+                            onTap: controller.onSelectTag,
+                            tags: state.expenses,
+                            jarsList: controller.jarsList,
+                          ),
+                //children: controller.tagsListView,
+              );
+            },
           ),
         ),
       ),

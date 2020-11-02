@@ -16,9 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    CategoriesScreen(
-      typeScreen: TypeScreen.management,
-    ),
+    CategoriesScreen(typeScreen: TypeScreen.management),
     AddTransactionScreen(),
     AccountScreen(),
   ];

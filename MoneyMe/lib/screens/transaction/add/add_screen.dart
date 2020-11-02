@@ -60,8 +60,8 @@ class AddTransactionScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: TagButton(
                                   onTap: controller.toCategoriesScreen,
-                                  title: (state.selectedTag != null) ? state.selectedTag.tagName : 'Chọn danh mục',
-                                  iconName: (state.selectedTag != null) ? state.selectedTag.icon.substring(4) : 'menu',
+                                  title: (state.selectedTag != null) ? (state.selectedTag.tagName ?? 'Chọn danh mục') : 'Chọn danh mục',
+                                  iconName: (state.selectedTag != null) ? (state.selectedTag.icon.substring(4) ?? 'menu') : 'menu',
                                 ),
                               );
                             },

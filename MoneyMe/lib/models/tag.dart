@@ -14,17 +14,6 @@ class Tag {
       : this._tagID = tagID,
         this._jarID = jarID,
         this._parentID = parentID;
-  @override
-  bool operator ==(other) {
-    return (other is Tag) &&
-        other._tagID == _tagID &&
-        other._jarID == _jarID &&
-        other._parentID == _parentID &&
-        other.icon == icon &&
-        other.color == color &&
-        other.tagName == tagName &&
-        other.color == color;
-  }
 
   Tag.map(dynamic obj) {
     this._tagID = obj["tag_id"];
@@ -40,6 +29,6 @@ class Tag {
   get jarID => this._jarID;
   get parentID => this._parentID;
 
-  @override
-  int get hashCode => super.hashCode;
+  set setJarID(String jarID) => this._jarID = jarID;
+  set setParentID(String parentID) => this._parentID = parentID;
 }

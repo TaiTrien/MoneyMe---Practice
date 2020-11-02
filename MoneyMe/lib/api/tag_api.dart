@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:MoneyMe/models/reponse.dart';
+import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/utils/store.dart';
 
 import 'package:http/http.dart' as http;
 
 class TagApi {
   static var urlGetTagsList = 'https://fin.mal.vn/api/tag/list';
+  static var urlAddTag = 'https://fin.mal.vn/api/tag/add';
 
   static Future<dynamic> getTagsList() async {
     var tagsListData;
@@ -24,5 +26,25 @@ class TagApi {
     tagsListData = Response.map(json.decode(response.body));
 
     return tagsListData;
+  }
+
+  static Future<dynamic> addTag(Tag newTag) async {
+    var token = await Store.getToken();
+    var mapTag = Map<String, dynamic>();
+    mapTag["icon"] = newTag.icon;
+    mapTag["jar_id"] = newTag.jarID;
+    mapTag["parent_id"] = newTag.parentID;
+    mapTag["tag_name"] = newTag.tagName;
+    mapTag["type"] = int.tryParse(newTag.type);
+    print(json.encode(mapTag));
+    var response = await http.post(
+      urlAddTag,
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json",
+      },
+      body: json.encode(mapTag),
+    );
+    return Response.map(json.decode(response.body));
   }
 }
