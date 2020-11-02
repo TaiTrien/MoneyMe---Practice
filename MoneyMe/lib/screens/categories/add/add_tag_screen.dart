@@ -1,6 +1,7 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
+import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/screens/categories/add/add_tag_controller.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_dropdown.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_toggle_button.dart';
@@ -75,7 +76,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
                         color: kPrimaryColor,
                         onPressed: controller.toIconScreen,
                         child: Icon(
-                          MdiIcons.fromString(state.selectedTag.icon.substring(4)),
+                          (state.selectedTag != null) ? MdiIcons.fromString(state.selectedTag.icon.substring(4)) : MdiIcons.fromString(IconsList.icons[0]),
                           color: Colors.white,
                         ),
                       );

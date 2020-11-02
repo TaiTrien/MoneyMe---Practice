@@ -18,12 +18,11 @@ class AccountController {
   double eduPercentage;
   double playPercentage;
   double givePercentage;
-  double percent;
+  int percent;
   bool canSlide = true;
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
-    print(_jarBloc.state.remainPercentage);
     jars = _jarBloc.state.jarsList;
 
     necPercentage = double.parse(jars[0].percentage);
@@ -35,9 +34,9 @@ class AccountController {
     percent = getRemainPercentage();
   }
 
-  double getRemainPercentage() {
-    double sum = 100;
-    sum = sum - (necPercentage + ltssPercentage + ffaPercentage + eduPercentage + playPercentage + givePercentage);
+  int getRemainPercentage() {
+    int sum = 100;
+    sum = sum - (necPercentage.toInt() + ltssPercentage.toInt() + ffaPercentage.toInt() + eduPercentage.toInt() + playPercentage.toInt() + givePercentage.toInt());
     return sum;
   }
 
@@ -69,17 +68,8 @@ class AccountController {
       playPercentage = value;
     else if (jarName == "give") givePercentage = value;
     percent = getRemainPercentage();
-
-    _jarBloc.add(UpdateRemainPercentage(percent.toInt()));
-  }
-
-  resetPercentage() {
-    necPercentage = double.parse(jars[0].percentage);
-    ltssPercentage = double.parse(jars[1].percentage);
-    ffaPercentage = double.parse(jars[2].percentage);
-    eduPercentage = double.parse(jars[3].percentage);
-    playPercentage = double.parse(jars[4].percentage);
-    givePercentage = double.parse(jars[5].percentage);
+    print(percent);
+    _jarBloc.add(UpdateRemainPercentage(percent));
   }
 
   void signOut(BuildContext context) {
@@ -92,14 +82,14 @@ class AccountController {
   }
 
   handleUpdatePercentage() async {
-    if (percent < 0) {
+    if (percent.toInt() < 0) {
       Notify().error(
         message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
       );
       return;
     }
 
-    if (percent > 0 && percent < 100) {
+    if (percent.toInt() > 0 && percent.toInt() < 100) {
       Notify().error(
         message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
       );

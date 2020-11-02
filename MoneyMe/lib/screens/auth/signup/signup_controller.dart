@@ -37,7 +37,7 @@ class SignUpController {
     bool isConnected = await Connection.isInternetConnected();
     if (!isConnected) return dialogConnectFailed(context);
 
-    var registerData = await UserApi.getRegisterResponse();
+    var registerData = await UserApi.getRegisterResponse(name: fullName, userName: phoneNumber, password: password);
     if (registerData.code != 200) return dialogRegisterFailed(context, registerData);
 
     //handle when register successfully
@@ -67,7 +67,7 @@ class SignUpController {
               color: Colors.grey,
               colorTitle: Colors.white,
               onPress: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
+                Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
               },
             ),
           ],

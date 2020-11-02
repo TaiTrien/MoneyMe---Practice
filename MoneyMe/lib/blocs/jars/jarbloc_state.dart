@@ -17,7 +17,7 @@ class JarblocInitial extends JarState {
           remainPercentage: 0,
         );
 
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price) ?? 0;
 }
 
 class UpdateJarsState extends JarState {

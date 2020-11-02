@@ -6,7 +6,7 @@ class JarSlider extends StatefulWidget {
   final Jar jar;
   final Function onChange;
   final Function getValue;
-  final double remainPercentage;
+  final int remainPercentage;
   const JarSlider({
     Key key,
     @required this.jar,
@@ -22,6 +22,7 @@ class JarSlider extends StatefulWidget {
 class _JarSliderState extends State<JarSlider> {
   double value;
   double oldValue;
+  bool isIncrease;
   @override
   void initState() {
     super.initState();
@@ -40,15 +41,24 @@ class _JarSliderState extends State<JarSlider> {
           min: 0,
           max: 100,
           onChanged: (double newValue) {
-            if (widget.remainPercentage < 0) return;
-
-            if (newValue < oldValue) {
+            if (newValue <= oldValue) {
+              isIncrease = false;
+              //oldValue = newValue;
               value = newValue;
             } else {
-              oldValue = newValue;
+              isIncrease = true;
               value = oldValue;
             }
-            widget.onChange(_value: value, jarName: widget.jar.jarName.toLowerCase());
+            if (widget.remainPercentage > 0) oldValue = newValue;
+
+            print('old value:  ' + oldValue.toString());
+            print('new value:  ' + newValue.toString());
+            print('is Increase: ' + isIncrease.toString());
+            print('remainPercentage: ' + widget.remainPercentage.toString());
+
+            if (isIncrease && widget.remainPercentage <= 0) return;
+
+            widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
           },
           value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
         ),
