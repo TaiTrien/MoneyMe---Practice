@@ -114,7 +114,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
                   ),
                 ),
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () => controller.updateParentTag(null),
                   child: Icon(Icons.close),
                 ),
               ],

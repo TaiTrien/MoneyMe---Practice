@@ -1,5 +1,6 @@
 import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
+import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
@@ -31,6 +32,8 @@ class AddTagController {
 
   updateParentTag(Tag newTag) {
     parentTag = newTag;
+    currentTag.setParentID = null;
+    _tagBloc.add(SelectTag(currentTag));
   }
 
   updateCurrentJar(Jar newJar) {
@@ -42,11 +45,35 @@ class AddTagController {
   }
 
   handleAddTag() async {
-    currentTag.setJarID = currentJar.jarID;
-    currentTag.setParentID = parentTag.tagID;
+    if (currentTag.tagName == null) return Notify().error(message: 'Vui lòng thêm tên');
+    if (currentTag.type == '2' && currentJar == null) return Notify().error(message: 'Vui lòng thêm hũ');
+
+    currentTag.setJarID = (currentJar != null) ? currentJar.jarID : '745';
+    currentTag.setParentID = (parentTag != null) ? parentTag.tagID : '0';
 
     var apiRespone = await TagApi.addTag(currentTag);
-    if (apiRespone.code != 200) print('failed');
+    if (apiRespone.code != 200) return Notify().error(message: 'Thêm thất bại');
+    addSuccessfully();
+  }
+
+  addSuccessfully() async {
+    await loadTagsData();
+    Navigator.pop(context);
+  }
+
+  Future<void> loadTagsData() async {
+    var tagsListData = await TagApi.getTagsList();
+    List<Tag> tagsList = List<Tag>();
+
+    int tagsListLength = tagsListData.data.length;
+
+    for (int i = 0; i < tagsListLength; i++) {
+      Tag newTag = Tag.map(tagsListData.data[i]);
+
+      if (!IconsList.icons.contains(newTag.icon)) IconsList.icons.add(newTag.icon);
+
+      tagsList.add(newTag);
+    }
   }
 
   switchToggle() {

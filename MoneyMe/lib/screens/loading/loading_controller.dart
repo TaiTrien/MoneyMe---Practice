@@ -41,7 +41,6 @@ class LoadingController {
     await loadTransactionsData();
     await loadTagsData();
 
-    print(IconsList.icons.length);
     try {
       return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
     } catch (e) {
