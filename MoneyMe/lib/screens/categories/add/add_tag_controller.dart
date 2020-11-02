@@ -57,8 +57,9 @@ class AddTagController {
   }
 
   addSuccessfully() async {
-    await loadTagsData();
     Navigator.pop(context);
+    await loadTagsData();
+    _tagBloc.add(ResetSelectedTag(null));
   }
 
   Future<void> loadTagsData() async {
