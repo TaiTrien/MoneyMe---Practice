@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTagController {
   BuildContext context;
-  Tag currentTag = Tag(type: '1', jarID: '745', icon: IconsList.icons[0]);
+  Tag currentTag = Tag(type: '1', jarID: '745', icon: IconsList.icons[0], parentID: '0');
   Tag parentTag;
   Jar currentJar;
   String icon;
@@ -38,19 +38,15 @@ class AddTagController {
   }
 
   onChanged(value) {
-    print(value);
+    currentTag.tagName = value.trim();
   }
 
   handleAddTag() async {
-    Tag newTag = new Tag(
-      icon: "mdi-cash-usd-outline",
-      jarID: "745",
-      parentID: "2252",
-      tagName: "Cơm trưa",
-      type: '2',
-    );
+    currentTag.setJarID = currentJar.jarID;
+    currentTag.setParentID = parentTag.tagID;
 
-    TagApi.addTag(newTag);
+    var apiRespone = await TagApi.addTag(currentTag);
+    if (apiRespone.code != 200) print('failed');
   }
 
   switchToggle() {

@@ -153,7 +153,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
               padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {},
+                onPressed: controller.handleAddTag,
                 child: Text(
                   'Lưu lại',
                   style: TextStyle(color: Colors.white),

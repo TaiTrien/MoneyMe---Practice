@@ -28,4 +28,7 @@ class Tag {
   get tagID => this._tagID;
   get jarID => this._jarID;
   get parentID => this._parentID;
+
+  set setJarID(String jarID) => this._jarID = jarID;
+  set setParentID(String parentID) => this._parentID = parentID;
 }

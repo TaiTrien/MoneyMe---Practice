@@ -37,18 +37,14 @@ class TagApi {
     mapTag["tag_name"] = newTag.tagName;
     mapTag["type"] = int.tryParse(newTag.type);
     print(json.encode(mapTag));
-    // var response = await http.post(
-    //   urlGetTagsList,
-    //   headers: {
-    //     "Authorization": token,
-    //   },
-    //   body: json.encode(mapTag),
-    // );
-
-    // if (response.statusCode != 200) {
-    //   return response.statusCode.toString();
-    // }
-
-    // return Response.map(json.decode(response.body));
+    var response = await http.post(
+      urlAddTag,
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json",
+      },
+      body: json.encode(mapTag),
+    );
+    return Response.map(json.decode(response.body));
   }
 }
