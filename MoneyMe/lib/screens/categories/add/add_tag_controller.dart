@@ -56,11 +56,11 @@ class AddTagController {
 
     var apiRespone = await TagApi.addTag(currentTag);
     if (apiRespone.code != 200) return Notify().error(message: 'Thêm thất bại');
+    Navigator.pop(context);
     addSuccessfully();
   }
 
   addSuccessfully() async {
-    Navigator.pop(context);
     await loadTagsData();
     _tagBloc.add(ResetSelectedTag(null));
   }
