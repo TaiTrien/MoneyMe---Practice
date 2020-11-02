@@ -69,20 +69,20 @@ class CategoriesController {
       ),
     ];
   }
+  toAddTagScreen() {
+    AddTagController controller = AddTagController(context: context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTagScreen(),
+      ),
+    );
+  }
 
   onSelectTag(Tag tag) {
     if (typeScreen == TypeScreen.select) {
       _tagBloc.add(SelectTag(tag));
       Navigator.pop(context);
-    } else if (typeScreen == TypeScreen.management) {
-      //push to management screen
-      AddTagController controller = AddTagController(context: context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AddTagScreen(),
-        ),
-      );
     } else if (typeScreen == TypeScreen.edit) {
       //push tag to edit transaction screen
       Navigator.pop(context, tag);

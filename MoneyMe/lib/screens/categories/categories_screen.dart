@@ -39,6 +39,14 @@ class CategoriesScreen extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
+            actions: [
+              (typeScreen == TypeScreen.management)
+                  ? FlatButton(
+                      child: Icon(Icons.add, color: Colors.white),
+                      onPressed: controller.toAddTagScreen,
+                    )
+                  : null,
+            ],
             backgroundColor: kSecondaryColor,
             bottom: TabBar(
               indicatorColor: Colors.white,
