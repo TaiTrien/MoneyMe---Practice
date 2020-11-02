@@ -11,14 +11,18 @@ class IconScreen extends StatelessWidget {
         spacing: 10,
         runSpacing: kDefaultPaddingVertical,
         children: IconsList.icons
-            .map((icon) => GestureDetector(
-                onTap: () {},
+            .map(
+              (icon) => GestureDetector(
+                onTap: () => Navigator.pop(context, icon),
                 child: CircleAvatar(
-                    backgroundColor: kPrimaryColor,
-                    child: Icon(
-                      MdiIcons.fromString(icon.substring(4)),
-                      color: Colors.white,
-                    ))))
+                  backgroundColor: kPrimaryColor,
+                  child: Icon(
+                    MdiIcons.fromString(icon.substring(4)),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
             .toList(),
       ),
     );

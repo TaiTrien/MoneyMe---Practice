@@ -6,11 +6,23 @@ import 'package:MoneyMe/screens/categories/add/components/custom_dropdown.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class AddTagScreen extends StatelessWidget {
+class AddTagScreen extends StatefulWidget {
+  @override
+  _AddTagScreenState createState() => _AddTagScreenState();
+}
+
+class _AddTagScreenState extends State<AddTagScreen> {
+  var controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = new AddTagController(context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    var controller = new AddTagController(context: context);
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -55,14 +67,18 @@ class AddTagScreen extends StatelessWidget {
             SizedBox(height: 20),
             Row(
               children: [
-                FlatButton(
-                  shape: CircleBorder(side: BorderSide.none),
-                  color: kPrimaryColor,
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.ac_unit,
-                    color: Colors.white,
-                  ),
+                BlocBuilder<TagBloc, TagState>(
+                  builder: (context, state) {
+                    return FlatButton(
+                      shape: CircleBorder(side: BorderSide.none),
+                      color: kPrimaryColor,
+                      onPressed: controller.toIconScreen,
+                      child: Icon(
+                        MdiIcons.fromString(state.selectedTag.icon.substring(4)),
+                        color: Colors.white,
+                      ),
+                    );
+                  },
                 ),
                 Expanded(
                   child: Container(
@@ -116,8 +132,9 @@ class AddTagScreen extends StatelessWidget {
                       builder: (context, state) {
                         return CustomDropdown(
                           hintText: 'Chọn hũ',
+                          value: controller.currentJar,
                           items: state.jarsList,
-                          onChanged: (value) {},
+                          onChanged: controller.updateCurrentJar,
                         );
                       },
                     ),
@@ -150,18 +167,3 @@ class AddTagScreen extends StatelessWidget {
     );
   }
 }
-
-// Wrap(
-//             spacing: 10,
-//             runSpacing: kDefaultPaddingVertical,
-//             children: IconsList.icons
-//                 .map((icon) => GestureDetector(
-//                     onTap: () {},
-//                     child: CircleAvatar(
-//                         backgroundColor: kPrimaryColor,
-//                         child: Icon(
-//                           MdiIcons.fromString(icon.substring(4)),
-//                           color: Colors.white,
-//                         ))))
-//                 .toList(),
-//           ),
