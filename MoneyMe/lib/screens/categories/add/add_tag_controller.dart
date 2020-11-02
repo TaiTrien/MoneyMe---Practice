@@ -46,7 +46,10 @@ class AddTagController {
 
   handleAddTag() async {
     if (currentTag.tagName == null) return Notify().error(message: 'Vui lòng thêm tên');
-    if (currentTag.type == '2' && currentJar == null) return Notify().error(message: 'Vui lòng thêm hũ');
+    if (currentTag.type == '2' && currentJar == null) {
+      Notify().error(message: 'Vui lòng thêm hũ');
+      return;
+    }
 
     currentTag.setJarID = (currentJar != null) ? currentJar.jarID : '745';
     currentTag.setParentID = (parentTag != null) ? parentTag.tagID : '0';

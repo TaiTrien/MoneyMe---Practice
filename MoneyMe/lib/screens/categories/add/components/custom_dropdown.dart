@@ -15,12 +15,6 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   dynamic dropdownValue;
-  List<dynamic> values = List<dynamic>();
-  @override
-  void initState() {
-    super.initState();
-    values = widget.items;
-  }
 
   @override
   void didUpdateWidget(CustomDropdown oldWidget) {
@@ -53,7 +47,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
           dropdownValue = newValue;
         });
       },
-      items: values.map<DropdownMenuItem<dynamic>>((dynamic value) {
+      items: widget.items.map<DropdownMenuItem<dynamic>>((dynamic value) {
         return DropdownMenuItem<dynamic>(
           value: value,
           child: (value is Tag) ? Text(value.tagName) : Text(value.jarName + ' - ' + value.jarTitle),
