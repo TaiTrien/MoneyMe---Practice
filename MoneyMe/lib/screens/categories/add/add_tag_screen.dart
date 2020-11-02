@@ -39,129 +39,131 @@ class _AddTagScreenState extends State<AddTagScreen> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical + 10),
-        child: Column(
-          children: [
-            CustomToggle(
-              onPress: controller.switchToggle,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
-                  child: Text(
-                    'Khoản thu',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                  width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
-                  child: Text(
-                    'Khoản chi',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                BlocBuilder<TagBloc, TagState>(
-                  builder: (context, state) {
-                    return FlatButton(
-                      shape: CircleBorder(side: BorderSide.none),
-                      color: kPrimaryColor,
-                      onPressed: controller.toIconScreen,
-                      child: Icon(
-                        MdiIcons.fromString(state.selectedTag.icon.substring(4)),
-                        color: Colors.white,
-                      ),
-                    );
-                  },
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(right: kDefaultPaddingHorizontal),
-                    child: TextField(
-                      onChanged: controller.onChanged,
-                      onTap: () {},
-                      controller: controller.tagController,
-                      cursorColor: kPrimaryColor,
-                      decoration: InputDecoration(
-                        hintText: 'Tên hạng mục',
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomToggle(
+                onPress: controller.switchToggle,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
+                    child: Text(
+                      'Khoản thu',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(left: kDefaultPaddingHorizontal, top: kDefaultPaddingVertical),
-                    child: BlocBuilder<TagBloc, TagState>(
-                      builder: (context, state) {
-                        return CustomDropdown(
-                          hintText: 'Hạng mục cha',
-                          value: controller.parentTag,
-                          items: (state.selectedTag.type == '1') ? controller.revenues : controller.expenses,
-                          onChanged: controller.updateParentTag,
-                        );
-                      },
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
+                    width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
+                    child: Text(
+                      'Khoản chi',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-                FlatButton(
-                  onPressed: () => controller.updateParentTag(null),
-                  child: Icon(Icons.close),
-                ),
-              ],
-            ),
-            BlocBuilder<TagBloc, TagState>(
-              builder: (context, state) {
-                return Visibility(
-                  visible: (state.selectedTag.type == '2') ? true : false,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: kDefaultPaddingHorizontal,
-                      vertical: kDefaultPaddingVertical,
-                    ),
-                    child: BlocBuilder<JarBloc, JarState>(
-                      builder: (context, state) {
-                        return CustomDropdown(
-                          hintText: 'Chọn hũ',
-                          value: controller.currentJar,
-                          items: state.jarsList,
-                          onChanged: controller.updateCurrentJar,
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: kDefaultPaddingHorizontal,
-                vertical: kDefaultPaddingVertical,
+                ],
               ),
-              child: Text('Nếu bạn bỏ trống hạng mục cha thì mặc định hạng mục này sẽ là hạng mục cha.'),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-              alignment: Alignment.centerRight,
-              child: FlatButton(
-                onPressed: controller.handleAddTag,
-                child: Text(
-                  'Lưu lại',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: kPrimaryColor,
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  BlocBuilder<TagBloc, TagState>(
+                    builder: (context, state) {
+                      return FlatButton(
+                        shape: CircleBorder(side: BorderSide.none),
+                        color: kPrimaryColor,
+                        onPressed: controller.toIconScreen,
+                        child: Icon(
+                          MdiIcons.fromString(state.selectedTag.icon.substring(4)),
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(right: kDefaultPaddingHorizontal),
+                      child: TextField(
+                        onChanged: controller.onChanged,
+                        onTap: () {},
+                        controller: controller.tagController,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          hintText: 'Tên hạng mục',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: kDefaultPaddingHorizontal, top: kDefaultPaddingVertical),
+                      child: BlocBuilder<TagBloc, TagState>(
+                        builder: (context, state) {
+                          return CustomDropdown(
+                            hintText: 'Hạng mục cha',
+                            value: controller.parentTag,
+                            items: (state.selectedTag.type == '1') ? controller.revenues : controller.expenses,
+                            onChanged: controller.updateParentTag,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () => controller.updateParentTag(null),
+                    child: Icon(Icons.close),
+                  ),
+                ],
+              ),
+              BlocBuilder<TagBloc, TagState>(
+                builder: (context, state) {
+                  return Visibility(
+                    visible: (state.selectedTag.type == '2') ? true : false,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: kDefaultPaddingHorizontal,
+                        vertical: kDefaultPaddingVertical,
+                      ),
+                      child: BlocBuilder<JarBloc, JarState>(
+                        builder: (context, state) {
+                          return CustomDropdown(
+                            hintText: 'Chọn hũ',
+                            value: controller.currentJar,
+                            items: state.jarsList,
+                            onChanged: controller.updateCurrentJar,
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: kDefaultPaddingHorizontal,
+                  vertical: kDefaultPaddingVertical,
+                ),
+                child: Text('Nếu bạn bỏ trống hạng mục cha thì mặc định hạng mục này sẽ là hạng mục cha.'),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
+                alignment: Alignment.centerRight,
+                child: FlatButton(
+                  onPressed: controller.handleAddTag,
+                  child: Text(
+                    'Lưu lại',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  color: kPrimaryColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

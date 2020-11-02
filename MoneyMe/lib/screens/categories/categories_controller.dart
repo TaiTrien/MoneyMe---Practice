@@ -36,18 +36,6 @@ class CategoriesController {
     jarsList = _jarBloc.state.jarsList;
     // seperateTagsList();
 
-    tagsListViews = [
-      TagsListView(
-        tags: _tagBloc.state.revenues,
-        onTap: onSelectTag,
-      ),
-      TagsListView(
-        onTap: onSelectTag,
-        tags: _tagBloc.state.expenses,
-        jarsList: jarsList,
-      )
-    ];
-
     tabs = [
       Tab(
         child: Text(
@@ -90,6 +78,18 @@ class CategoriesController {
   }
 
   get tabsView {
+    tagsListViews = [
+      TagsListView(
+        tags: _tagBloc.state.revenues,
+        onTap: onSelectTag,
+      ),
+      TagsListView(
+        onTap: onSelectTag,
+        tags: _tagBloc.state.expenses,
+        jarsList: jarsList,
+      )
+    ];
+
     if (typeScreen != TypeScreen.edit) return tabs;
 
     if (currentTransaction.type == '1') return [tabs[0]];

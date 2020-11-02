@@ -74,6 +74,8 @@ class AddTagController {
 
       tagsList.add(newTag);
     }
+
+    _tagBloc.add(LoadingTagsData(tagsList));
   }
 
   switchToggle() {
