@@ -66,7 +66,7 @@ class SignInController {
 
     await Store.setToken(token);
     // Handle if validate successfuly
-    Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
+    Navigator.pushNamedAndRemoveUntil(context, '/loadingScreen', (_) => false);
   }
 
   Future<bool> isSignedIn() async {
