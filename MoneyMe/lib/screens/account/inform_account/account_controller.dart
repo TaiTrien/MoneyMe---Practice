@@ -1,8 +1,10 @@
 import 'package:MoneyMe/api/jar_api.dart';
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/utils/store.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:core';
@@ -10,6 +12,7 @@ import 'dart:core';
 class AccountController {
   BuildContext context;
   JarBloc _jarBloc;
+  TransactionBloc _transactionBloc;
 
   List<Jar> jars;
   double necPercentage;
@@ -24,6 +27,7 @@ class AccountController {
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
+    _transactionBloc = BlocProvider.of<TransactionBloc>(context);
     jars = _jarBloc.state.jarsList;
 
     necPercentage = double.parse(jars[0].percentage);
@@ -74,8 +78,17 @@ class AccountController {
   }
 
   void signOut(BuildContext context) {
-    Store.deleteToken();
-    Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      title: 'Bạn có muốn đăng xuất không?',
+      onConfirmBtnTap: () {
+        Store.deleteToken();
+        _transactionBloc.add(ResetCurrentTransaction(null));
+        Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
+      },
+      confirmBtnColor: Colors.red,
+    );
   }
 
   void toChangePasswordScreen() {
