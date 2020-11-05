@@ -85,6 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controller.nameController,
                           validator: Validator.isName,
                           errorMessage: "Họ tên không hợp lệ",
+                          maxLines: 1,
                         ),
                         CustomTextField(
                           label: 'Số điện thoại',
@@ -93,6 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controller.phoneNumberController,
                           validator: Validator.isPhoneNumber,
                           errorMessage: "Số điện thoại không hợp lệ",
+                          maxLines: 1,
                         ),
                         CustomTextField(
                           label: 'Mật khẩu',
@@ -100,7 +102,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           controller: controller.passwordController,
                           isObscured: false,
                           validator: Validator.isPassword,
-                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa, số và ký tự đặc biệt",
+                          errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                          maxLines: 1,
                         ),
                         CustomTextField(
                           label: 'Nhập lại mật khẩu',
@@ -109,6 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           isObscured: false,
                           validator: (value) => (value == controller.passwordController.text),
                           errorMessage: "Mật khẩu nhập lại không khớp",
+                          maxLines: 1,
                         ),
                         RoudedButton(
                           titleBtn: 'Đăng ký',

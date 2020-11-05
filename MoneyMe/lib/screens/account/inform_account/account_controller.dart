@@ -20,6 +20,7 @@ class AccountController {
   double givePercentage;
   int percent;
   bool canSlide = true;
+  Notify notify = Notify();
 
   AccountController({this.context}) {
     _jarBloc = BlocProvider.of<JarBloc>(context);
@@ -83,14 +84,14 @@ class AccountController {
 
   handleUpdatePercentage() async {
     if (percent.toInt() < 0) {
-      Notify().error(
+      notify.error(
         message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
       );
       return;
     }
 
     if (percent.toInt() > 0 && percent.toInt() < 100) {
-      Notify().error(
+      notify.error(
         message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
       );
       return;
@@ -113,7 +114,7 @@ class AccountController {
     }
 
     var data = await JarApi.editJarPercentage(newJarsList, _jarBloc);
-    Notify().success(message: data.toString());
+    notify.success(message: data.toString());
   }
 
   get jarsList => jars;

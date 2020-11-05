@@ -58,10 +58,10 @@ class ChangePasswordScreen extends StatelessWidget {
                         CustomTextField(
                           label: 'Mật khẩu cũ',
                           iconData: Icons.lock,
-                          keyboardType: TextInputType.number,
                           controller: controller.currentPasswordController,
                           validator: Validator.isPassword,
-                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                          maxLines: 1,
+                          errorMessage: "Mật khẩu dài hơn 8 ký tự",
                         ),
                         CustomTextField(
                           label: 'Mật khẩu mới',
@@ -69,7 +69,8 @@ class ChangePasswordScreen extends StatelessWidget {
                           controller: controller.newPasswordController,
                           isObscured: false,
                           validator: Validator.isPassword,
-                          errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                          maxLines: 1,
+                          errorMessage: "Mật khẩu dài hơn 8 ký tự",
                         ),
                         CustomTextField(
                           // onTap: (value) => controller.isValid,
@@ -77,6 +78,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           iconData: Icons.lock,
                           controller: controller.retypedPasswordController,
                           isObscured: false,
+                          maxLines: 1,
                           validator: (value) {
                             return (value == controller.newPassword);
                           },

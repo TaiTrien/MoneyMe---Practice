@@ -15,6 +15,7 @@ class AddTagController {
   Tag parentTag;
   Jar currentJar;
   String icon;
+  Notify notify = Notify();
 
   TextEditingController tagController = TextEditingController();
   TagBloc _tagBloc;
@@ -45,7 +46,7 @@ class AddTagController {
   }
 
   handleAddTag() async {
-    if (currentTag.tagName == null) return Notify().error(message: 'Vui lòng thêm tên');
+    if (currentTag.tagName == null) return notify.error(message: 'Vui lòng thêm tên');
     if (currentTag.type == '2' && currentJar == null) {
       Notify().error(message: 'Vui lòng thêm hũ');
       return;
@@ -55,7 +56,7 @@ class AddTagController {
     currentTag.setParentID = (parentTag != null) ? parentTag.tagID : '0';
 
     var apiRespone = await TagApi.addTag(currentTag);
-    if (apiRespone.code != 200) return Notify().error(message: 'Thêm thất bại');
+    if (apiRespone.code != 200) return notify.error(message: 'Thêm thất bại');
     Navigator.pop(context);
     addSuccessfully();
   }

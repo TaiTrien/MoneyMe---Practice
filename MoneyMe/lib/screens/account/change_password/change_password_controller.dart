@@ -18,10 +18,12 @@ class ChangePasswordController {
     String newPassword = newPasswordController.text.trim();
 
     var data = await UserApi.changePassword(currentPassword: currentPassword, newPassword: newPassword);
-    if (data.code != 200)
-      Notify().error(message: data.apiMessagse);
-    else {
-      Notify().success(message: "Đổi mật khẩu thành công");
+    if (data.code != 200) {
+      Notify notify = Notify();
+      return notify.error(message: data.apiMessagse);
+    } else {
+      Notify notify = Notify();
+      notify.success(message: "Đổi mật khẩu thành công");
       Navigator.pop(context);
     }
   }

@@ -17,8 +17,7 @@ class Validator {
   }
 
   static isPassword(String password) {
-    //(?=.*[0-9])
-    String pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$";
-    return new RegExp(pattern).hasMatch(password);
+    if (password.trim().length <= 8) return false;
+    return true;
   }
 }

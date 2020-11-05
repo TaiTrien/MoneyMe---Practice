@@ -23,6 +23,7 @@ class EditController {
   String desc;
   String price;
   String tagID;
+  Notify notify = Notify();
 
   TransactionBloc _transactionBloc;
   JarBloc _jarBloc;
@@ -116,7 +117,7 @@ class EditController {
   deleteSuccessfully() async {
     await loadJarsData();
     await loadTransactionsData();
-    Notify().success(message: "Xóa thành công", timeout: 8);
+    notify.success(message: "Xóa thành công", timeout: 8);
     Navigator.pop(context);
     Navigator.pop(context);
   }
@@ -137,7 +138,7 @@ class EditController {
     currentTransaction.tagID = tagID;
     var data = await TransactionApi.editTransaction(inputID, currentTransaction);
 
-    if (data.code != 200) return Notify().error(message: 'Sửa giao dịch thất bại', timeout: 8);
+    if (data.code != 200) return notify.error(message: 'Sửa giao dịch thất bại', timeout: 8);
 
     editSuccessfully();
   }

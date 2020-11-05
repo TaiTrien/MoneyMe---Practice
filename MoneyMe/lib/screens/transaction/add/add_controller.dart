@@ -87,10 +87,8 @@ class AddController {
     tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
     if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
-      Notify().error(
-        message: 'Cần điền đầy đủ thông tin',
-      );
-      return;
+      Notify notify = Notify();
+      return notify.error(message: 'Cần điền đầy đủ thông tin');
     }
     if (_tagBloc.state.selectedTag == null) return;
 

@@ -87,7 +87,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
                       padding: EdgeInsets.only(right: kDefaultPaddingHorizontal),
                       child: TextField(
                         onChanged: controller.onChanged,
-                        onTap: () {},
+                        maxLines: 1,
                         controller: controller.tagController,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(

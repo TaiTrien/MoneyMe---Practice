@@ -1,5 +1,6 @@
 import 'package:MoneyMe/api/user_api.dart';
 import 'package:MoneyMe/components/custom_dialog.dart';
+import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
@@ -61,7 +62,8 @@ class SignInController {
     );
 
     if (token == null) {
-      return dialogWrongInfo(context);
+      Notify notify = Notify();
+      return notify.error(message: 'Tài khoản hoặc mật khẩu không chính xác');
     }
 
     await Store.setToken(token);
@@ -72,34 +74,5 @@ class SignInController {
   Future<bool> isSignedIn() async {
     var token = await Store.getToken();
     return (token != null) ? true : false;
-  }
-
-  Future dialogWrongInfo(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Tài khoản hoặc mật khẩu không chính xác",
-        subTitle: "Vui lòng kiểm tra lại tên tài khoản/mật khẩu",
-        titleWidget: Image.asset('assets/images/404.gif'),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.grey,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          CustomActionButton(
-            titleBtn: 'Đăng ký ngay',
-            color: Colors.green[400],
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/signUpScreen', (_) => false);
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

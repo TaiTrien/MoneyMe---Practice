@@ -87,6 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: controller.phoneNumberController,
                     validator: Validator.isPhoneNumber,
                     errorMessage: "Số điện thoại không hợp lệ",
+                    maxLines: 1,
                   ),
                   CustomTextField(
                     label: 'Mật khẩu',
@@ -94,7 +95,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: controller.passwordController,
                     isObscured: false,
                     validator: Validator.isPassword,
-                    errorMessage: "Mật khẩu bao gồm chữ cái thường, chữ in hoa và ký tự đặc biệt",
+                    errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                    maxLines: 1,
                   ),
                   RoudedButton(
                     titleBtn: 'Đăng nhập',
