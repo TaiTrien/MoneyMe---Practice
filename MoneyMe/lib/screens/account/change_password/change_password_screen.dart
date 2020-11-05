@@ -73,7 +73,6 @@ class ChangePasswordScreen extends StatelessWidget {
                           errorMessage: "Mật khẩu dài hơn 8 ký tự",
                         ),
                         CustomTextField(
-                          // onTap: (value) => controller.isValid,
                           label: 'Nhập lại mật khẩu mới',
                           iconData: Icons.lock,
                           controller: controller.retypedPasswordController,

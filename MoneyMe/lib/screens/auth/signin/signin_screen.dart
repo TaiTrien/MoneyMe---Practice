@@ -7,8 +7,6 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
-  static String screenID = 'SignInScreen';
-
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -57,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Text(
                 'Manage your finance with us',

@@ -25,33 +25,10 @@ class SignInController {
     bool isPasswordValid = Validator.isPassword(password);
     bool hasToken = await isSignedIn();
     bool isConnected = await Connection.isInternetConnected();
+    if (!isConnected) return Notify().error(message: "Thiết bị của bạn chưa kết nối Internet");
 
     if (hasToken) {
       return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
-    }
-
-    if (!isConnected) {
-      return showDialog(
-        context: context,
-        builder: (context) => CustomDiaglog(
-          title: "Thiết bị của bạn chưa kết nối Internet",
-          subTitle: "Vui lòng kiểm tra lại kết nối của bạn",
-          titleWidget: Image.asset(
-            'assets/images/noInternet.gif',
-            fit: BoxFit.contain,
-          ),
-          actions: [
-            CustomActionButton(
-              titleBtn: 'Hủy',
-              color: Colors.grey,
-              colorTitle: Colors.white,
-              onPress: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      );
     }
 
     if (!isPhoneNumberValid || !isPasswordValid) return null;

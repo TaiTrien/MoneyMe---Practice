@@ -49,11 +49,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     Container(
-                      height: 80,
-                      width: 80,
+                      height: 100,
+                      width: 100,
                       child: Image(
                         image: AssetImage('assets/icons/logo.png'),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Manage your finance with us',
+                      style: kSubTitleTextStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: 30,

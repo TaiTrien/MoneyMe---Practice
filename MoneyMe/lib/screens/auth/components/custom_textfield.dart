@@ -1,3 +1,4 @@
+import 'package:MoneyMe/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -49,7 +50,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color get selectedColor {
     isValid = widget.validator(value);
-    return isValid ? Colors.grey : Colors.red;
+    return isValid ? kPrimaryColor : Colors.red;
   }
 
   @override
@@ -59,7 +60,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 80.0),
         child: TextField(
-          onTap: widget.onTap,
+          onTap: () {
+            setState(
+              () {
+                this.value = value;
+                color = selectedColor;
+                message = errorMessage;
+              },
+            );
+          },
           controller: widget.controller,
           cursorColor: color,
           maxLines: widget.maxLines,
