@@ -64,9 +64,11 @@ class AddController {
     date = dateController.text.trim() ?? '';
     desc = descController.text.trim() ?? '';
     price = moneyController.text;
+    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+    //price =  price /1000
+    // print("rounded price: " + ((int.tryParse(price) % 1000).toString()));
     tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
     //to format price into new string
-    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
 
     Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
     _transactionBloc.add(GetCurrentTransaction(transaction));
