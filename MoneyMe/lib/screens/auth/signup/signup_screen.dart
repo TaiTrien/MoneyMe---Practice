@@ -28,7 +28,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: DoubleBackToCloseApp(
         snackBar: const SnackBar(
           backgroundColor: kPrimaryColor,
-          content: Text('Bấm quay lại lần nữa để thoát'),
+          content: Text(
+            'Bấm quay lại lần nữa để thoát',
+            textAlign: TextAlign.center,
+          ),
         ),
         child: Container(
           height: double.infinity,
