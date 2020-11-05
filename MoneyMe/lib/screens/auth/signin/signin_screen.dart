@@ -3,6 +3,7 @@ import 'package:MoneyMe/screens/auth/components/custom_textfield.dart';
 import 'package:MoneyMe/screens/auth/components/rounded_button.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
 import 'package:MoneyMe/utils/validator.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -28,58 +29,43 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover,
-          ),
+      body: DoubleBackToCloseApp(
+        snackBar: const SnackBar(
+          backgroundColor: kPrimaryColor,
+          content: Text('Bấm quay lại lần nữa để thoát'),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 80,
-              width: 80,
-              child: Image(
-                image: AssetImage('assets/icons/logo.png'),
-              ),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover,
             ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 10.0,
-                    color: Colors.black87,
-                    offset: Offset(0, 5),
-                  ),
-                ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                child: Image(
+                  image: AssetImage('assets/icons/logo.png'),
+                ),
               ),
-              child: Column(
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'Manage your finance with us',
+                style: kSubTitleTextStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 15,
-                    ),
-                    width: double.infinity,
-                    child: Text(
-                      'Đăng nhập',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    color: kPrimaryColor,
-                  ),
                   CustomTextField(
                     label: 'Số điện thoại',
                     iconData: Icons.phone,
@@ -98,39 +84,43 @@ class _SignInScreenState extends State<SignInScreen> {
                     errorMessage: "Mật khẩu dài hơn 8 ký tự",
                     maxLines: 1,
                   ),
-                  RoudedButton(
+                  DefaultButton(
                     titleBtn: 'Đăng nhập',
                     onPressed: () => controller.handleSignIn(context),
                   ),
                   Container(
-                    margin: EdgeInsets.only(
-                      left: 10.0,
-                      bottom: 15.0,
-                    ),
+                    width: double.infinity,
+                    alignment: Alignment.center,
                     child: GestureDetector(
                       onTap: () => Navigator.pushNamedAndRemoveUntil(context, '/signUpScreen', (_) => false),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black54,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            'Đăng ký tài khoản mới',
-                            style: kTitleTextStyle,
-                          ),
-                        ],
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Chưa có tài khoản?',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' Đăng ký ngay',
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
