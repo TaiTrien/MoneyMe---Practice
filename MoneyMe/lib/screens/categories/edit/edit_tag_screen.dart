@@ -1,9 +1,7 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_dropdown.dart';
-import 'package:MoneyMe/screens/categories/add/components/custom_toggle_button.dart';
 import 'package:MoneyMe/screens/categories/edit/edit_tag_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

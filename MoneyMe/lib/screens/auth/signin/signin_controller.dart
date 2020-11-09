@@ -1,12 +1,9 @@
 import 'package:MoneyMe/api/user_api.dart';
-import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/utils/connection.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:MoneyMe/utils/validator.dart';
 import 'package:flutter/material.dart';
-
-import '../../../components/custom_action_btn.dart';
 
 class SignInController {
   var phoneNumberController = TextEditingController();
