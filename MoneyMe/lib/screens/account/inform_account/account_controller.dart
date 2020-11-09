@@ -45,56 +45,6 @@ class AccountController {
     return sum;
   }
 
-  double getValue({String jarName}) {
-    if (jarName == "nec")
-      return necPercentage;
-    else if (jarName == "ltss")
-      return ltssPercentage;
-    else if (jarName == "ffa")
-      return ffaPercentage;
-    else if (jarName == "edu")
-      return eduPercentage;
-    else if (jarName == "play")
-      return playPercentage;
-    else if (jarName == "give") return givePercentage;
-    return 0;
-  }
-
-  onSliderChange({double value, String jarName}) {
-    if (jarName == "nec")
-      necPercentage = value;
-    else if (jarName == "ltss")
-      ltssPercentage = value;
-    else if (jarName == "ffa")
-      ffaPercentage = value;
-    else if (jarName == "edu")
-      eduPercentage = value;
-    else if (jarName == "play")
-      playPercentage = value;
-    else if (jarName == "give") givePercentage = value;
-    percent = getRemainPercentage();
-    print(percent);
-    _jarBloc.add(UpdateRemainPercentage(percent));
-  }
-
-  void signOut(BuildContext context) {
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.confirm,
-      title: 'Bạn có muốn đăng xuất không?',
-      onConfirmBtnTap: () {
-        Store.deleteToken();
-        _transactionBloc.add(ResetCurrentTransaction(null));
-        Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
-      },
-      confirmBtnColor: Colors.red,
-    );
-  }
-
-  void toChangePasswordScreen() {
-    Navigator.pushNamed(context, '/changePasswordScreen');
-  }
-
   handleUpdatePercentage() async {
     if (percent.toInt() < 0) {
       notify.error(
@@ -128,6 +78,91 @@ class AccountController {
 
     var data = await JarApi.editJarPercentage(newJarsList, _jarBloc);
     notify.success(message: data.toString());
+  }
+
+  double getValue({String jarName}) {
+    if (jarName == "nec")
+      return necPercentage;
+    else if (jarName == "ltss")
+      return ltssPercentage;
+    else if (jarName == "ffa")
+      return ffaPercentage;
+    else if (jarName == "edu")
+      return eduPercentage;
+    else if (jarName == "play")
+      return playPercentage;
+    else if (jarName == "give") return givePercentage;
+    return 0;
+  }
+
+  onSliderChange({double value, String jarName}) {
+    if (jarName == "nec")
+      necPercentage = value;
+    else if (jarName == "ltss")
+      ltssPercentage = value;
+    else if (jarName == "ffa")
+      ffaPercentage = value;
+    else if (jarName == "edu")
+      eduPercentage = value;
+    else if (jarName == "play")
+      playPercentage = value;
+    else if (jarName == "give") givePercentage = value;
+    percent = getRemainPercentage();
+    //print(percent);
+    print('getRemainPercentage: ' + percent.toString());
+
+    _jarBloc.add(UpdateRemainPercentage(percent));
+  }
+
+  onSliderStop({double value, String jarName}) {
+    if (jarName == "nec")
+      necPercentage = value;
+    else if (jarName == "ltss")
+      ltssPercentage = value;
+    else if (jarName == "ffa")
+      ffaPercentage = value;
+    else if (jarName == "edu")
+      eduPercentage = value;
+    else if (jarName == "play")
+      playPercentage = value;
+    else if (jarName == "give") givePercentage = value;
+    percent = getRemainPercentage();
+    while (percent < 0) {
+      value--;
+      if (jarName == "nec")
+        necPercentage = value;
+      else if (jarName == "ltss")
+        ltssPercentage = value;
+      else if (jarName == "ffa")
+        ffaPercentage = value;
+      else if (jarName == "edu")
+        eduPercentage = value;
+      else if (jarName == "play")
+        playPercentage = value;
+      else if (jarName == "give") givePercentage = value;
+      percent = getRemainPercentage();
+    }
+    print(percent);
+
+    _jarBloc.add(UpdateRemainPercentage(percent));
+  }
+
+  void signOut(BuildContext context) {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      title: 'Bạn có muốn đăng xuất không?',
+      onConfirmBtnTap: () {
+        Store.deleteToken();
+        _transactionBloc.add(ResetCurrentTransaction(null));
+        Navigator.pushNamedAndRemoveUntil(context, '/signInScreen', (route) => false);
+      },
+      confirmBtnColor: Colors.red,
+    );
+  }
+
+  void toChangePasswordScreen() {
+    Navigator.pushNamed(context, '/changePasswordScreen');
   }
 
   get jarsList => jars;

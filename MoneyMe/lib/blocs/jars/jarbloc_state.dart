@@ -7,7 +7,7 @@ abstract class JarState {
 
   JarState({this.jarsList, this.remainPercentage});
 
-  int get remainMoney;
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price) ?? 0;
 }
 
 class JarblocInitial extends JarState {
@@ -16,14 +16,10 @@ class JarblocInitial extends JarState {
           jarsList: null,
           remainPercentage: 0,
         );
-
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price) ?? 0;
 }
 
 class UpdateJarsState extends JarState {
   UpdateJarsState(JarState oldState, {List<Jar> jarsList}) : super(jarsList: jarsList ?? oldState.jarsList);
-
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class UpdatePercentageState extends JarState {
@@ -32,6 +28,4 @@ class UpdatePercentageState extends JarState {
           jarsList: oldState.jarsList,
           remainPercentage: remainPercentage ?? oldState.remainPercentage,
         );
-
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }

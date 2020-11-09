@@ -6,6 +6,7 @@ class JarSlider extends StatefulWidget {
   final Jar jar;
   final Function onChange;
   final Function getValue;
+  final Function onStop;
   final int remainPercentage;
   const JarSlider({
     Key key,
@@ -13,6 +14,7 @@ class JarSlider extends StatefulWidget {
     @required this.onChange,
     @required this.getValue,
     this.remainPercentage,
+    this.onStop,
   }) : super(key: key);
 
   @override
@@ -23,44 +25,66 @@ class _JarSliderState extends State<JarSlider> {
   double value;
   double oldValue;
   bool isIncrease;
+  var percentController;
   @override
   void initState() {
     super.initState();
     oldValue = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
+    percentController = TextEditingController();
+    percentController.text = oldValue.toInt().toString() + '%';
   }
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.jar.jarName + ' - ' + widget.jar.jarTitle),
-        Slider(
-          activeColor: kPrimaryColor,
-          inactiveColor: kSecondaryColor,
-          min: 0,
-          max: 100,
-          onChanged: (double newValue) {
-            if (newValue <= oldValue) {
-              isIncrease = false;
-              //oldValue = newValue;
-              value = newValue;
-            } else {
-              isIncrease = true;
-              value = oldValue;
-            }
-            if (widget.remainPercentage > 0) oldValue = newValue;
-
-            print('old value:  ' + oldValue.toString());
-            print('new value:  ' + newValue.toString());
-            print('is Increase: ' + isIncrease.toString());
-            print('remainPercentage: ' + widget.remainPercentage.toString());
-
-            if (isIncrease && widget.remainPercentage <= 0) return;
-
-            widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
-          },
-          value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
+        Row(
+          children: [
+            Container(
+              width: size.width * 0.6,
+              child: Slider(
+                activeColor: kPrimaryColor,
+                inactiveColor: kSecondaryColor,
+                min: 0,
+                max: 100,
+                onChanged: (double newValue) {
+                  value = newValue;
+                  percentController.text = newValue.toInt().toString() + '%';
+                  widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
+                },
+                onChangeEnd: (double newValue) {
+                  widget.onStop(value: newValue, jarName: widget.jar.jarName.toLowerCase());
+                },
+                value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                onTap: () {
+                  setState(
+                    () {},
+                  );
+                },
+                controller: percentController,
+                cursorColor: kPrimaryColor,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  hintText: 'Phần trăm %',
+                  border: InputBorder.none,
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(
+                    () {},
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );

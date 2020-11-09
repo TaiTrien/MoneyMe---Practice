@@ -78,6 +78,7 @@ class AccountScreen extends StatelessWidget {
                                   onChange: controller.onSliderChange,
                                   getValue: controller.getValue,
                                   remainPercentage: controller.percent,
+                                  onStop: controller.onSliderStop,
                                 );
                               },
                             );
