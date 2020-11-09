@@ -91,6 +91,15 @@ class EditTagController {
     currentTag.tagName = value.trim();
   }
 
-  List<dynamic> get revenues => _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
-  List<dynamic> get expenses => _tagBloc.state.expenses.entries.map((entry) => entry.value["parent"]).toList();
+  List<dynamic> get revenues {
+    List<dynamic> temp = _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
+    temp.removeWhere((tag) => tag.tagID == currentTag.tagID);
+    return temp;
+  }
+
+  List<dynamic> get expenses {
+    List<dynamic> temp = _tagBloc.state.expenses.entries.map((entry) => entry.value["parent"]).toList();
+    temp.removeWhere((tag) => tag.tagID == currentTag.tagID);
+    return temp;
+  }
 }
