@@ -61,7 +61,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           controller: controller.currentPasswordController,
                           validator: Validator.isPassword,
                           maxLines: 1,
-                          errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                          errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
                         ),
                         CustomTextField(
                           label: 'Mật khẩu mới',
@@ -70,7 +70,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           isObscured: false,
                           validator: Validator.isPassword,
                           maxLines: 1,
-                          errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                          errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
                         ),
                         CustomTextField(
                           label: 'Nhập lại mật khẩu mới',

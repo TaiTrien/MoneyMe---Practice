@@ -49,8 +49,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     Container(
-                      height: 100,
-                      width: 100,
+                      height: 120,
+                      width: 120,
                       child: Image(
                         image: AssetImage('assets/icons/logo.png'),
                       ),
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: controller.passwordController,
                             isObscured: false,
                             validator: Validator.isPassword,
-                            errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                            errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
                             maxLines: 1,
                           ),
                           CustomTextField(

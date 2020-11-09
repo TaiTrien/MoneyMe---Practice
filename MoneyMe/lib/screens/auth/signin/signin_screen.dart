@@ -48,8 +48,8 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: 100,
-                width: 100,
+                height: 120,
+                width: 120,
                 child: Image(
                   image: AssetImage('assets/icons/logo.png'),
                 ),
@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: controller.passwordController,
                     isObscured: false,
                     validator: Validator.isPassword,
-                    errorMessage: "Mật khẩu dài hơn 8 ký tự",
+                    errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
                     maxLines: 1,
                   ),
                   DefaultButton(
