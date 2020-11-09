@@ -47,6 +47,7 @@ class TransactionApi {
       },
       body: json.encode(mapTransaction),
     );
+    print(json.encode(mapTransaction));
     transactionData = Response.map(json.decode(response.body));
     return transactionData;
   }

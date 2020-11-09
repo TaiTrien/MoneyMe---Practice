@@ -17,7 +17,7 @@ class Validator {
   }
 
   static isPassword(String password) {
-    if (password.trim().length <= 8) return false;
+    if (password.trim().length < 8) return false;
     return true;
   }
 }
