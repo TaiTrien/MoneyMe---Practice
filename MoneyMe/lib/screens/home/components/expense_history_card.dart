@@ -19,7 +19,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 400),
+      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 200),
       child: BlocBuilder<TransactionBloc, TransactionState>(
         builder: (context, state) {
           return Container(

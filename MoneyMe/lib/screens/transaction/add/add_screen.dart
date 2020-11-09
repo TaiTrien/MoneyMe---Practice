@@ -73,10 +73,11 @@ class AddTransactionScreen extends StatelessWidget {
                                 label: 'Số tiền',
                                 iconData: Icons.attach_money,
                                 keyboardType: TextInputType.number,
-                                controller: controller.moneyController,
+                                controller: controller.priceController,
                                 formatter: MoneyTextFormatter(),
                                 color: Colors.black,
                                 onChange: controller.onDataChange,
+                                onFocus: (isFocus) => controller.onFocus(isFocus),
                               ),
                               DateTimePicker(
                                 label: 'Chọn thời gian',

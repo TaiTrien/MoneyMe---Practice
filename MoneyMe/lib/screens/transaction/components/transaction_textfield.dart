@@ -10,6 +10,7 @@ class TransactionTextField extends StatefulWidget {
   final TextInputFormatter formatter;
   final Function onChange;
   final Function onTap;
+  final Function onFocus;
   const TransactionTextField({
     Key key,
     @required this.label,
@@ -20,6 +21,7 @@ class TransactionTextField extends StatefulWidget {
     this.formatter,
     this.onChange,
     this.onTap,
+    this.onFocus,
   }) : super(key: key);
 
   @override
@@ -27,9 +29,19 @@ class TransactionTextField extends StatefulWidget {
 }
 
 class _TransactionTextFieldState extends State<TransactionTextField> {
+  FocusNode _focus;
+
   @override
   void initState() {
     super.initState();
+    _focus = new FocusNode();
+    _focus.addListener(() => widget.onFocus(_focus.hasFocus));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _focus.dispose();
   }
 
   @override
@@ -39,6 +51,7 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 80.0),
         child: TextField(
+          focusNode: _focus,
           onTap: widget.onTap,
           onChanged: widget.onChange,
           textAlign: TextAlign.end,

@@ -6,7 +6,7 @@ class Formatter {
 
   static formatMoney(dynamic money) {
     try {
-      return currencyFormat.format(int.parse("$money"));
+      return currencyFormat.format(int.tryParse("$money"));
     } catch (e) {
       print(e);
     }

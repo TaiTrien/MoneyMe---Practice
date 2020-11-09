@@ -22,7 +22,7 @@ class AddController {
 
   final dateController = TextEditingController();
   final descController = TextEditingController();
-  final moneyController = TextEditingController();
+  final priceController = TextEditingController();
 
   String date;
   String desc;
@@ -38,13 +38,77 @@ class AddController {
     initData();
   }
 
+  handleAddTransaction() async {
+    updatePrice();
+    date = _transactionBloc.state.currentTransaction.date;
+    desc = _transactionBloc.state.currentTransaction.desc;
+    price = _transactionBloc.state.currentTransaction.price;
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+
+    if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Cần điền đầy đủ thông tin');
+    }
+    if (_tagBloc.state.selectedTag == null) return;
+
+    Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    var data;
+    switch (_tagBloc.state.selectedTag.type) {
+      case "1":
+        List<Map<String, dynamic>> listMapsTag = List<Map<String, dynamic>>();
+        List<Jar> jarsList = _jarBloc.state.jarsList;
+        listMapsTag = jarsList
+            .map((jar) => {
+                  "jar_id": jar.jarID,
+                  "percentage": jar.percentage,
+                  "price": int.tryParse(price) * int.tryParse(jar.percentage) / 100,
+                })
+            .toList();
+        data = await TransactionApi.income(newTransaction, listMapsTag);
+        break;
+
+      case "2":
+        data = await TransactionApi.spend(newTransaction);
+        break;
+    }
+
+    if (data.code != 200) {
+      Services.hideKeyboard(context);
+      return CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: 'Thêm giao dịch thất bại',
+        confirmBtnText: 'Đóng',
+        confirmBtnColor: Colors.green,
+        text: "Thêm giao dịch thất bại",
+      );
+    }
+
+    addSuccessfully();
+  }
+
+  addSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    resetData();
+    Services.hideKeyboard(context);
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.success,
+      title: 'Hoàn tất',
+      confirmBtnText: 'Xong',
+      confirmBtnColor: Colors.green,
+      text: "Giao dịch của bạn đã được thêm thành công",
+    );
+  }
+
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
     Services.hideKeyboard(context);
   }
 
   initData() {
-    moneyController.text = (currentTransaction != null)
+    priceController.text = (currentTransaction != null)
         ? Formatter.formatMoney(
             currentTransaction.price,
           )
@@ -63,85 +127,47 @@ class AddController {
   onDataChange(value) {
     date = dateController.text.trim() ?? '';
     desc = descController.text.trim() ?? '';
-    price = moneyController.text;
-    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
-    //price =  price /1000
-    // print("rounded price: " + ((int.tryParse(price) % 1000).toString()));
-    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
+    price = priceController.text;
     //to format price into new string
+    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
     Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
     _transactionBloc.add(GetCurrentTransaction(transaction));
+  }
+
+  onFocus(isFocus) {
+    if (!isFocus) updatePrice();
+  }
+
+  updatePrice() {
+    priceController.text = priceController.text.replaceAll(new RegExp(r'[^\w\s]+'), '');
+    priceController.text = roundPrice(price: priceController.text).toString();
+    price = priceController.text;
+
+    priceController.text = Formatter.formatMoney(priceController.text);
+    if (currentTransaction == null) return;
+    currentTransaction.price = price;
+  }
+
+  roundPrice({String price}) {
+    int roundedPrice = int.tryParse(price);
+    if (roundedPrice == null || roundedPrice == 0) return 0;
+    if (roundedPrice < 100) return roundedPrice;
+
+    int offSet = (100 - roundedPrice % 100);
+    if (offSet == 100) return roundedPrice;
+    roundedPrice += offSet;
+    return roundedPrice;
   }
 
   resetData() {
     _tagBloc.add(ResetSelectedTag(null));
     _transactionBloc.add(ResetCurrentTransaction(null));
 
-    moneyController.text = '0';
+    priceController.text = '0';
     descController.clear();
-  }
-
-  handleAddTransaction() async {
-    date = _transactionBloc.state.currentTransaction.date;
-    desc = _transactionBloc.state.currentTransaction.desc;
-    price = _transactionBloc.state.currentTransaction.price;
-    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
-
-    if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
-      Notify notify = Notify();
-      return notify.error(message: 'Cần điền đầy đủ thông tin');
-    }
-    if (_tagBloc.state.selectedTag == null) return;
-
-    Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-    var data;
-    switch (_tagBloc.state.selectedTag.type) {
-      case "1":
-        List<Map<String, dynamic>> listMapsTag = List<Map<String, dynamic>>();
-        List<Jar> jarsList = _jarBloc.state.jarsList;
-
-        listMapsTag = jarsList
-            .map((jar) => {
-                  "jar_id": jar.jarID,
-                  "percentage": jar.percentage,
-                  "price": int.tryParse(price) * int.tryParse(jar.percentage) / 100,
-                })
-            .toList();
-        data = await TransactionApi.income(newTransaction, listMapsTag);
-        break;
-
-      case "2":
-        data = await TransactionApi.spend(newTransaction);
-        break;
-    }
-
-    if (data.code != 200)
-      return CoolAlert.show(
-        context: context,
-        type: CoolAlertType.error,
-        title: 'Thêm giao dịch thất bại',
-        confirmBtnText: 'Đóng',
-        confirmBtnColor: Colors.green,
-        text: "Thêm giao dịch thất bại",
-      );
-
-    addSuccessfully();
-  }
-
-  addSuccessfully() async {
-    await loadJarsData();
-    await loadTransactionsData();
-    resetData();
-    Services.showKeyBoard(context);
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      title: 'Hoàn tất',
-      confirmBtnText: 'Xong',
-      confirmBtnColor: Colors.green,
-      text: "Giao dịch của bạn đã được thêm thành công",
-    );
   }
 
   Future<void> loadJarsData() async {
