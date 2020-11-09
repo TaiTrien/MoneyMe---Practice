@@ -51,7 +51,7 @@ class JarApi {
         },
         body: json.encode(listMapJars),
       );
-      print(json.encode(listMapJars));
+      //print(json.encode(listMapJars));
       var data = Response.map(json.decode(response.body));
       if (data.code != 200) return data.apiMessagse;
 

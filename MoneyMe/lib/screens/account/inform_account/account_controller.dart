@@ -109,24 +109,11 @@ class AccountController {
     else if (jarName == "give") givePercentage = value;
     percent = getRemainPercentage();
     //print(percent);
-    print('getRemainPercentage: ' + percent.toString());
 
     _jarBloc.add(UpdateRemainPercentage(percent));
   }
 
   onSliderStop({double value, String jarName}) {
-    if (jarName == "nec")
-      necPercentage = value;
-    else if (jarName == "ltss")
-      ltssPercentage = value;
-    else if (jarName == "ffa")
-      ffaPercentage = value;
-    else if (jarName == "edu")
-      eduPercentage = value;
-    else if (jarName == "play")
-      playPercentage = value;
-    else if (jarName == "give") givePercentage = value;
-    percent = getRemainPercentage();
     while (percent < 0) {
       value--;
       if (jarName == "nec")
@@ -142,9 +129,8 @@ class AccountController {
       else if (jarName == "give") givePercentage = value;
       percent = getRemainPercentage();
     }
-    print(percent);
-
     _jarBloc.add(UpdateRemainPercentage(percent));
+    return value.toInt();
   }
 
   void signOut(BuildContext context) {

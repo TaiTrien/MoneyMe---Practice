@@ -1,12 +1,13 @@
 import 'package:MoneyMe/constants.dart';
+import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:flutter/material.dart';
 
 class JarSlider extends StatefulWidget {
   final Jar jar;
   final Function onChange;
-  final Function getValue;
   final Function onStop;
+  final Function getValue;
   final int remainPercentage;
   const JarSlider({
     Key key,
@@ -23,15 +24,13 @@ class JarSlider extends StatefulWidget {
 
 class _JarSliderState extends State<JarSlider> {
   double value;
-  double oldValue;
-  bool isIncrease;
   var percentController;
   @override
   void initState() {
     super.initState();
-    oldValue = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
     percentController = TextEditingController();
-    percentController.text = oldValue.toInt().toString() + '%';
+    value = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
+    percentController.text = value.toInt().toString();
   }
 
   @override
@@ -45,7 +44,7 @@ class _JarSliderState extends State<JarSlider> {
         Row(
           children: [
             Container(
-              width: size.width * 0.6,
+              width: size.width * 0.7,
               child: Slider(
                 activeColor: kPrimaryColor,
                 inactiveColor: kSecondaryColor,
@@ -53,22 +52,18 @@ class _JarSliderState extends State<JarSlider> {
                 max: 100,
                 onChanged: (double newValue) {
                   value = newValue;
-                  percentController.text = newValue.toInt().toString() + '%';
+                  percentController.text = newValue.toInt().toString();
                   widget.onChange(value: value, jarName: widget.jar.jarName.toLowerCase());
                 },
                 onChangeEnd: (double newValue) {
-                  widget.onStop(value: newValue, jarName: widget.jar.jarName.toLowerCase());
+                  int value = widget.onStop(value: newValue, jarName: widget.jar.jarName.toLowerCase());
+                  percentController.text = value.toString();
                 },
                 value: widget.getValue(jarName: widget.jar.jarName.toLowerCase()),
               ),
             ),
             Expanded(
               child: TextField(
-                onTap: () {
-                  setState(
-                    () {},
-                  );
-                },
                 controller: percentController,
                 cursorColor: kPrimaryColor,
                 maxLines: 1,
@@ -78,10 +73,21 @@ class _JarSliderState extends State<JarSlider> {
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
-                  setState(
-                    () {},
-                  );
+                  double percent = double.tryParse(value);
+                  if (percent > 100.0) return Notify().error(message: 'Bạn đã nhập quá 100%');
+                  widget.onChange(value: percent, jarName: widget.jar.jarName.toLowerCase());
                 },
+                onSubmitted: (newValue) {
+                  double percent = double.tryParse(newValue);
+                  int value = widget.onStop(value: percent, jarName: widget.jar.jarName.toLowerCase());
+                  percentController.text = value.toString();
+                },
+              ),
+            ),
+            Text(
+              '%',
+              style: TextStyle(
+                fontSize: 20,
               ),
             ),
           ],
