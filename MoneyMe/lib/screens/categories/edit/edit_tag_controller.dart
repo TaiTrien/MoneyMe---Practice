@@ -89,10 +89,6 @@ class EditTagController {
     currentJar = newJar;
   }
 
-  onChanged(value) {
-    currentTag.tagName = value.trim();
-  }
-
   List<dynamic> get revenues {
     List<dynamic> revenues = _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
     revenues.removeWhere((tag) => tag.tagID == currentTag.tagID);
