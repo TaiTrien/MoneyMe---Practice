@@ -29,6 +29,7 @@ class EditTagController {
     if (currentTag.parentID != '0') {
       parentTag = _tagBloc.state.tagsList.firstWhere((tag) => (tag.tagID == currentTag.parentID));
     }
+    tagController.text = currentTag.tagName;
   }
 
   handleEditTag() async {

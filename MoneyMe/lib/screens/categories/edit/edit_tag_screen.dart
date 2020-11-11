@@ -74,7 +74,6 @@ class _EditTagScreenState extends State<EditTagScreen> {
                         controller: controller.tagController,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
-                          hintText: controller.currentTag.tagName,
                           hintStyle: TextStyle(color: Colors.black),
                         ),
                       ),
