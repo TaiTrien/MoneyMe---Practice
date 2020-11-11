@@ -53,21 +53,20 @@ class HomeScreen extends StatelessWidget {
                       topRight: Radius.circular(30.0),
                     ),
                   ),
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        ExpenseHistoryBoard(
+                  child: Column(
+                    children: [
+                      ExpenseHistoryBoard(
+                        size: size,
+                        controller: controller,
+                      ),
+                      SizedBox(height: 20.0),
+                      Expanded(
+                        child: JarsListBoard(
                           size: size,
                           controller: controller,
                         ),
-                        SizedBox(height: 20.0),
-                        JarsListBoard(
-                          size: size,
-                          controller: controller,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
