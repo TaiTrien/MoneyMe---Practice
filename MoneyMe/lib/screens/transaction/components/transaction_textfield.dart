@@ -61,12 +61,13 @@ class _TransactionTextFieldState extends State<TransactionTextField> {
             ),
           inputFormatters: [widget.formatter],
           cursorColor: widget.color,
-          maxLength: 12,
+          maxLength: 15,
           decoration: InputDecoration(
             prefixIcon: Icon(
               widget.iconData,
               color: widget.color,
             ),
+            counterText: '',
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: widget.color,
