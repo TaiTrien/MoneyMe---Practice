@@ -1,4 +1,5 @@
 import 'package:MoneyMe/api/user_api.dart';
+import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/reponse.dart';
 import 'package:MoneyMe/components/custom_dialog.dart';
 import 'package:MoneyMe/components/custom_action_btn.dart';
@@ -13,6 +14,8 @@ class SignUpController {
   var phoneNumberController = TextEditingController();
   var passwordController = TextEditingController();
   var retypedPasswordController = TextEditingController();
+
+  Notify notify = Notify();
 
   dispose() {
     nameController.dispose();
@@ -35,10 +38,12 @@ class SignUpController {
     if (!isNameValid || !isPhoneNumberValid || !isPasswordValid || !isRetypedPasswordValid) return null;
 
     bool isConnected = await Connection.isInternetConnected();
-    if (!isConnected) return dialogConnectFailed(context);
+    if (!isConnected) return notify.error(message: "Thiết bị của bạn chưa kết nối Internet");
 
     var registerData = await UserApi.getRegisterResponse(name: fullName, userName: phoneNumber, password: password);
-    if (registerData.code != 200) return dialogRegisterFailed(context, registerData);
+    if (registerData.code != 200) {
+      return notify.error(message: registerData.apiMessagse);
+    }
 
     //handle when register successfully
     var token = await UserApi.getGlobalToken(phoneNumber: phoneNumber, password: password);
@@ -52,7 +57,7 @@ class SignUpController {
       context: context,
       builder: (context) {
         Future.delayed(Duration(seconds: 2), () {
-          Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (_) => false);
+          Navigator.pushNamedAndRemoveUntil(context, '/loadingScreen', (_) => false);
         });
         return CustomDiaglog(
           title: registerData.apiMessagse,
@@ -73,59 +78,6 @@ class SignUpController {
           ],
         );
       },
-    );
-  }
-
-  Future dialogRegisterFailed(BuildContext context, Response registerData) {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: registerData.apiMessagse,
-        subTitle: "Vui lòng đăng ký tài khoản khác",
-        titleWidget: Image.asset('assets/images/404.gif'),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.grey,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          CustomActionButton(
-            titleBtn: 'Đăng ký tài khoản khác',
-            color: Colors.green[400],
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/signUpScreen', (_) => false);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future dialogConnectFailed(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => CustomDiaglog(
-        title: "Thiết bị của bạn chưa kết nối Internet",
-        subTitle: "Vui lòng kiểm tra lại kết nối của bạn",
-        titleWidget: Image.asset(
-          'assets/images/noInternet.gif',
-          fit: BoxFit.contain,
-        ),
-        actions: [
-          CustomActionButton(
-            titleBtn: 'Hủy',
-            color: Colors.grey,
-            colorTitle: Colors.white,
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
     );
   }
 }

@@ -9,41 +9,48 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddTagController {
+class EditTagController {
   BuildContext context;
-  Tag currentTag = Tag(type: '1', jarID: '745', icon: IconsList.icons[0], parentID: '0');
+  Tag currentTag;
   Tag parentTag;
   Jar currentJar;
+
   String icon;
   Notify notify = Notify();
 
   TextEditingController tagController = TextEditingController();
   TagBloc _tagBloc;
 
-  AddTagController({this.context}) {
+  EditTagController({this.context}) {
     _tagBloc = BlocProvider.of<TagBloc>(context);
     _tagBloc.add(SelectTag(currentTag));
+
+    currentTag = _tagBloc.state.selectedTag;
+    if (currentTag.parentID != '0') {
+      parentTag = _tagBloc.state.tagsList.firstWhere((tag) => (tag.tagID == currentTag.parentID));
+    }
+    tagController.text = currentTag.tagName;
   }
 
-  handleAddTag() async {
+  handleEditTag() async {
     if (currentTag.tagName == null) return notify.error(message: 'Vui lòng thêm tên');
     if (currentTag.type == '2' && currentJar == null) {
       Notify().error(message: 'Vui lòng thêm hũ');
       return;
     }
-
     currentTag.setJarID = (currentJar != null) ? currentJar.jarID : '745';
     currentTag.setParentID = (parentTag != null) ? parentTag.tagID : '0';
+
     Navigator.pop(context);
 
-    var apiRespone = await TagApi.addTag(currentTag);
-    if (apiRespone.code != 200) return notify.error(message: 'Thêm thất bại');
+    var apiRespone = await TagApi.editTag(currentTag);
 
-    notify.success(message: 'Thêm hạng mục thành công');
-    await addSuccessfully();
+    if (apiRespone.code != 200) return notify.error(message: 'Sửa hạng mục thất bại');
+    notify.success(message: 'Sửa hạng mục thành công');
+    await editSuccessfully();
   }
 
-  addSuccessfully() async {
+  editSuccessfully() async {
     await loadTagsData();
     _tagBloc.add(ResetSelectedTag(null));
   }
@@ -85,15 +92,15 @@ class AddTagController {
     currentTag.tagName = value.trim();
   }
 
-  switchToggle() {
-    if (currentTag.type == '1')
-      currentTag.type = '2';
-    else if (currentTag.type == '2') currentTag.type = '1';
-    _tagBloc.add(SelectTag(currentTag));
-
-    parentTag = null;
+  List<dynamic> get revenues {
+    List<dynamic> revenues = _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
+    revenues.removeWhere((tag) => tag.tagID == currentTag.tagID);
+    return revenues;
   }
 
-  List<dynamic> get revenues => _tagBloc.state.revenues.entries.map((entry) => entry.value["parent"]).toList();
-  List<dynamic> get expenses => _tagBloc.state.expenses.entries.map((entry) => entry.value["parent"]).toList();
+  List<dynamic> get expenses {
+    List<dynamic> expenses = _tagBloc.state.expenses.entries.map((entry) => entry.value["parent"]).toList();
+    expenses.removeWhere((tag) => tag.tagID == currentTag.tagID);
+    return expenses;
+  }
 }

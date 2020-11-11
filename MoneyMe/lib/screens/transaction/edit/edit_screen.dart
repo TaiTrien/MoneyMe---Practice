@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 
-class EditTransactionScreen extends StatelessWidget {
+class EditTransactionScreen extends StatefulWidget {
   final selectedTransaction;
 
   const EditTransactionScreen({
@@ -19,8 +19,20 @@ class EditTransactionScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _EditTransactionScreenState createState() => _EditTransactionScreenState();
+}
+
+class _EditTransactionScreenState extends State<EditTransactionScreen> {
+  var controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = EditController(context: context, currentTransaction: widget.selectedTransaction);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var controller = EditController(context: context, currentTransaction: selectedTransaction);
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Material(
       child: SafeArea(
@@ -82,6 +94,7 @@ class EditTransactionScreen extends StatelessWidget {
                               formatter: MoneyTextFormatter(),
                               color: Colors.black,
                               onChange: controller.onDataChange,
+                              onFocus: (isFocus) => controller.onFocus(isFocus),
                             ),
                             DateTimePicker(
                               label: 'Chọn thời gian',
@@ -96,6 +109,7 @@ class EditTransactionScreen extends StatelessWidget {
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               onChanged: controller.onDataChange,
+                              onTap: controller.updatePrice,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

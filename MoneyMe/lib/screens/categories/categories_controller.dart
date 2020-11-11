@@ -74,6 +74,9 @@ class CategoriesController {
     } else if (typeScreen == TypeScreen.edit) {
       //push tag to edit transaction screen
       Navigator.pop(context, tag);
+    } else if (typeScreen == TypeScreen.management) {
+      _tagBloc.add(SelectTag(tag));
+      Navigator.pushNamed(context, '/editTagScreen');
     }
   }
 

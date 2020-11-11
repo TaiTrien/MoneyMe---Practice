@@ -1,10 +1,10 @@
 import 'package:MoneyMe/constants.dart';
 import 'package:flutter/material.dart';
 
-class RoudedButton extends StatelessWidget {
+class DefaultButton extends StatelessWidget {
   final String titleBtn;
   final Function onPressed;
-  const RoudedButton({
+  const DefaultButton({
     Key key,
     @required this.titleBtn,
     @required this.onPressed,
@@ -12,16 +12,21 @@ class RoudedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        vertical: kDefaultPaddingVertical,
+        horizontal: 10,
+      ),
       child: FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        shape: RoundedRectangleBorder(),
+        padding: const EdgeInsets.symmetric(
+          vertical: kDefaultPaddingVertical,
         ),
         onPressed: onPressed,
         child: Text(
           '$titleBtn',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
         color: kPrimaryColor,
       ),

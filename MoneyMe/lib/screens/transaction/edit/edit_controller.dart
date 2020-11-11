@@ -23,6 +23,7 @@ class EditController {
   String desc;
   String price;
   String tagID;
+  Notify notify = Notify();
 
   TransactionBloc _transactionBloc;
   JarBloc _jarBloc;
@@ -53,38 +54,40 @@ class EditController {
     descController.text = tempTransaction.desc;
   }
 
+  handleEditTransaction() async {
+    updatePrice();
+    String inputID = currentTransaction.inputId;
+    String date = dateController.text.trim() ?? '';
+    String desc = descController.text.trim() ?? '';
+    String price = priceController.text ?? '';
+    String tagID = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagID : _tagBloc.state.selectedTag.tagID;
+    //to format price into new string
+    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+    currentTransaction.date = date;
+    currentTransaction.desc = desc;
+    currentTransaction.price = price;
+    currentTransaction.tagID = tagID;
+    var data = await TransactionApi.editTransaction(inputID, currentTransaction);
+
+    if (data.code != 200) return notify.error(message: 'Sửa giao dịch thất bại', timeout: 8);
+
+    editSuccessfully();
+  }
+
+  editSuccessfully() async {
+    await loadJarsData();
+    await loadTransactionsData();
+    resetData();
+    Notify().success(message: 'Sửa thành công');
+    Navigator.pop(context);
+  }
+
   resetData() {
     _tagBloc.add(ResetSelectedTag(null));
     _transactionBloc.add(ResetCurrentTransaction(null));
 
     priceController.text = '0';
     descController.clear();
-  }
-
-  onDataChange(value) {
-    date = dateController.text.trim() ?? '';
-    desc = descController.text.trim() ?? '';
-    price = priceController.text;
-    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
-    //to format price into new string
-    price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
-
-    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
-    _transactionBloc.add(GetCurrentTransaction(transaction));
-  }
-
-  void toCategoriesScreen() async {
-    selectedTag = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CategoriesScreen(
-          typeScreen: TypeScreen.edit,
-          currentTransaction: currentTransaction,
-        ),
-      ),
-    );
-    _tagBloc.add(SelectTag(selectedTag));
-    Services.hideKeyboard(context);
   }
 
   //to handle when delete a transaction
@@ -116,37 +119,60 @@ class EditController {
   deleteSuccessfully() async {
     await loadJarsData();
     await loadTransactionsData();
-    Notify().success(message: "Xóa thành công", timeout: 8);
+    notify.success(message: "Xóa thành công", timeout: 8);
     Navigator.pop(context);
     Navigator.pop(context);
   }
 
-  // to handle when edit a transaction
-
-  handleEditTransaction() async {
-    String inputID = currentTransaction.inputId;
-    String date = dateController.text.trim() ?? '';
-    String desc = descController.text.trim() ?? '';
-    String price = priceController.text ?? '';
-    String tagID = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagID : _tagBloc.state.selectedTag.tagID;
+  onDataChange(value) {
+    date = dateController.text.trim() ?? '';
+    desc = descController.text.trim() ?? '';
+    price = priceController.text;
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
-    currentTransaction.date = date;
-    currentTransaction.desc = desc;
-    currentTransaction.price = price;
-    currentTransaction.tagID = tagID;
-    var data = await TransactionApi.editTransaction(inputID, currentTransaction);
 
-    if (data.code != 200) return Notify().error(message: 'Sửa giao dịch thất bại', timeout: 8);
+    tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
-    editSuccessfully();
+    Transaction transaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
+    _transactionBloc.add(GetCurrentTransaction(transaction));
   }
 
-  editSuccessfully() async {
-    await loadJarsData();
-    await loadTransactionsData();
-    resetData();
-    Navigator.pop(context);
+  onFocus(isFocus) {
+    if (!isFocus) updatePrice();
+  }
+
+  updatePrice() {
+    priceController.text = priceController.text.replaceAll(new RegExp(r'[^\w\s]+'), '');
+    priceController.text = roundPrice(price: priceController.text).toString();
+    price = priceController.text;
+    currentTransaction.price = price;
+    priceController.text = Formatter.formatMoney(priceController.text);
+  }
+
+  roundPrice({String price}) {
+    int roundedPrice = int.tryParse(price);
+    if (roundedPrice == null) return 0;
+    if (roundedPrice == null || roundedPrice == 0) return 0;
+    if (roundedPrice < 100) return roundedPrice;
+
+    int offSet = (100 - roundedPrice % 100);
+    if (offSet == 100) return roundedPrice;
+    roundedPrice += offSet;
+    return roundedPrice;
+  }
+
+  void toCategoriesScreen() async {
+    selectedTag = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategoriesScreen(
+          typeScreen: TypeScreen.edit,
+          currentTransaction: currentTransaction,
+        ),
+      ),
+    );
+    _tagBloc.add(SelectTag(selectedTag));
+    Services.hideKeyboard(context);
   }
 
   Future<void> loadJarsData() async {

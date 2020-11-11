@@ -103,8 +103,6 @@ class TransactionApi {
     mapTransaction["desc"] = transaction.desc;
     mapTransaction["price"] = transaction.price;
     mapTransaction["tag_id"] = transaction.tagID;
-    print(url);
-    print(json.encode(mapTransaction));
 
     var response = await http.put(
       url,

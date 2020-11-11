@@ -16,17 +16,15 @@ class Notify {
 
   show({String message, Color color, fontColor = Colors.white, int timeout}) {
     try {
-      Fluttertoast.cancel();
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 5,
+        backgroundColor: color,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } catch (e) {}
-
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 5,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
   }
 }

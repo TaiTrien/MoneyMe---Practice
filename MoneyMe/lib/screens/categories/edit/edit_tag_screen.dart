@@ -1,25 +1,23 @@
 import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/models/icon.dart';
-import 'package:MoneyMe/screens/categories/add/add_tag_controller.dart';
 import 'package:MoneyMe/screens/categories/add/components/custom_dropdown.dart';
-import 'package:MoneyMe/screens/categories/add/components/custom_toggle_button.dart';
+import 'package:MoneyMe/screens/categories/edit/edit_tag_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class AddTagScreen extends StatefulWidget {
+class EditTagScreen extends StatefulWidget {
   @override
-  _AddTagScreenState createState() => _AddTagScreenState();
+  _EditTagScreenState createState() => _EditTagScreenState();
 }
 
-class _AddTagScreenState extends State<AddTagScreen> {
+class _EditTagScreenState extends State<EditTagScreen> {
   var controller;
   @override
   void initState() {
     super.initState();
-    controller = new AddTagController(context: context);
+    controller = new EditTagController(context: context);
   }
 
   @override
@@ -31,7 +29,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
           onTap: () => Navigator.pop(context),
         ),
         title: Text(
-          'Thêm hạng mục',
+          'Sửa hạng mục',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -43,44 +41,29 @@ class _AddTagScreenState extends State<AddTagScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomToggle(
-                onPress: controller.switchToggle,
-                children: [
-                  Container(
+              BlocBuilder<TagBloc, TagState>(
+                builder: (context, state) {
+                  return Container(
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
                     child: Text(
-                      'Khoản thu',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      (state.selectedTag.type == '1') ? 'Khoản thu' : 'Khoản chi',
+                      style: kTitleTextStyle.copyWith(fontSize: 20),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                    width: MediaQuery.of(context).size.width / 3 - kDefaultPaddingHorizontal,
-                    child: Text(
-                      'Khoản chi',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
               SizedBox(height: 20),
               Row(
                 children: [
-                  BlocBuilder<TagBloc, TagState>(
-                    builder: (context, state) {
-                      return FlatButton(
-                        shape: CircleBorder(side: BorderSide.none),
-                        color: kPrimaryColor,
-                        onPressed: controller.toIconScreen,
-                        child: Icon(
-                          (state.selectedTag != null) ? MdiIcons.fromString(state.selectedTag.icon.substring(4)) : MdiIcons.fromString(IconsList.icons[0]),
-                          color: Colors.white,
-                        ),
-                      );
-                    },
+                  FlatButton(
+                    shape: CircleBorder(side: BorderSide.none),
+                    color: kPrimaryColor,
+                    onPressed: controller.toIconScreen,
+                    child: Icon(
+                      MdiIcons.fromString(controller.currentTag.icon.substring(4)),
+                      color: Colors.white,
+                    ),
                   ),
                   Expanded(
                     child: Container(
@@ -91,7 +74,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
                         controller: controller.tagController,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
-                          hintText: 'Tên hạng mục',
+                          hintStyle: TextStyle(color: Colors.black),
                         ),
                       ),
                     ),
@@ -121,28 +104,24 @@ class _AddTagScreenState extends State<AddTagScreen> {
                   ),
                 ],
               ),
-              BlocBuilder<TagBloc, TagState>(
-                builder: (context, state) {
-                  return Visibility(
-                    visible: (state.selectedTag.type == '2') ? true : false,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: kDefaultPaddingHorizontal,
-                        vertical: kDefaultPaddingVertical,
-                      ),
-                      child: BlocBuilder<JarBloc, JarState>(
-                        builder: (context, state) {
-                          return CustomDropdown(
-                            hintText: 'Chọn hũ',
-                            value: controller.currentJar,
-                            items: state.jarsList,
-                            onChanged: controller.updateCurrentJar,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
+              Visibility(
+                visible: (controller.currentTag.type == '2') ? true : false,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: kDefaultPaddingHorizontal,
+                    vertical: kDefaultPaddingVertical,
+                  ),
+                  child: BlocBuilder<JarBloc, JarState>(
+                    builder: (context, state) {
+                      return CustomDropdown(
+                        hintText: 'Chọn hũ',
+                        value: controller.currentJar,
+                        items: state.jarsList,
+                        onChanged: controller.updateCurrentJar,
+                      );
+                    },
+                  ),
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(
@@ -155,7 +134,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
                 alignment: Alignment.centerRight,
                 child: FlatButton(
-                  onPressed: controller.handleAddTag,
+                  onPressed: controller.handleEditTag,
                   child: Text(
                     'Lưu lại',
                     style: TextStyle(color: Colors.white),

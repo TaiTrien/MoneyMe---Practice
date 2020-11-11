@@ -3,6 +3,7 @@ import 'package:MoneyMe/screens/account/inform_account/account_screen.dart';
 import 'package:MoneyMe/screens/categories/categories_screen.dart';
 import 'package:MoneyMe/screens/home/home_screen.dart';
 import 'package:MoneyMe/screens/transaction/add/add_screen.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -24,8 +25,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: DoubleBackToCloseApp(
+        snackBar: const SnackBar(
+          backgroundColor: kPrimaryColor,
+          content: Text(
+            'Bấm quay lại lần nữa để thoát',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: kPrimaryColor,
