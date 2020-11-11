@@ -24,13 +24,25 @@ class JarSlider extends StatefulWidget {
 
 class _JarSliderState extends State<JarSlider> {
   double value;
-  var percentController;
+  TextEditingController percentController;
+  FocusNode _focusNode;
   @override
   void initState() {
     super.initState();
     percentController = TextEditingController();
     value = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
     percentController.text = value.toInt().toString();
+
+    _focusNode = new FocusNode();
+    _focusNode.addListener(() => updatePercent(value));
+  }
+
+  void updatePercent(double newValue) {
+    if (widget.remainPercentage > 0) return;
+
+    widget.onChange(value: newValue, jarName: widget.jar.jarName.toLowerCase());
+    int value = widget.onStop(value: newValue, jarName: widget.jar.jarName.toLowerCase());
+    percentController.text = value.toString();
   }
 
   @override
@@ -66,6 +78,7 @@ class _JarSliderState extends State<JarSlider> {
               child: TextField(
                 controller: percentController,
                 cursorColor: kPrimaryColor,
+                focusNode: _focusNode,
                 maxLines: 1,
                 decoration: InputDecoration(
                   hintText: 'Phần trăm %',
@@ -74,10 +87,16 @@ class _JarSliderState extends State<JarSlider> {
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   double percent = double.tryParse(value);
+
+                  if (value.trim().isEmpty) {
+                    percent = 0;
+                    percentController.text = '0';
+                  }
                   if (percent > 100.0) return Notify().error(message: 'Bạn đã nhập quá 100%');
                   widget.onChange(value: percent, jarName: widget.jar.jarName.toLowerCase());
                 },
                 onSubmitted: (newValue) {
+                  newValue = newValue.trim();
                   double percent = double.tryParse(newValue);
                   int value = widget.onStop(value: percent, jarName: widget.jar.jarName.toLowerCase());
                   percentController.text = value.toString();
