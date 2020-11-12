@@ -63,10 +63,30 @@ class EditController {
     String tagID = (_tagBloc.state.selectedTag == null) ? currentTransaction.tagID : _tagBloc.state.selectedTag.tagID;
     //to format price into new string
     price = price.replaceAll(new RegExp(r'[^\w\s]+'), '');
+    if (date.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng điền ngày giao dịch');
+    }
+
+    if (price.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng điền số tiền giao dịch');
+    }
+
+    if (tagID.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng chọn hạng mục');
+    }
+
+    if (int.tryParse(price) < 100) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng nhập số tiền lớn hơn 100 đồng');
+    }
     currentTransaction.date = date;
     currentTransaction.desc = desc;
     currentTransaction.price = price;
     currentTransaction.tagID = tagID;
+
     var data = await TransactionApi.editTransaction(inputID, currentTransaction);
 
     if (data.code != 200) return notify.error(message: 'Sửa giao dịch thất bại', timeout: 8);

@@ -37,7 +37,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     return Material(
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false, //new line
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             leading: FlatButton(
               onPressed: controller.toExit,
