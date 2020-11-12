@@ -3,6 +3,7 @@ import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/models/transaction.dart';
+import 'package:MoneyMe/screens/transaction/add/add_screen.dart';
 import 'package:MoneyMe/screens/transaction/edit/edit_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,15 @@ class HomeController {
     );
     _tagBloc.add(ResetSelectedTag(null));
     _transactionBloc.add(ResetCurrentTransaction(null));
+  }
+
+  toAddTransactionScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTransactionScreen(),
+      ),
+    );
   }
 
   get totalExpense => _jarBloc.state.remainMoney;

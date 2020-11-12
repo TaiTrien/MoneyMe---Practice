@@ -21,6 +21,14 @@ class HomeScreen extends StatelessWidget {
     return Material(
       color: Theme.of(context).primaryColor,
       child: Scaffold(
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          child: FloatingActionButton(
+            onPressed: controller.toAddTransactionScreen,
+            backgroundColor: kPrimaryColor,
+            child: Icon(Icons.add, size: 30),
+          ),
+        ),
         body: Container(
           color: kPrimaryColor,
           child: Column(
@@ -58,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20.0),
                         ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 320),
+                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 400),
                           child: JarsListBoard(
                             size: size,
                             controller: controller,

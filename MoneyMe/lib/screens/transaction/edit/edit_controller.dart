@@ -175,6 +175,10 @@ class EditController {
     Services.hideKeyboard(context);
   }
 
+  void toExit() {
+    Navigator.pop(context);
+  }
+
   Future<void> loadJarsData() async {
     var jarsListData;
     List<Jar> jarsList = List<Jar>();

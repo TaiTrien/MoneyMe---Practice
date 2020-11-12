@@ -122,11 +122,11 @@ class AccountScreen extends StatelessWidget {
                             onTap: () => controller.signOut(context),
                             spashColor: Colors.red,
                           ),
-                          SizedBox(
-                            height: kDefaultPaddingVertical,
-                          ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 120,
                     ),
                   ],
                 ),

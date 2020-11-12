@@ -12,6 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class AddTransactionScreen extends StatelessWidget {
+  final bool isCanBack;
+
+  const AddTransactionScreen({Key key, this.isCanBack = true}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var controller = AddController(context: context);
@@ -19,6 +22,12 @@ class AddTransactionScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            leading: (isCanBack)
+                ? FlatButton(
+                    onPressed: controller.toExit,
+                    child: Icon(Icons.arrow_back, color: Colors.white),
+                  )
+                : null,
             title: Text(
               'Thêm giao dịch',
               style: TextStyle(color: Colors.white),

@@ -107,6 +107,10 @@ class AddController {
     Services.hideKeyboard(context);
   }
 
+  void toExit() {
+    Navigator.pop(context);
+  }
+
   initData() {
     priceController.text = (currentTransaction != null)
         ? Formatter.formatMoney(
