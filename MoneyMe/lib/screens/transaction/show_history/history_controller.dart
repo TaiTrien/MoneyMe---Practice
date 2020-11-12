@@ -29,6 +29,10 @@ class HistoryController {
     _transactionBloc.add(ResetCurrentTransaction(null));
   }
 
+  toAddTransactionScreen() {
+    Navigator.pushNamed(context, '/addTransactionScreen');
+  }
+
   toExit() {
     Navigator.pop(context);
   }

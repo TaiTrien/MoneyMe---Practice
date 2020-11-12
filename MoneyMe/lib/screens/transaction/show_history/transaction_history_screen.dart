@@ -22,6 +22,15 @@ class TransactionHistory extends StatelessWidget {
           'Lịch sử thu chi',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          FlatButton(
+            onPressed: controller.toAddTransactionScreen,
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        ],
         centerTitle: true,
         backgroundColor: kSecondaryColor,
       ),

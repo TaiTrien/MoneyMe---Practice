@@ -82,6 +82,7 @@ class EditController {
       Notify notify = Notify();
       return notify.error(message: 'Vui lòng nhập số tiền lớn hơn 100 đồng');
     }
+
     currentTransaction.date = date;
     currentTransaction.desc = desc;
     currentTransaction.price = price;
