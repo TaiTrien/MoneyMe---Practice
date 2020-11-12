@@ -25,6 +25,8 @@ class ExpenseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      color: Color(0xFFf7f9fc),
       elevation: 0,
       child: ListTile(
         leading: Container(
@@ -50,10 +52,11 @@ class ExpenseCard extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: prefixMoney + Formatter.formatMoney(this.money) + " vnd\n",
+                text: prefixMoney + Formatter.formatMoney(this.money) + " VND\n",
                 style: TextStyle(
                   color: color,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
               TextSpan(

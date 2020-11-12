@@ -27,16 +27,21 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: kPrimaryColor,
         ),
         body: Container(
-          color: kPrimaryColor,
+          color: kSecondaryColor,
           child: Column(
             children: [
               Container(
                 padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
                 child: Text(
-                  'Chào ${controller.userName}',
-                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                  'Xin chào ${controller.userName}',
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
+              SizedBox(height: 20),
               RemainMoneyCard(
                 controller: controller,
               ),
@@ -56,6 +61,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: SingleChildScrollView(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ExpenseHistoryBoard(
                           size: size,

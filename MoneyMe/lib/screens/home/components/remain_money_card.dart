@@ -21,7 +21,7 @@ class RemainMoneyCard extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: kDefaultPaddingVertical + 5),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         child: BlocBuilder<JarBloc, JarState>(
           builder: (context, state) {
@@ -30,7 +30,7 @@ class RemainMoneyCard extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Số tiền hiện tại trong ví\n',
+                    text: 'Số tiền hiện tại \n',
                     style: kSubTitleTextStyle,
                   ),
                   TextSpan(

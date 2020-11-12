@@ -83,7 +83,6 @@ class AddController {
         text: "Thêm giao dịch thất bại",
       );
     }
-
     addSuccessfully();
   }
 
@@ -92,14 +91,8 @@ class AddController {
     await loadTransactionsData();
     resetData();
     Services.hideKeyboard(context);
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      title: 'Hoàn tất',
-      confirmBtnText: 'Xong',
-      confirmBtnColor: Colors.green,
-      text: "Giao dịch của bạn đã được thêm thành công",
-    );
+    Navigator.pop(context);
+    Notify().success(message: "Thêm giao dịch thành công");
   }
 
   void toCategoriesScreen() {
