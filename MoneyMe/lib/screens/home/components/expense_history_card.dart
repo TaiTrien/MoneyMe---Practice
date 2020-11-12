@@ -45,7 +45,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: controller.toTransactionHistoryScreen,
                           child: Row(
                             children: [
                               Container(
@@ -75,7 +75,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
                       ? Center(
                           child: Text(
                             'Chưa có giao dịch gần đây',
-                            style: kTitleTextStyle.copyWith(color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         )
                       : ListView.builder(

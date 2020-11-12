@@ -9,6 +9,7 @@ import 'package:MoneyMe/screens/home/home_screen.dart';
 import 'package:MoneyMe/screens/loading/loading_screen.dart';
 import 'package:MoneyMe/screens/main_screen.dart';
 import 'package:MoneyMe/screens/transaction/add/add_screen.dart';
+import 'package:MoneyMe/screens/transaction/show_history/transaction_history_screen.dart';
 
 final routes = {
   '/loadingScreen': (context) => LoadingScreen(),
@@ -22,4 +23,5 @@ final routes = {
   '/addTagScreen': (context) => AddTagScreen(),
   '/editTagScreen': (context) => EditTagScreen(),
   '/iconScreen': (context) => IconScreen(),
+  '/transactionHistoryScreen': (context) => TransactionHistory(),
 };

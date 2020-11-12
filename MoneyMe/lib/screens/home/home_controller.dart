@@ -44,6 +44,10 @@ class HomeController {
     Navigator.pushNamed(context, '/addTransactionScreen');
   }
 
+  toTransactionHistoryScreen() {
+    Navigator.pushNamed(context, '/transactionHistoryScreen');
+  }
+
   get totalExpense => _jarBloc.state.remainMoney;
   get userName => _userBloc.state.user.name;
   get jarsList => _jarBloc.state.jarsList;
