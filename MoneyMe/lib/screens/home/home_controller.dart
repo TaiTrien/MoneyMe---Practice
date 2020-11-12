@@ -40,6 +40,10 @@ class HomeController {
     _transactionBloc.add(ResetCurrentTransaction(null));
   }
 
+  toAddTransactionScreen() {
+    Navigator.pushNamed(context, '/addTransactionScreen');
+  }
+
   get totalExpense => _jarBloc.state.remainMoney;
   get userName => _userBloc.state.user.name;
   get jarsList => _jarBloc.state.jarsList;

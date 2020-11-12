@@ -21,6 +21,11 @@ class HomeScreen extends StatelessWidget {
     return Material(
       color: Theme.of(context).primaryColor,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.toAddTransactionScreen,
+          child: Icon(Icons.add),
+          backgroundColor: kPrimaryColor,
+        ),
         body: Container(
           color: kPrimaryColor,
           child: Column(

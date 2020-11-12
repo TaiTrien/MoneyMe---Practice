@@ -19,6 +19,13 @@ class AddTransactionScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            leading: FlatButton(
+              onPressed: controller.toExit,
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
             title: Text(
               'Thêm giao dịch',
               style: TextStyle(color: Colors.white),
