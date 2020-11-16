@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChartsDemo extends StatefulWidget {
   ChartsDemo() : super();
@@ -13,11 +15,12 @@ class ChartsDemo extends StatefulWidget {
 class ChartsDemoState extends State<ChartsDemo> {
   //
   List<charts.Series> seriesList;
+  static TagBloc _tagBloc;
 
   static List<charts.Series<Sales, String>> _createRandomData() {
     final random = Random();
-
-    final desktopSalesData = [
+    final tagsList = _tagBloc.state.tagsList;
+    final expenseData = [
       Sales('2015', random.nextInt(100)),
       Sales('2016', random.nextInt(100)),
       Sales('2017', random.nextInt(100)),
@@ -25,15 +28,7 @@ class ChartsDemoState extends State<ChartsDemo> {
       Sales('2019', random.nextInt(100)),
     ];
 
-    final tabletSalesData = [
-      Sales('2015', random.nextInt(100)),
-      Sales('2016', random.nextInt(100)),
-      Sales('2017', random.nextInt(100)),
-      Sales('2018', random.nextInt(100)),
-      Sales('2019', random.nextInt(100)),
-    ];
-
-    final mobileSalesData = [
+    final revenueData = [
       Sales('2015', random.nextInt(100)),
       Sales('2016', random.nextInt(100)),
       Sales('2017', random.nextInt(100)),
@@ -46,29 +41,20 @@ class ChartsDemoState extends State<ChartsDemo> {
         id: 'Sales',
         domainFn: (Sales sales, _) => sales.year,
         measureFn: (Sales sales, _) => sales.sales,
-        data: desktopSalesData,
+        data: expenseData,
         fillColorFn: (Sales sales, _) {
-          return charts.MaterialPalette.blue.shadeDefault;
+          return charts.MaterialPalette.red.shadeDefault;
         },
       ),
       charts.Series<Sales, String>(
         id: 'Sales',
         domainFn: (Sales sales, _) => sales.year,
         measureFn: (Sales sales, _) => sales.sales,
-        data: tabletSalesData,
+        data: revenueData,
         fillColorFn: (Sales sales, _) {
           return charts.MaterialPalette.green.shadeDefault;
         },
       ),
-      charts.Series<Sales, String>(
-        id: 'Sales',
-        domainFn: (Sales sales, _) => sales.year,
-        measureFn: (Sales sales, _) => sales.sales,
-        data: mobileSalesData,
-        fillColorFn: (Sales sales, _) {
-          return charts.MaterialPalette.teal.shadeDefault;
-        },
-      )
     ];
   }
 
@@ -92,6 +78,7 @@ class ChartsDemoState extends State<ChartsDemo> {
   void initState() {
     super.initState();
     seriesList = _createRandomData();
+    _tagBloc = BlocProvider.of<TagBloc>(context);
   }
 
   @override
