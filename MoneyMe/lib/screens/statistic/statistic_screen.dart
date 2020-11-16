@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class StatisticScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -16,7 +15,10 @@ class StatisticScreen extends StatelessWidget {
         backgroundColor: kSecondaryColor,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal),
+        padding: EdgeInsets.symmetric(
+          horizontal: kDefaultPaddingHorizontal,
+          vertical: kDefaultPaddingVertical + 10,
+        ),
         width: double.infinity,
         child: Column(
           children: [
@@ -42,15 +44,12 @@ class StatisticScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color(0xffeeeeef),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+            SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                child: StatisticOption(),
               ),
-              child: StatisticOption(),
             ),
           ],
         ),
