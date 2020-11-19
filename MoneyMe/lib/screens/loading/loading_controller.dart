@@ -12,6 +12,7 @@ import 'package:MoneyMe/models/tag.dart';
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:MoneyMe/models/user.dart';
 import 'package:MoneyMe/screens/auth/signin/signin_controller.dart';
+import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,6 +99,7 @@ class LoadingController {
 
     for (int i = 0; i < transactionsListLength; i++) {
       Transaction transaction = Transaction.map(transactionsListData.data, i);
+      transaction.date = Formatter.formatDate(transaction.date);
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));

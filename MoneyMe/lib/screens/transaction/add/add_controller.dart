@@ -204,6 +204,7 @@ class AddController {
 
     for (int i = 0; i < transactionsListLength; i++) {
       Transaction transaction = Transaction.map(transactionsListData.data, i);
+      transaction.date = Formatter.formatDate(transaction.date);
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));

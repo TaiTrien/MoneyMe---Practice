@@ -60,7 +60,7 @@ class ExpenseCard extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: Formatter.formatDate(date).toString(),
+                text: date,
                 style: kSubTitleTextStyle,
               ),
             ],

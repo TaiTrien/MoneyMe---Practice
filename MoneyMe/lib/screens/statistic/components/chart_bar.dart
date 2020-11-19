@@ -41,11 +41,10 @@ class ChartsDemoState extends State<ChartsDemo> {
       Transaction(time: '2019', value: 500),
       Transaction(time: '2020', value: 800),
     ];
-
     return [
       charts.Series<Transaction, String>(
-        id: 'Sales',
-        domainFn: (Transaction transaction, _) => transaction.time,
+        id: 'Expenses',
+        domainFn: (Transaction transaction, _) => transaction.time.toString(),
         measureFn: (Transaction transaction, _) => transaction.value,
         data: expenses,
         fillColorFn: (Transaction transaction, _) {
@@ -53,8 +52,8 @@ class ChartsDemoState extends State<ChartsDemo> {
         },
       ),
       charts.Series<Transaction, String>(
-        id: 'Sales',
-        domainFn: (Transaction transaction, _) => transaction.time,
+        id: 'Revenue',
+        domainFn: (Transaction transaction, _) => transaction.time.toString(),
         measureFn: (Transaction transaction, _) => transaction.value,
         data: revenues,
         fillColorFn: (Transaction transaction, _) {
@@ -74,9 +73,20 @@ class ChartsDemoState extends State<ChartsDemo> {
         groupingType: charts.BarGroupingType.grouped,
         strokeWidthPx: 1.0,
       ),
-      domainAxis: charts.OrdinalAxisSpec(
-        renderSpec: charts.GridlineRendererSpec(),
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+        tickProviderSpec: new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
       ),
+      secondaryMeasureAxis: new charts.NumericAxisSpec(
+        tickProviderSpec: new charts.BasicNumericTickProviderSpec(desiredTickCount: 3),
+      ),
+      // domainAxis: charts.DateTimeAxisSpec(
+      //   tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+      //     day: charts.TimeFormatterSpec(
+      //       format: 'dd',
+      //       transitionFormat: 'dd MMM',
+      //     ),
+      //   ),
+      // ),
     );
   }
 
