@@ -27,7 +27,7 @@ class StatisticScreen extends StatelessWidget {
           child: Column(
             children: [
               GestureDetector(
-                onTap: controller.selectDateRange,
+                onTap: controller.handleStatistic,
                 child: ListTile(
                   dense: true,
                   leading: Container(
