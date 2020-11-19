@@ -33,7 +33,8 @@ class EditTagController {
   }
 
   handleEditTag() async {
-    if (currentTag.tagName == null) return notify.error(message: 'Vui lòng thêm tên');
+    currentTag.setTagName = tagController.text.trim();
+    if (currentTag.tagName.isEmpty) return notify.error(message: 'Vui lòng thêm tên');
     if (currentTag.type == '2' && currentJar == null) {
       Notify().error(message: 'Vui lòng thêm hũ');
       return;
@@ -86,10 +87,6 @@ class EditTagController {
 
   updateCurrentJar(Jar newJar) {
     currentJar = newJar;
-  }
-
-  onChanged(value) {
-    currentTag.tagName = value.trim();
   }
 
   List<dynamic> get revenues {

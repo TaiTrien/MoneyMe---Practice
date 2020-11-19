@@ -20,22 +20,28 @@ class HomeScreen extends StatelessWidget {
 
     return Material(
       color: Theme.of(context).primaryColor,
-      child: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
-        child: Container(
-          height: size.height,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.toAddTransactionScreen,
+          child: Icon(Icons.add),
+          backgroundColor: kPrimaryColor,
+        ),
+        body: Container(
+          color: kSecondaryColor,
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal, vertical: kDefaultPaddingVertical),
-                child: Container(
-                  padding: EdgeInsets.only(top: kDefaultPaddingVertical),
-                  child: Text(
-                    'Chào ${controller.userName}',
-                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
-                  ),
+              Container(
+                padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
+                child: Text(
+                  'Xin chào ${controller.userName}',
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
+              SizedBox(height: 20),
               RemainMoneyCard(
                 controller: controller,
               ),
@@ -45,7 +51,7 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 25.0),
+                  padding: EdgeInsets.only(right: 25.0, left: 25.0, top: 25.0),
                   decoration: BoxDecoration(
                     color: Color(0xFFf7f9fc),
                     borderRadius: BorderRadius.only(
@@ -53,18 +59,21 @@ class HomeScreen extends StatelessWidget {
                       topRight: Radius.circular(30.0),
                     ),
                   ),
-                  child: Container(
-                    width: double.infinity,
+                  child: SingleChildScrollView(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ExpenseHistoryBoard(
                           size: size,
                           controller: controller,
                         ),
                         SizedBox(height: 20.0),
-                        JarsListBoard(
-                          size: size,
-                          controller: controller,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 320),
+                          child: JarsListBoard(
+                            size: size,
+                            controller: controller,
+                          ),
                         ),
                       ],
                     ),

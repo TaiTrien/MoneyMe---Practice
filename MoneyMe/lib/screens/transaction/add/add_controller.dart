@@ -45,10 +45,26 @@ class AddController {
     price = _transactionBloc.state.currentTransaction.price;
     tagID = (_tagBloc.state.selectedTag != null) ? _tagBloc.state.selectedTag.tagID : '';
 
-    if (date.isEmpty || price.isEmpty || tagID.isEmpty) {
+    if (date.isEmpty) {
       Notify notify = Notify();
-      return notify.error(message: 'Cần điền đầy đủ thông tin');
+      return notify.error(message: 'Vui lòng điền ngày giao dịch');
     }
+
+    if (price.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng điền số tiền giao dịch');
+    }
+
+    if (tagID.isEmpty) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng chọn hạng mục');
+    }
+
+    if (int.tryParse(price) < 100) {
+      Notify notify = Notify();
+      return notify.error(message: 'Vui lòng nhập số tiền lớn hơn 100 đồng');
+    }
+
     if (_tagBloc.state.selectedTag == null) return;
 
     Transaction newTransaction = new Transaction(date: date, desc: desc, price: price, tagID: tagID);
@@ -83,7 +99,6 @@ class AddController {
         text: "Thêm giao dịch thất bại",
       );
     }
-
     addSuccessfully();
   }
 
@@ -92,19 +107,17 @@ class AddController {
     await loadTransactionsData();
     resetData();
     Services.hideKeyboard(context);
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      title: 'Hoàn tất',
-      confirmBtnText: 'Xong',
-      confirmBtnColor: Colors.green,
-      text: "Giao dịch của bạn đã được thêm thành công",
-    );
+    Navigator.pop(context);
+    Notify().success(message: "Thêm giao dịch thành công");
   }
 
   void toCategoriesScreen() {
     Navigator.pushNamed(context, '/categoriesScreen');
     Services.hideKeyboard(context);
+  }
+
+  void toExit() {
+    Navigator.pop(context);
   }
 
   initData() {

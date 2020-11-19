@@ -69,7 +69,6 @@ class _EditTagScreenState extends State<EditTagScreen> {
                     child: Container(
                       padding: EdgeInsets.only(right: kDefaultPaddingHorizontal),
                       child: TextField(
-                        onChanged: controller.onChanged,
                         maxLines: 1,
                         controller: controller.tagController,
                         cursorColor: kPrimaryColor,

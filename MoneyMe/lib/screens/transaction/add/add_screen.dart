@@ -16,8 +16,23 @@ class AddTransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = AddController(context: context);
     return Material(
-      child: SafeArea(
-        child: GestureDetector(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: FlatButton(
+            onPressed: controller.toExit,
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+          title: Text(
+            'Thêm giao dịch',
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: kSecondaryColor,
+        ),
+        body: GestureDetector(
           onTap: () => Services.hideKeyboard(context),
           child: Container(
             color: kSecondaryColor,
@@ -26,6 +41,7 @@ class AddTransactionScreen extends StatelessWidget {
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -44,23 +60,21 @@ class AddTransactionScreen extends StatelessWidget {
                         vertical: kDefaultPaddingVertical,
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             alignment: Alignment.center,
                             child: Text(
-                              'Thêm giao dịch',
+                              'Điền thông tin giao dịch',
                               style: kTitleTextStyle,
                             ),
                           ),
-                          SizedBox(height: kDefaultPaddingVertical),
                           BlocBuilder<TagBloc, TagState>(
                             builder: (context, state) {
                               return Container(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: TagButton(
                                   onTap: controller.toCategoriesScreen,
-                                  title: (state.selectedTag != null) ? (state.selectedTag.tagName ?? 'Chọn danh mục') : 'Chọn danh mục',
+                                  title: (state.selectedTag != null) ? (state.selectedTag.tagName ?? 'Chọn hạng mục') : 'Chọn hạng mục',
                                   iconName: (state.selectedTag != null) ? (state.selectedTag.icon.substring(4) ?? 'menu') : 'menu',
                                 ),
                               );

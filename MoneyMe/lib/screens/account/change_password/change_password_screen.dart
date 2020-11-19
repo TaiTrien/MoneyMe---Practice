@@ -13,7 +13,7 @@ class ChangePasswordScreen extends StatelessWidget {
         centerTitle: true,
         leading: FlatButton(
           child: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: Colors.white,
           ),
           onPressed: () => Navigator.pop(context),
