@@ -9,15 +9,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BarValue {
   final String time;
   final int value;
-
-  BarValue({this.time, this.value, Color color});
+  final charts.Color color;
+  BarValue({this.time, this.value, this.color});
 }
 
 // ignore: must_be_immutable
 class ChartsDemo extends StatefulWidget {
   ChartsDemo() : super();
-  List<Transaction> expenses;
-  List<Transaction> revenues;
+  List<Transaction> transactions;
   TransactionBloc _transactionBloc;
 
   @override
@@ -29,49 +28,31 @@ class ChartsDemoState extends State<ChartsDemo> {
   void initState() {
     super.initState();
     widget._transactionBloc = BlocProvider.of<TransactionBloc>(context);
-    widget.expenses = widget._transactionBloc.state.expenses;
-    widget.revenues = widget._transactionBloc.state.revenues;
+    widget.transactions = widget._transactionBloc.state.transactionsList;
+
     seriesList = _createRandomData();
   }
 
-  //
   List<charts.Series> seriesList;
 
   List<charts.Series<BarValue, String>> _createRandomData() {
-    final expenses = widget.expenses
+    final transactions = widget.transactions
         .map(
-          (expense) => BarValue(
-            time: expense.date,
-            value: int.tryParse(expense.price),
+          (transaction) => BarValue(
+            time: transaction.date,
+            value: int.tryParse(transaction.price),
+            color: transaction.type == '1' ? charts.MaterialPalette.green.shadeDefault : charts.MaterialPalette.red.shadeDefault,
           ),
         )
         .toList();
-    final revenues = widget.revenues
-        .map(
-          (revenue) => BarValue(
-            time: revenue.date,
-            value: int.tryParse(revenue.price),
-          ),
-        )
-        .toList();
+
     return [
-      charts.Series<BarValue, String>(
-        id: 'Revenue',
-        domainFn: (BarValue transaction, _) => transaction.time.toString(),
-        measureFn: (BarValue transaction, _) => transaction.value,
-        data: revenues,
-        fillColorFn: (BarValue transaction, _) {
-          return charts.MaterialPalette.green.shadeDefault;
-        },
-      ),
       charts.Series<BarValue, String>(
         id: 'Expenses',
         domainFn: (BarValue transaction, _) => transaction.time.toString(),
         measureFn: (BarValue transaction, _) => transaction.value,
-        data: expenses,
-        fillColorFn: (BarValue transaction, _) {
-          return charts.MaterialPalette.red.shadeDefault;
-        },
+        data: transactions,
+        fillColorFn: (BarValue transaction, _) => transaction.color,
       ),
     ];
   }
@@ -85,6 +66,7 @@ class ChartsDemoState extends State<ChartsDemo> {
       defaultRenderer: charts.BarRendererConfig(
         groupingType: charts.BarGroupingType.grouped,
       ),
+
       // domainAxis: new charts.DateTimeAxisSpec(
       //   tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
       //   tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(

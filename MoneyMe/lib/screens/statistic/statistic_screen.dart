@@ -1,5 +1,5 @@
 import 'package:MoneyMe/constants.dart';
-import 'package:MoneyMe/screens/statistic/components/statistic_option.dart';
+import 'package:MoneyMe/screens/statistic/components/chart_bar.dart';
 import 'package:flutter/material.dart';
 
 class StatisticScreen extends StatelessWidget {
@@ -44,11 +44,10 @@ class StatisticScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
             Expanded(
               child: Container(
                 width: double.infinity,
-                child: StatisticOption(),
+                child: ChartsDemo(),
               ),
             ),
           ],
