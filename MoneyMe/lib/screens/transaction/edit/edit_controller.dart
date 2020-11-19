@@ -220,7 +220,7 @@ class EditController {
     int transactionsListLength = int.parse(transactionsListData.data["total"]);
 
     for (int i = 0; i < transactionsListLength; i++) {
-      Transaction transaction = Transaction.map(transactionsListData.data, i);
+      Transaction transaction = Transaction.map(transactionsListData.data["items"][i]);
       transaction.date = Formatter.formatDate(transaction.date);
       transactionsList.add(transaction);
     }

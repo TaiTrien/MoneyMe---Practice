@@ -81,23 +81,6 @@ class ChartsDemoState extends State<ChartsDemo> {
         ),
       ),
     );
-    // return charts.BarChart(
-    //   seriesList,
-    //   animate: true,
-    //   vertical: true,
-    //   barGroupingType: charts.BarGroupingType.grouped,
-    //   defaultRenderer: charts.BarRendererConfig(
-    //     groupingType: charts.BarGroupingType.grouped,
-    //   ),
-    //   domainAxis: new charts.OrdinalAxisSpec(
-    //     renderSpec: charts.SmallTickRendererSpec(
-    //       labelRotation: -45,
-    //       labelAnchor: charts.TickLabelAnchor.after,
-    //       labelOffsetFromAxisPx: 50,
-    //       labelOffsetFromTickPx: 50,
-    //     ),
-    //   ),
-    // );
   }
 
   @override
@@ -108,7 +91,7 @@ class ChartsDemoState extends State<ChartsDemo> {
         builder: (context, state) {
           return Container(
             padding: EdgeInsets.all(20.0),
-            child: state.transactionsList.isEmpty ? Center(child: Text('Bạn chưa có giao dịch nào gần đây')) : barChart(),
+            child: widget.transactions == null ? Center(child: Text('Bạn chưa có giao dịch nào gần đây')) : barChart(),
           );
         },
       ),

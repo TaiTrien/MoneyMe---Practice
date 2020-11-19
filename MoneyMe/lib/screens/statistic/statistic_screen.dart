@@ -1,12 +1,15 @@
+import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/statistic/components/chart_bar.dart';
 import 'package:MoneyMe/screens/statistic/statistic_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatisticScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var controller = StatisticController(context: context);
+    StatisticController controller = StatisticController(context: context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -60,8 +63,12 @@ class StatisticScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 500,
-                child: ChartsDemo(
-                  transactions: controller.transactions,
+                child: BlocBuilder<TransactionBloc, TransactionState>(
+                  builder: (context, state) {
+                    return ChartsDemo(
+                      transactions: controller.transactions,
+                    );
+                  },
                 ),
               ),
             ],

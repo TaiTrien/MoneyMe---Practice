@@ -17,18 +17,18 @@ class Transaction {
         _price = price,
         _tagID = tagID;
 
-  Transaction.map(dynamic obj, int index) {
-    this._inputID = obj["items"][index]["input_id"];
-    this._tagName = obj["items"][index]["tag_name"];
-    this._tagID = obj["items"][index]["tag_id"];
-    this._icon = obj["items"][index]["icon"];
-    this._desc = obj["items"][index]["desc"];
-    this._price = obj["items"][index]["price"];
-    this._date = obj["items"][index]["date"];
-    this._type = obj["items"][index]["type"];
-    this._jarName = obj["items"][index]["jar_name"];
-    this._jarTitle = obj["items"][index]["jar_title"];
-    this._jarIcon = obj["items"][index]["jar_icon"];
+  Transaction.map(dynamic obj) {
+    this._inputID = obj["input_id"];
+    this._tagName = obj["tag_name"];
+    this._tagID = obj["tag_id"];
+    this._icon = obj["icon"];
+    this._desc = obj["desc"];
+    this._price = obj["price"];
+    this._date = obj["date"];
+    this._type = obj["type"];
+    this._jarName = obj["jar_name"];
+    this._jarTitle = obj["jar_title"];
+    this._jarIcon = obj["jar_icon"];
   }
 
   String get inputId => this._inputID;
