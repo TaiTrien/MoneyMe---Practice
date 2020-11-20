@@ -50,7 +50,12 @@ class ChartsDemoState extends State<ChartsDemo> {
         .toList()
         .reversed
         .toList(); //to reorder transactions
-
+    // final data = [
+    //   new BarValue(time: DateTime(2017, 9, 19), value: 10, color: charts.MaterialPalette.red.shadeDefault),
+    //   new BarValue(time: DateTime(2017, 9, 19), value: 5, color: charts.MaterialPalette.green.shadeDefault),
+    //   new BarValue(time: DateTime(2017, 9, 19), value: 5, color: charts.MaterialPalette.green.shadeDefault),
+    //   new BarValue(time: DateTime(2017, 9, 19), value: 5, color: charts.MaterialPalette.green.shadeDefault),
+    // ];
     return [
       charts.Series<BarValue, DateTime>(
         id: 'Transactions monthly',
@@ -74,10 +79,13 @@ class ChartsDemoState extends State<ChartsDemo> {
         // dynamically.
         new charts.PanAndZoomBehavior(),
       ],
-      domainAxis: new charts.DateTimeAxisSpec(
-        tickProviderSpec: charts.AutoDateTimeTickProviderSpec(includeTime: true),
-        tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-          day: new charts.TimeFormatterSpec(format: 'd', transitionFormat: 'dd/MM/yyyy'),
+      dateTimeFactory: const charts.LocalDateTimeFactory(),
+      domainAxis: charts.DateTimeAxisSpec(
+        tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+          day: charts.TimeFormatterSpec(
+            format: 'dd/MM/yyyy',
+            transitionFormat: 'dd/MM/yyyy',
+          ),
         ),
       ),
     );
