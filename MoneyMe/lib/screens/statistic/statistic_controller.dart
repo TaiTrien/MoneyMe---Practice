@@ -11,33 +11,15 @@ import 'package:intl/intl.dart';
 class StatisticController {
   BuildContext context;
   TransactionBloc _transactionBloc;
-  List<Transaction> transactionList = List<Transaction>();
 
   StatisticController({this.context}) {
     _transactionBloc = BlocProvider.of<TransactionBloc>(context);
-    initStatistic();
-  }
-  initStatistic() async {
-    var formatter = new DateFormat('yyyy-MM-dd');
-    DateTime firstDay = DateTime(DateTime.now().year, DateTime.now().month, 1);
-    DateTime lastday = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
-
-    var startDate = formatter.format(firstDay).toString();
-    var endDate = formatter.format(lastday).toString();
-
-    var transactions = await StatisticApi.getStatistic(startDate, endDate);
-    if (transactions == null) return Notify().error(message: 'Thống kê thất bại');
-
-    int transactionsListLength = transactions.length;
-    for (int i = 0; i < transactionsListLength; i++) {
-      Transaction transaction = Transaction.map(transactions[i]);
-      transaction.date = Formatter.formatDate(transaction.date);
-      transactionList.add(transaction);
-    }
-    _transactionBloc.add(LoadStatisticTransaction(transactionList));
+    //initStatistic();
   }
 
   handleStatistic() async {
+    List<Transaction> transactionList = List<Transaction>();
+
     var dateRange = await selectDateRange();
     if (dateRange == null) return;
 

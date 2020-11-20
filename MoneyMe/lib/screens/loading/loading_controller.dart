@@ -1,4 +1,5 @@
 import 'package:MoneyMe/api/jar_api.dart';
+import 'package:MoneyMe/api/statistic_api.dart';
 import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/api/user_api.dart';
@@ -6,6 +7,7 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
+import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
@@ -16,6 +18,7 @@ import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class LoadingController {
   BuildContext context;
@@ -41,7 +44,7 @@ class LoadingController {
     await loadJarsData();
     await loadTransactionsData();
     await loadTagsData();
-
+    await loadThisMonthReport();
     try {
       return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
     } catch (e) {
@@ -103,5 +106,27 @@ class LoadingController {
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
+  }
+
+  Future<void> loadThisMonthReport() async {
+    List<Transaction> transactionList = List<Transaction>();
+
+    var formatter = new DateFormat('yyyy-MM-dd');
+    DateTime firstDay = DateTime(DateTime.now().year, DateTime.now().month, 1);
+    DateTime lastday = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+
+    var startDate = formatter.format(firstDay).toString();
+    var endDate = formatter.format(lastday).toString();
+
+    var transactions = await StatisticApi.getStatistic(startDate, endDate);
+    if (transactions == null) return Notify().error(message: 'Thống kê thất bại');
+
+    int transactionsListLength = transactions.length;
+    for (int i = 0; i < transactionsListLength; i++) {
+      Transaction transaction = Transaction.map(transactions[i]);
+      transaction.date = Formatter.formatDate(transaction.date);
+      transactionList.add(transaction);
+    }
+    _transactionBloc.add(LoadStatisticTransaction(transactionList));
   }
 }
