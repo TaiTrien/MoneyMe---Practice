@@ -39,7 +39,9 @@ class ChartsDemoState extends State<ChartsDemo> {
   }
 
   List<charts.Series<BarValue, DateTime>> _createRandomData() {
-    final transactions = widget.transactions
+    var transactions = widget.transactions;
+
+    var barValues = transactions
         .map(
           (transaction) => BarValue(
             time: convertToDateTime(transaction),
@@ -50,6 +52,7 @@ class ChartsDemoState extends State<ChartsDemo> {
         .toList()
         .reversed
         .toList(); //to reorder transactions
+
     // final data = [
     //   new BarValue(time: DateTime(2017, 9, 19), value: 10, color: charts.MaterialPalette.red.shadeDefault),
     //   new BarValue(time: DateTime(2017, 9, 19), value: 5, color: charts.MaterialPalette.green.shadeDefault),
@@ -61,7 +64,7 @@ class ChartsDemoState extends State<ChartsDemo> {
         id: 'Transactions monthly',
         domainFn: (BarValue transaction, _) => transaction.time,
         measureFn: (BarValue transaction, _) => transaction.value,
-        data: transactions,
+        data: barValues,
         fillColorFn: (BarValue transaction, _) => transaction.color,
       ),
     ];
@@ -99,7 +102,12 @@ class ChartsDemoState extends State<ChartsDemo> {
         builder: (context, state) {
           return Container(
             padding: EdgeInsets.all(20.0),
-            child: widget.transactions == null ? Center(child: Text('Bạn chưa có giao dịch nào gần đây')) : barChart(),
+            child: widget.transactions == null
+                ? Center(
+                    child: Text(
+                    'Bạn chưa có giao dịch nào gần đây',
+                  ))
+                : barChart(),
           );
         },
       ),
