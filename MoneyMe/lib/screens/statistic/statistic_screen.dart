@@ -1,9 +1,8 @@
-import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/statistic/components/chart_bar.dart';
 import 'package:MoneyMe/screens/statistic/statistic_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class StatisticScreen extends StatelessWidget {
   @override
@@ -60,16 +59,47 @@ class StatisticScreen extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              Container(
-                width: double.infinity,
-                height: 500,
-                child: BlocBuilder<TransactionBloc, TransactionState>(
-                  builder: (context, state) {
-                    return ChartsDemo(
-                      transactions: controller.transactions,
-                    );
-                  },
-                ),
+              FutureBuilder<dynamic>(
+                future: controller.handleStatistic(), // async work
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Container(
+                        height: 500,
+                        child: Center(
+                          child: ModalProgressHUD(
+                            color: Colors.transparent,
+                            inAsyncCall: true,
+                            child: Container(),
+                          ),
+                        ),
+                      );
+                    default:
+                      if (snapshot.hasError)
+                        return Container(
+                          height: 500,
+                          child: Center(
+                            child: Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        );
+                      else
+                        return Container(
+                          width: double.infinity,
+                          height: 500,
+                          child: Center(
+                            child: ChartsDemo(
+                              transactions: snapshot.data,
+                            ),
+                          ),
+                        );
+                  }
+                },
               ),
             ],
           ),

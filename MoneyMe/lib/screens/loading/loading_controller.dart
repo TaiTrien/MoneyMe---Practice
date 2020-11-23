@@ -44,7 +44,6 @@ class LoadingController {
     await loadJarsData();
     await loadTransactionsData();
     await loadTagsData();
-    await loadThisMonthReport();
     try {
       return Navigator.pushNamedAndRemoveUntil(context, '/mainScreen', (_) => false);
     } catch (e) {
@@ -106,27 +105,5 @@ class LoadingController {
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
-  }
-
-  Future<void> loadThisMonthReport() async {
-    List<Transaction> transactionList = List<Transaction>();
-
-    var formatter = new DateFormat('yyyy-MM-dd');
-    DateTime firstDay = DateTime(DateTime.now().year, DateTime.now().month, 1);
-    DateTime lastday = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
-
-    var startDate = formatter.format(firstDay).toString();
-    var endDate = formatter.format(lastday).toString();
-
-    var transactions = await StatisticApi.getStatistic(startDate, endDate);
-    if (transactions == null) return Notify().error(message: 'Thống kê thất bại');
-
-    int transactionsListLength = transactions.length;
-    for (int i = 0; i < transactionsListLength; i++) {
-      Transaction transaction = Transaction.map(transactions[i]);
-      transaction.date = Formatter.formatDate(transaction.date);
-      transactionList.add(transaction);
-    }
-    _transactionBloc.add(LoadStatisticTransaction(transactionList));
   }
 }

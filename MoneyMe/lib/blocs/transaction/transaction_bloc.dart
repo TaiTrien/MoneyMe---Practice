@@ -16,8 +16,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   ) async* {
     if (event is LoadTransactionsData) {
       yield UpdateState(state, listTransactions: event.payload);
-    } else if (event is LoadStatisticTransaction) {
-      yield UpdateState(state, statisticTransactions: event.payload);
     } else if (event is GetCurrentTransaction) {
       yield UpdateState(state, currentTransaction: event.payload);
     } else if (event is ResetCurrentTransaction) {

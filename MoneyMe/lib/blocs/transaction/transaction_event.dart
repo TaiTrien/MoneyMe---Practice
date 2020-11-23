@@ -10,10 +10,6 @@ class LoadTransactionsData extends TransactionEvent {
   LoadTransactionsData(List<Transaction> listTransactions) : super(payload: listTransactions);
 }
 
-class LoadStatisticTransaction extends TransactionEvent {
-  LoadStatisticTransaction(List<Transaction> statisticTransactions) : super(payload: statisticTransactions);
-}
-
 class GetCurrentTransaction extends TransactionEvent {
   GetCurrentTransaction(Transaction currentTransaction) : super(payload: currentTransaction);
 }
