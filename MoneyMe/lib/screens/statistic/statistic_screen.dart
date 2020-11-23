@@ -2,7 +2,6 @@ import 'package:MoneyMe/blocs/statistic/statistic_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/statistic/components/chart_bar.dart';
 import 'package:MoneyMe/screens/statistic/statistic_controller.dart';
-import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -52,7 +51,7 @@ class StatisticScreen extends StatelessWidget {
                         transform: Matrix4.translationValues(-20, 0.0, 0.0),
                         child: Text(
                           '${controller.formatter.format(state.startDate)}  ~  ${controller.formatter.format(state.endDate)}',
-                          style: kTitleTextStyle.copyWith(fontSize: 16.0),
+                          style: kTitleTextStyle.copyWith(fontSize: 20.0),
                         ),
                       );
                     },

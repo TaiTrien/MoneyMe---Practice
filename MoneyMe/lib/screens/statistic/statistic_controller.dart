@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 
 class StatisticController {
   BuildContext context;
-  List<Transaction> transactionList = List<Transaction>();
   StatisticBloc _statisticBloc;
   var formatter = new DateFormat('dd-MM-yyyy');
 
@@ -19,6 +18,8 @@ class StatisticController {
   }
 
   Future<List<Transaction>> handleStatistic() async {
+    List<Transaction> transactionList = List<Transaction>();
+
     var startDate = formatter.format(_statisticBloc.state.startDate).toString();
     var endDate = formatter.format(_statisticBloc.state.endDate).toString();
 
@@ -45,6 +46,4 @@ class StatisticController {
     if (dateRange == null) return;
     _statisticBloc.add(LoadStatistic(dateRange.start, dateRange.end));
   }
-
-  get transactions => transactionList;
 }

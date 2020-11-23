@@ -114,8 +114,7 @@ class ChartsState extends State<Charts> {
           new charts.SlidingViewport(),
           new charts.PanAndZoomBehavior(),
         ],
-        defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-        dateTimeFactory: const charts.LocalDateTimeFactory(),
+        defaultRenderer: charts.BarRendererConfig<DateTime>(),
         domainAxis: charts.DateTimeAxisSpec(
           tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
             day: charts.TimeFormatterSpec(
