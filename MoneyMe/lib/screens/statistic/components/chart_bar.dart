@@ -1,7 +1,6 @@
 import 'package:MoneyMe/models/transaction.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BarValue {
   final DateTime time;
@@ -31,7 +30,7 @@ class ChartsDemoState extends State<ChartsDemo> {
   }
 
   convertToDateTime(String transactionDate) {
-    List<String> splittedDate = transactionDate.split('/');
+    List<String> splittedDate = transactionDate.split('-');
     int day = int.tryParse(splittedDate[0]);
     int month = int.tryParse(splittedDate[1]);
     int year = int.tryParse(splittedDate[2]);
