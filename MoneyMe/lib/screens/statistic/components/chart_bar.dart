@@ -88,14 +88,14 @@ class ChartsState extends State<Charts> {
 
     return [
       charts.Series<BarValue, DateTime>(
-        id: 'revenues monthly',
+        id: 'Mức thu',
         domainFn: (BarValue transaction, _) => transaction.time,
         measureFn: (BarValue transaction, _) => transaction.value,
         data: revenues,
         colorFn: (BarValue transaction, _) => transaction.color,
       ),
       charts.Series<BarValue, DateTime>(
-        id: 'expenses monthly',
+        id: 'Mức chi',
         domainFn: (BarValue transaction, _) => transaction.time,
         measureFn: (BarValue transaction, _) => transaction.value,
         data: expenses,
@@ -110,15 +110,20 @@ class ChartsState extends State<Charts> {
       return new charts.TimeSeriesChart(
         seriesList,
         animate: true,
+        defaultRenderer: charts.LineRendererConfig<DateTime>(),
+        primaryMeasureAxis: new charts.NumericAxisSpec(),
         behaviors: [
-          new charts.SlidingViewport(),
-          new charts.PanAndZoomBehavior(),
+          new charts.SeriesLegend(),
         ],
-        defaultRenderer: charts.BarRendererConfig<DateTime>(),
         domainAxis: charts.DateTimeAxisSpec(
+          tickProviderSpec: charts.AutoDateTimeTickProviderSpec(includeTime: false),
           tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
             day: charts.TimeFormatterSpec(
               format: 'dd/MM/yyyy',
+              transitionFormat: 'dd/MM/yyyy',
+            ),
+            hour: charts.TimeFormatterSpec(
+              format: '',
               transitionFormat: 'dd/MM/yyyy',
             ),
           ),
@@ -130,11 +135,13 @@ class ChartsState extends State<Charts> {
       resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.all(20.0),
-        child: widget.transactions == null
+        child: widget.transactions.isEmpty
             ? Center(
                 child: Text(
-                'Bạn chưa có giao dịch nào gần đây',
-              ))
+                  'Bạn chưa có giao dịch nào gần đây',
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
             : lineChart(),
       ),
     );
