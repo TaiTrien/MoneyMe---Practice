@@ -11,16 +11,16 @@ class BarValue {
 }
 
 // ignore: must_be_immutable
-class ChartsDemo extends StatefulWidget {
+class Charts extends StatefulWidget {
   final List<Transaction> transactions;
 
-  ChartsDemo({Key key, this.transactions}) : super(key: key);
+  Charts({Key key, this.transactions}) : super(key: key);
 
   @override
-  ChartsDemoState createState() => ChartsDemoState();
+  ChartsState createState() => ChartsState();
 }
 
-class ChartsDemoState extends State<ChartsDemo> {
+class ChartsState extends State<Charts> {
   List<charts.Series<BarValue, DateTime>> seriesList;
 
   @override
