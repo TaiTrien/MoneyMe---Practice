@@ -78,10 +78,23 @@ class ChartsState extends State<Charts> {
       }
     }
 
+    BarValue defaultValueRevenue = BarValue(
+      time: DateTime(DateTime.now().year, DateTime.now().month, 1),
+      value: 0,
+      color: charts.MaterialPalette.green.shadeDefault,
+    );
+    revenues.add(defaultValueRevenue);
+
     mapRevenues.entries.forEach((element) {
       revenues.add(element.value);
     });
 
+    BarValue defaultValueExpense = BarValue(
+      time: DateTime(DateTime.now().year, DateTime.now().month, 1),
+      value: 0,
+      color: charts.MaterialPalette.red.shadeDefault,
+    );
+    expenses.add(defaultValueExpense);
     mapExpenses.entries.forEach((element) {
       expenses.add(element.value);
     });

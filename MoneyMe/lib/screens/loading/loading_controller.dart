@@ -1,5 +1,4 @@
 import 'package:MoneyMe/api/jar_api.dart';
-import 'package:MoneyMe/api/statistic_api.dart';
 import 'package:MoneyMe/api/tag_api.dart';
 import 'package:MoneyMe/api/transaction_api.dart';
 import 'package:MoneyMe/api/user_api.dart';
@@ -7,7 +6,6 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
-import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/icon.dart';
 import 'package:MoneyMe/models/jar.dart';
 import 'package:MoneyMe/models/tag.dart';
@@ -18,7 +16,6 @@ import 'package:MoneyMe/utils/formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class LoadingController {
   BuildContext context;
