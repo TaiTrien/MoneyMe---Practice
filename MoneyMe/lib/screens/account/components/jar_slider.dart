@@ -80,9 +80,11 @@ class _JarSliderState extends State<JarSlider> {
                 cursorColor: kPrimaryColor,
                 focusNode: _focusNode,
                 maxLines: 1,
+                maxLength: 3,
                 decoration: InputDecoration(
                   hintText: 'Phần trăm %',
                   border: InputBorder.none,
+                  counterText: '',
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
