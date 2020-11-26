@@ -1,4 +1,5 @@
 import 'package:MoneyMe/blocs/auth/auth_bloc.dart';
+import 'package:MoneyMe/blocs/statistic/statistic_bloc.dart';
 import 'package:MoneyMe/blocs/tag/tag_bloc.dart';
 import 'package:MoneyMe/blocs/user/user_bloc.dart';
 import 'package:MoneyMe/constants.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TagBloc>(
           create: (context) => TagBloc(),
+        ),
+        BlocProvider<StatisticBloc>(
+          create: (context) => StatisticBloc(),
         ),
       ],
       child: MaterialApp(

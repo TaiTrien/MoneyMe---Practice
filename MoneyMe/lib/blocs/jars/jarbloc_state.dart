@@ -7,7 +7,7 @@ abstract class JarState {
 
   JarState({this.jarsList, this.remainPercentage});
 
-  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price) ?? 0;
+  int get remainMoney => jarsList.fold(0, (total, jar) => total + jar.price);
 }
 
 class JarblocInitial extends JarState {

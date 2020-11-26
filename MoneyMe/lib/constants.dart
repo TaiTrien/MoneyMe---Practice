@@ -19,3 +19,11 @@ const TextStyle kSubTitleTextStyle = TextStyle(
   color: Color(0xFF8f8f90),
   fontWeight: FontWeight.w500,
 );
+enum DateRange {
+  LastWeek,
+  ThisWeek,
+  LastMonth,
+  ThisMonth,
+  LastQuarter,
+  ThisQuarter,
+}

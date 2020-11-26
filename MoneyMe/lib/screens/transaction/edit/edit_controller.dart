@@ -47,7 +47,7 @@ class EditController {
     priceController.text = Formatter.formatMoney(tempTransaction.price);
     bool isDateFormatted = tempTransaction.date.contains(new RegExp(r'[/\-\_]'));
     if (!isDateFormatted)
-      dateController.text = Formatter.formatDate(tempTransaction.date);
+      dateController.text = tempTransaction.date;
     else
       dateController.text = tempTransaction.date;
 
@@ -220,7 +220,8 @@ class EditController {
     int transactionsListLength = int.parse(transactionsListData.data["total"]);
 
     for (int i = 0; i < transactionsListLength; i++) {
-      Transaction transaction = Transaction.map(transactionsListData.data, i);
+      Transaction transaction = Transaction.map(transactionsListData.data["items"][i]);
+      transaction.date = Formatter.formatDate(transaction.date);
       transactionsList.add(transaction);
     }
     _transactionBloc.add(LoadTransactionsData(transactionsList));
