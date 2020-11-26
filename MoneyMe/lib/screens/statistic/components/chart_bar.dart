@@ -15,7 +15,6 @@ class Charts extends StatefulWidget {
   final List<Transaction> transactions;
 
   Charts({Key key, this.transactions}) : super(key: key);
-
   @override
   ChartsState createState() => ChartsState();
 }
@@ -77,24 +76,27 @@ class ChartsState extends State<Charts> {
         }
       }
     }
-
     BarValue defaultValueRevenue = BarValue(
       time: DateTime(DateTime.now().year, DateTime.now().month, 1),
       value: 0,
       color: charts.MaterialPalette.green.shadeDefault,
     );
-    revenues.add(defaultValueRevenue);
-
-    mapRevenues.entries.forEach((element) {
-      revenues.add(element.value);
-    });
-
     BarValue defaultValueExpense = BarValue(
       time: DateTime(DateTime.now().year, DateTime.now().month, 1),
       value: 0,
       color: charts.MaterialPalette.red.shadeDefault,
     );
-    expenses.add(defaultValueExpense);
+
+    if (mapRevenues.length == 1) {
+      revenues.add(defaultValueRevenue);
+    }
+    mapRevenues.entries.forEach((element) {
+      revenues.add(element.value);
+    });
+
+    if (mapExpenses.length == 1) {
+      expenses.add(defaultValueExpense);
+    }
     mapExpenses.entries.forEach((element) {
       expenses.add(element.value);
     });
@@ -147,11 +149,11 @@ class ChartsState extends State<Charts> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(8.0),
         child: widget.transactions.isEmpty
             ? Center(
                 child: Text(
-                  'Bạn chưa có giao dịch nào gần đây',
+                  'Bạn chưa có giao dịch nào lúc này',
                   style: TextStyle(fontSize: 18),
                 ),
               )

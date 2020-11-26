@@ -1,6 +1,7 @@
 import 'package:MoneyMe/blocs/statistic/statistic_bloc.dart';
 import 'package:MoneyMe/constants.dart';
 import 'package:MoneyMe/screens/statistic/components/chart_bar.dart';
+import 'package:MoneyMe/screens/statistic/components/dropdown_button.dart';
 import 'package:MoneyMe/screens/statistic/statistic_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,12 +60,20 @@ class StatisticScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.0),
-              Text(
-                'Thống kê theo ngày',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Thống kê theo ngày',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  TimeRangeDropDown(
+                    onPress: controller.setDateRange,
+                  ),
+                ],
               ),
               BlocBuilder<StatisticBloc, StatisticState>(
                 builder: (context, state) {
