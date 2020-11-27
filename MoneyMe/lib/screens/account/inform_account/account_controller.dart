@@ -3,6 +3,7 @@ import 'package:MoneyMe/blocs/jars/jarbloc_bloc.dart';
 import 'package:MoneyMe/blocs/transaction/transaction_bloc.dart';
 import 'package:MoneyMe/helpers/notify.dart';
 import 'package:MoneyMe/models/jar.dart';
+import 'package:MoneyMe/utils/services.dart';
 import 'package:MoneyMe/utils/store.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -116,6 +117,14 @@ class AccountController {
   onSliderStop({double value, String jarName}) {
     while (percent < 0) {
       value--;
+      if (value < 0) {
+        value = 0;
+        break;
+      }
+      if (value > 100) {
+        value = 100;
+        break;
+      }
       if (jarName == "nec")
         necPercentage = value;
       else if (jarName == "ltss")
