@@ -92,9 +92,12 @@ class _JarSliderState extends State<JarSlider> {
 
                   if (value.trim().isEmpty) {
                     percent = 0;
-                    percentController.text = '0';
+                    percentController.text = '';
                   }
-                  if (percent > 100.0) return Notify().error(message: 'Bạn đã nhập quá 100%');
+                  if (percent > 100.0) {
+                    Notify().error(message: 'Bạn đã nhập quá 100%');
+                    percent = 100;
+                  }
                   widget.onChange(value: percent, jarName: widget.jar.jarName.toLowerCase());
                 },
                 onSubmitted: (newValue) {
