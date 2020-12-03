@@ -57,6 +57,7 @@ class CategoriesController {
       ),
     ];
   }
+
   toAddTagScreen() {
     AddTagController controller = AddTagController(context: context);
     Navigator.push(

@@ -59,6 +59,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           label: 'Mật khẩu cũ',
                           iconData: Icons.lock,
                           controller: controller.currentPasswordController,
+                          isObscured: true,
                           validator: Validator.isPassword,
                           maxLines: 1,
                           errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
@@ -67,7 +68,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           label: 'Mật khẩu mới',
                           iconData: Icons.lock,
                           controller: controller.newPasswordController,
-                          isObscured: false,
+                          isObscured: true,
                           validator: Validator.isPassword,
                           maxLines: 1,
                           errorMessage: "Mật khẩu phải bằng hoặc hơn 8 ký tự",
@@ -76,7 +77,7 @@ class ChangePasswordScreen extends StatelessWidget {
                           label: 'Nhập lại mật khẩu mới',
                           iconData: Icons.lock,
                           controller: controller.retypedPasswordController,
-                          isObscured: false,
+                          isObscured: true,
                           maxLines: 1,
                           validator: (value) {
                             return (value == controller.newPassword);
