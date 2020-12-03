@@ -48,16 +48,12 @@ class AccountController {
 
   handleUpdatePercentage() async {
     if (percent.toInt() < 0) {
-      notify.error(
-        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
-      );
+      notify.error(message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %");
       return;
     }
 
     if (percent.toInt() > 0 && percent.toInt() < 100) {
-      notify.error(
-        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
-      );
+      notify.error(message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật");
       return;
     }
 
