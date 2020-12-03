@@ -51,7 +51,7 @@ class StatisticScreen extends StatelessWidget {
                       return Transform(
                         transform: Matrix4.translationValues(-20, 0.0, 0.0),
                         child: Text(
-                          '${controller.formatter.format(state.startDate)}  ~  ${controller.formatter.format(state.endDate)}',
+                          '${controller.formatter.format(state.startDate)} ~ ${controller.formatter.format(state.endDate)}',
                           style: kTitleTextStyle.copyWith(fontSize: 20.0),
                         ),
                       );
