@@ -18,39 +18,40 @@ class HomeScreen extends StatelessWidget {
     var controller = HomeController(context: context);
     var size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.toAddTransactionScreen,
-        child: Icon(Icons.add),
-        backgroundColor: kPrimaryColor,
-      ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: size.height),
-          child: Container(
-            color: kSecondaryColor,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
-                  child: Text(
-                    'Xin chào ${controller.userName}',
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+    return Material(
+      color: Theme.of(context).primaryColor,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.toAddTransactionScreen,
+          child: Icon(Icons.add),
+          backgroundColor: kPrimaryColor,
+        ),
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: size.height - 60),
+            child: Container(
+              color: kSecondaryColor,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
+                    child: Text(
+                      'Xin chào ${controller.userName}',
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                RemainMoneyCard(
-                  controller: controller,
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Expanded(
-                  child: Container(
+                  SizedBox(height: 20),
+                  RemainMoneyCard(
+                    controller: controller,
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Container(
                     width: double.infinity,
                     padding: EdgeInsets.only(right: 25.0, left: 25.0, top: 25.0),
                     decoration: BoxDecoration(
@@ -68,15 +69,18 @@ class HomeScreen extends StatelessWidget {
                           controller: controller,
                         ),
                         SizedBox(height: 20.0),
-                        JarsListBoard(
-                          size: size,
-                          controller: controller,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: size.height * 0.5),
+                          child: JarsListBoard(
+                            size: size,
+                            controller: controller,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
