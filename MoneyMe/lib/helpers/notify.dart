@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,13 @@ class Notify {
     this.show(message: message, color: Color(0xFF9199a1), timeout: timeout);
   }
 
-  show({String message, Color color, fontColor = Colors.white, int timeout}) {
+  show({String message, Color color, fontColor = Colors.white, int timeout}) async {
     try {
+      try {
+        MethodChannel _channel = const MethodChannel('PonnamKarthik/fluttertoast');
+        bool res = await _channel.invokeMethod("cancel");
+      } catch (e) {}
+
       Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,

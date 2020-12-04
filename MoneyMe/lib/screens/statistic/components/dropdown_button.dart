@@ -23,50 +23,63 @@ class _TimeRangeDropDownState extends State<TimeRangeDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<DateRange>(
-      value: dropdownValue,
-      icon: Icon(Icons.arrow_downward, color: kPrimaryColor),
-      iconSize: 24,
-      elevation: 16,
-      hint: Text(
-        'Chọn khoảng thời gian',
-        style: TextStyle(
-          fontWeight: FontWeight.w400,
-          color: kPrimaryColor,
-          fontSize: 16,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shadows: [
+          BoxShadow(
+            blurRadius: 2.0,
+            color: Colors.black45,
+            offset: Offset(0, 2),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
       ),
-      style: TextStyle(color: kPrimaryColor),
-      underline: Container(
-        height: 2,
-        color: kPrimaryColor,
-      ),
-      onChanged: (DateRange newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
-      items: <DateRange>[
-        DateRange.ThisWeek,
-        DateRange.LastWeek,
-        DateRange.ThisMonth,
-        DateRange.LastMonth,
-        DateRange.ThisQuarter,
-        DateRange.LastQuarter,
-      ].map<DropdownMenuItem<DateRange>>((DateRange value) {
-        return DropdownMenuItem<DateRange>(
-          onTap: widget.onPress(dropdownValue),
-          value: value,
-          child: Text(
-            dictionary.entries.firstWhere((element) => element.key == value).value,
-            style: TextStyle(
-              color: kPrimaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
+      child: DropdownButton<DateRange>(
+        value: dropdownValue,
+        icon: Icon(Icons.arrow_drop_down, color: kPrimaryColor),
+        iconSize: 24,
+        elevation: 16,
+        underline: Container(height: 2, color: Colors.transparent),
+        hint: Text(
+          'Chọn khoảng thời gian',
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            color: kPrimaryColor,
+            fontSize: 16,
           ),
-        );
-      }).toList(),
+        ),
+        style: TextStyle(color: kPrimaryColor),
+        onChanged: (DateRange newValue) {
+          setState(() {
+            dropdownValue = newValue;
+          });
+        },
+        items: <DateRange>[
+          DateRange.ThisWeek,
+          DateRange.LastWeek,
+          DateRange.ThisMonth,
+          DateRange.LastMonth,
+          DateRange.ThisQuarter,
+          DateRange.LastQuarter,
+        ].map<DropdownMenuItem<DateRange>>((DateRange value) {
+          return DropdownMenuItem<DateRange>(
+            onTap: widget.onPress(dropdownValue),
+            value: value,
+            child: Text(
+              dictionary.entries.firstWhere((element) => element.key == value).value,
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }

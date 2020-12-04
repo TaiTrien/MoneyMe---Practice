@@ -25,16 +25,12 @@ class JarSlider extends StatefulWidget {
 class _JarSliderState extends State<JarSlider> {
   double value;
   TextEditingController percentController;
-  FocusNode _focusNode;
   @override
   void initState() {
     super.initState();
     percentController = TextEditingController();
     value = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
     percentController.text = value.toInt().toString();
-
-    _focusNode = new FocusNode();
-    _focusNode.addListener(() => updatePercent(value));
   }
 
   void updatePercent(double newValue) {
@@ -75,32 +71,44 @@ class _JarSliderState extends State<JarSlider> {
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: percentController,
-                cursorColor: kPrimaryColor,
-                focusNode: _focusNode,
-                maxLines: 1,
-                decoration: InputDecoration(
-                  hintText: 'Phần trăm %',
-                  border: InputBorder.none,
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  double percent = double.tryParse(value);
-
-                  if (value.trim().isEmpty) {
-                    percent = 0;
-                    percentController.text = '0';
+              child: Focus(
+                onFocusChange: (hasFocus) {
+                  if (!hasFocus) {
+                    value = widget.getValue(jarName: widget.jar.jarName.toLowerCase());
+                    updatePercent(value);
                   }
-                  if (percent > 100.0) return Notify().error(message: 'Bạn đã nhập quá 100%');
-                  widget.onChange(value: percent, jarName: widget.jar.jarName.toLowerCase());
                 },
-                onSubmitted: (newValue) {
-                  newValue = newValue.trim();
-                  double percent = double.tryParse(newValue);
-                  int value = widget.onStop(value: percent, jarName: widget.jar.jarName.toLowerCase());
-                  percentController.text = value.toString();
-                },
+                child: TextField(
+                  controller: percentController,
+                  cursorColor: kPrimaryColor,
+                  maxLines: 1,
+                  maxLength: 3,
+                  decoration: InputDecoration(
+                    hintText: 'Phần trăm %',
+                    border: InputBorder.none,
+                    counterText: '',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    double percent = double.tryParse(value);
+
+                    if (value.trim().isEmpty) {
+                      percent = 0;
+                      percentController.text = '';
+                    }
+                    if (percent > 100.0) {
+                      Notify().error(message: 'Bạn đã nhập quá 100%');
+                      percent = 100;
+                    }
+                    widget.onChange(value: percent, jarName: widget.jar.jarName.toLowerCase());
+                  },
+                  onSubmitted: (newValue) {
+                    newValue = newValue.trim();
+                    double percent = double.tryParse(newValue);
+                    int value = widget.onStop(value: percent, jarName: widget.jar.jarName.toLowerCase());
+                    percentController.text = value.toString();
+                  },
+                ),
               ),
             ),
             Text(

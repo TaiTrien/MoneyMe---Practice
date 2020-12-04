@@ -18,12 +18,12 @@ class ExpenseHistoryBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 400),
-      child: BlocBuilder<TransactionBloc, TransactionState>(
-        builder: (context, state) {
-          return Container(
-            height: (state.transactionsList.length == 0) ? 100 : state.transactionsList.length * 90.0,
+    return BlocBuilder<TransactionBloc, TransactionState>(
+      builder: (context, state) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 350),
+          child: Container(
+            height: (state.transactionsList.length == 0 || state.transactionsList.length == 1) ? 150 : (state.transactionsList.length) * 0.2 * size.height,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -32,16 +32,14 @@ class ExpenseHistoryBoard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kDefaultPaddingHorizontal),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Lịch sử thu chi',
-                        style: kTitleTextStyle,
-                      ),
+                      Text('Lịch sử thu chi', style: kTitleTextStyle),
                       Material(
                         color: Colors.transparent,
                         child: InkWell(
@@ -59,10 +57,7 @@ class ExpenseHistoryBoard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Icon(
-                                Icons.navigate_next,
-                                color: kSecondaryColor,
-                              )
+                              Icon(Icons.navigate_next, color: kSecondaryColor)
                             ],
                           ),
                         ),
@@ -78,32 +73,35 @@ class ExpenseHistoryBoard extends StatelessWidget {
                             style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         )
-                      : ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: (state.transactionsList != null) ? state.transactionsList.length : 0,
-                          itemBuilder: (context, index) {
-                            var currentTransaction = state.transactionsList[index];
-                            return GestureDetector(
-                              onTap: () => controller.toEditTransactionScreen(currentTransaction),
-                              child: ExpenseCard(
-                                title: currentTransaction.tagName ?? "Trống",
-                                subTitle: currentTransaction.jarTitle ?? "Trống",
-                                prefixMoney: (currentTransaction.type == "1") ? '+' : '-',
-                                money: currentTransaction.price,
-                                color: (currentTransaction.type == "1") ? kPrimaryColor : Colors.red,
-                                date: currentTransaction.date,
-                                iconName: currentTransaction.icon.substring(4),
-                              ),
-                            );
-                          },
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: false,
+                            itemCount: (state.transactionsList != null) ? state.transactionsList.length : 0,
+                            itemBuilder: (context, index) {
+                              var currentTransaction = state.transactionsList[index];
+                              return GestureDetector(
+                                onTap: () => controller.toEditTransactionScreen(currentTransaction),
+                                child: ExpenseCard(
+                                  title: currentTransaction.tagName ?? "Trống",
+                                  subTitle: currentTransaction.jarTitle ?? "Trống",
+                                  prefixMoney: (currentTransaction.type == "1") ? '+' : '-',
+                                  money: currentTransaction.price,
+                                  color: (currentTransaction.type == "1") ? kPrimaryColor : Colors.red,
+                                  date: currentTransaction.date,
+                                  iconName: currentTransaction.icon.substring(4),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

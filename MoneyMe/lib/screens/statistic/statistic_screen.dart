@@ -51,8 +51,8 @@ class StatisticScreen extends StatelessWidget {
                       return Transform(
                         transform: Matrix4.translationValues(-20, 0.0, 0.0),
                         child: Text(
-                          '${controller.formatter.format(state.startDate)}  ~  ${controller.formatter.format(state.endDate)}',
-                          style: kTitleTextStyle.copyWith(fontSize: 20.0),
+                          '${controller.formatter.format(state.startDate)} ~ ${controller.formatter.format(state.endDate)}',
+                          style: kTitleTextStyle.copyWith(fontSize: 18.0),
                         ),
                       );
                     },
@@ -60,8 +60,9 @@ class StatisticScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                runAlignment: WrapAlignment.spaceBetween,
                 children: [
                   Text(
                     'Thống kê theo ngày',
@@ -70,11 +71,13 @@ class StatisticScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  SizedBox(width: 20),
                   TimeRangeDropDown(
                     onPress: controller.setDateRange,
                   ),
                 ],
               ),
+              SizedBox(height: 20),
               BlocBuilder<StatisticBloc, StatisticState>(
                 builder: (context, state) {
                   return FutureBuilder<dynamic>(

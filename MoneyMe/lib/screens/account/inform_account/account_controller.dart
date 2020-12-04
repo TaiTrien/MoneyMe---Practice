@@ -47,16 +47,12 @@ class AccountController {
 
   handleUpdatePercentage() async {
     if (percent.toInt() < 0) {
-      notify.error(
-        message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %",
-      );
+      notify.error(message: "Tổng số hũ phải là 100%, bạn đã vượt quá ${percent.toInt().abs()} %");
       return;
     }
 
     if (percent.toInt() > 0 && percent.toInt() < 100) {
-      notify.error(
-        message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật",
-      );
+      notify.error(message: "Tổng số hũ phải là 100%, bạn cần thêm ${percent.toInt().abs()} % để cập nhật");
       return;
     }
 
@@ -116,6 +112,14 @@ class AccountController {
   onSliderStop({double value, String jarName}) {
     while (percent < 0) {
       value--;
+      if (value < 0) {
+        value = 0;
+        break;
+      }
+      if (value > 100) {
+        value = 100;
+        break;
+      }
       if (jarName == "nec")
         necPercentage = value;
       else if (jarName == "ltss")

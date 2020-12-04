@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class SignInController {
   var phoneNumberController = TextEditingController();
   var passwordController = TextEditingController();
+  bool isSignin = false;
 
   dispose() {
     phoneNumberController.dispose();
@@ -15,6 +16,8 @@ class SignInController {
   }
 
   handleSignIn(BuildContext context) async {
+    if (isSignin) return;
+    isSignin = true;
     String phoneNumber = phoneNumberController.text.trim();
     String password = passwordController.text.trim();
 
@@ -42,6 +45,7 @@ class SignInController {
 
     await Store.setToken(token);
     // Handle if validate successfuly
+    isSignin = false;
     Navigator.pushNamedAndRemoveUntil(context, '/loadingScreen', (_) => false);
   }
 

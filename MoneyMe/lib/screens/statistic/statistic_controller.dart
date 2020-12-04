@@ -40,7 +40,6 @@ class StatisticController {
     DateTime today = DateTime.now();
     DateTime startDate, endDate;
 
-    print(dateRange);
     switch (dateRange) {
       case DateRange.ThisWeek:
         startDate = today.subtract(new Duration(days: today.weekday - 1));
@@ -72,7 +71,7 @@ class StatisticController {
         break;
       case DateRange.ThisQuarter:
         DateTime today = DateTime.now();
-        int quarterNumber = ((today.month) ~/ 3 + 1);
+        int quarterNumber = ((today.month - 1) ~/ 3 + 1);
         startDate = new DateTime(today.year, (quarterNumber - 1) * 3 + 1, 1);
         endDate = DateTime(DateTime.now().year, (quarterNumber - 1) * 3 + 4, 0);
 
@@ -80,7 +79,7 @@ class StatisticController {
         break;
       case DateRange.LastQuarter:
         DateTime today = DateTime.now();
-        int quarterNumber = ((today.month) ~/ 3);
+        int quarterNumber = ((today.month - 1) ~/ 3);
         startDate = new DateTime(today.year, (quarterNumber - 1) * 3 + 1, 1);
         endDate = DateTime(DateTime.now().year, (quarterNumber - 1) * 3 + 4, 0);
 

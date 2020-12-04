@@ -26,40 +26,41 @@ class HomeScreen extends StatelessWidget {
           child: Icon(Icons.add),
           backgroundColor: kPrimaryColor,
         ),
-        body: Container(
-          color: kSecondaryColor,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
-                child: Text(
-                  'Xin chào ${controller.userName}',
-                  style: Theme.of(context).textTheme.headline6.copyWith(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-              SizedBox(height: 20),
-              RemainMoneyCard(
-                controller: controller,
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(right: 25.0, left: 25.0, top: 25.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFf7f9fc),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0),
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: size.height - 60),
+            child: Container(
+              color: kSecondaryColor,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: kDefaultPaddingVertical + 10),
+                    child: Text(
+                      'Xin chào ${controller.userName}',
+                      style: Theme.of(context).textTheme.headline6.copyWith(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ),
-                  child: SingleChildScrollView(
+                  SizedBox(height: 20),
+                  RemainMoneyCard(
+                    controller: controller,
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(right: 25.0, left: 25.0, top: 25.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFf7f9fc),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -69,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20.0),
                         ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: 320),
+                          constraints: BoxConstraints(maxWidth: double.infinity, maxHeight: size.height * 0.5),
                           child: JarsListBoard(
                             size: size,
                             controller: controller,
@@ -78,9 +79,9 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

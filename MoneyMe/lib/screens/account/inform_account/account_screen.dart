@@ -10,6 +10,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = new AccountController(context: context);
+    var size = MediaQuery.of(context).size;
     return Material(
       child: SafeArea(
         child: Scaffold(
@@ -21,25 +22,16 @@ class AccountScreen extends StatelessWidget {
             centerTitle: true,
             backgroundColor: kSecondaryColor,
           ),
-          body: Container(
-            color: kSecondaryColor,
-            height: double.infinity,
-            padding: EdgeInsets.all(kDefaultPaddingHorizontal),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
+          body: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height - 60),
+              child: Column(
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: size.height - 60),
+                    child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 40.0,
-                            color: kPrimaryColor,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
                       ),
                       padding: EdgeInsets.symmetric(
                         horizontal: kDefaultPaddingHorizontal,
@@ -47,6 +39,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(height: kDefaultPaddingVertical),
                           Text(
@@ -128,8 +121,8 @@ class AccountScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
