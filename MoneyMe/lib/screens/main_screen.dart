@@ -55,19 +55,19 @@ class _MainScreenState extends State<MainScreen> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'Trang chủ',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),
-              label: 'Event',
+              label: 'Thống kê',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.category),
-              label: 'Add',
+              label: 'Quản lý danh mục',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
-              label: 'Profile',
+              label: 'Trang cá nhân',
             ),
           ],
           currentIndex: _selectedIndex,
